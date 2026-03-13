@@ -35,29 +35,40 @@ export class HardwareOrchestrator {
     private handlePrintStart(): void {
         if (!this.cameraUnit || !this.printerUnit) return;
 
+        // Atmospheric Focus Effect
+        document.body.style.transition = "background-color 0.8s ease-in-out";
+        document.body.style.backgroundColor = "#050505";
+        const panels = document.querySelectorAll('.studio-panel, .manual-panel');
+        panels.forEach(p => (p as HTMLElement).style.opacity = "0.3");
+
         // Animate Camera out (Clean fade and scale)
-        this.cameraUnit.style.transition = "transform 0.4s ease-in-out, opacity 0.3s ease-out";
+        this.cameraUnit.style.transition = "transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease-out";
         this.cameraUnit.style.opacity = "0";
-        this.cameraUnit.style.transform = "scale(0.95)";
+        this.cameraUnit.style.transform = "scale(0.92) translateX(-50px)";
         this.cameraUnit.style.pointerEvents = "none";
 
         // Animate Printer in (Perfectly Centered)
         setTimeout(() => {
             if (this.printerUnit) {
-                this.printerUnit.style.transition = "transform 0.5s ease-out, opacity 0.4s ease-out";
+                this.printerUnit.style.transition = "transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease-out";
                 this.printerUnit.classList.remove("opacity-0", "pointer-events-none");
                 this.printerUnit.classList.add("opacity-100");
-                this.printerUnit.style.transform = "translateX(0) scale(1)";
+                this.printerUnit.style.transform = "scale(1)";
             }
-        }, 150);
+        }, 100);
     }
 
     private handlePrintEnd(): void {
         setTimeout(() => {
             if (!this.cameraUnit || !this.printerUnit) return;
 
+            // Restore Atmosphere
+            document.body.style.backgroundColor = "";
+            const panels = document.querySelectorAll('.studio-panel, .manual-panel');
+            panels.forEach(p => (p as HTMLElement).style.opacity = "1");
+
             // Animate Printer out
-            this.printerUnit.style.transform = "scale(0.95)";
+            this.printerUnit.style.transform = "scale(0.92) translateX(50px)";
             this.printerUnit.classList.add("opacity-0", "pointer-events-none");
             this.printerUnit.classList.remove("opacity-100");
 
@@ -65,7 +76,7 @@ export class HardwareOrchestrator {
             setTimeout(() => {
                 if (this.cameraUnit) {
                     this.cameraUnit.style.opacity = "1";
-                    this.cameraUnit.style.transform = "scale(1)";
+                    this.cameraUnit.style.transform = "scale(1) translateX(0)";
                     this.cameraUnit.style.pointerEvents = "auto";
                 }
             }, 300);

@@ -74,6 +74,11 @@ export const AppStore = {
         window.dispatchEvent(new CustomEvent('gb-input', { detail: { button } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
         this.playSound('click');
+
+        // Haptic Feedback for physical sensation
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            navigator.vibrate(10);
+        }
     },
 
     /**

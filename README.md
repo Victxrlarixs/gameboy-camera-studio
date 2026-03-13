@@ -1,43 +1,58 @@
-# Astro Starter Kit: Minimal
+# Game Boy Camera Studio
+### *A Tactile Sensory Journey into 8-Bit Photography*
 
-```sh
-npm create astro@latest -- --template minimal
-```
+[![Enter the Studio](https://img.shields.io/badge/LIVE_EXPERIENCE-Enter_Studio-A01050?style=for-the-badge&logo=gameboy&logoColor=white)](https://victxrlarixs.github.io/gameboy-camera-studio)
+> **Direct Access**: [victxrlarixs.github.io/gameboy-camera-studio](https://victxrlarixs.github.io/gameboy-camera-studio)  
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## 🚀 Project Structure
+![Hero Experience](public/readme/hardware-desktop.png)
 
-Inside of your Astro project, you'll see the following folders and files:
+Game Boy Camera Studio is designed to transform the act of digital photography into a tactile, mechanical experience that honors the 1998 classic hardware.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+---
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## The Experience Workflow
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+The Studio is built around a "Hardware-First" philosophy. Every interaction is designed to feel like moving physical parts on a professional laboratory workbench.
 
-Any static assets, like images, can be placed in the `public/` directory.
+### 1. The Capture (Hardware Phase)
+Hold the device. See the "eye" of the camera. The interface is a stripped-back, high-contrast LCD. When you snap a photo, you aren't just saving data—you're capturing a raw dithered frame with the soul of a 2-bit sensor.
 
-## 🧞 Commands
+### 2. The Development (Darkroom Phase)
+Slide into the **Studio Panel**. Here, you select your "Film Stock" (Palettes) and refine the development.
+*   **Tactile Controls**: Adjust brightness and contrast through industrial-grade sliders.
+*   **Film Strips**: Watch your lab roll grow as you capture negatives in real-time.
 
-All commands are run from the root of the project, from a terminal:
+### 3. The Print (Mechanical Phase)
+The most magical part of the journey. Once you initiate a print, the Game Boy unit slides away on mechanical rails to make room for the **Thermal Printer**.
+*   **Sensory Immersion**: Hear the low-frequency drone of the printing motor.
+*   **Physical Feedback**: Feel the vibration of the machine as the paper slowly emerges from the tinted acrylic cover.
+*   **Thermal Realism**: Watch the image appear on dithered thermal paper, complete with micro-scanlines and paper grain.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### 4. The Tear (The Final Result)
+The process ends with the physical act of "cutting" the paper. Press the debossed, magenta **CUT** button to trigger the tear animation. You are presented with a digital "Print Preview" on a matte plastic tray, ready to be saved as an **8x Upscaled (1280x1152)** pixel-perfect artifact.
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Industrial Design Language
+
+We moved away from modern web conventions to embrace **Industrial Nintendo Aesthetics**:
+*   **Matte ABS Plastic**: Every panel has the weight and texture of a DMG-01 console.
+*   **Debossed Wells**: Controls sit inside recessed cavities for a high-fidelity hardware look.
+*   **Mechanical Rails**: Transitions between hardware units are snappy, horizontal slides—no "web magic," just rails and motors.
+*   **High-Fidelity Audio**: Procedurally synthesized hardware clicks and motor hums provide constant acoustic feedback.
+
+---
+
+## Designed for Your Pocket
+Whether on Desktop or Mobile, the Studio adapts to keep the hardware at the center of your focus.
+
+<div align="center">
+  <img src="public/readme/hardware-mobile.png" width="300" alt="Mobile Experience" />
+  <br/>
+  <em>Optimized for perfect centering and tactile reach on all touchscreens</em>
+</div>
+
+---
+
+*“Bringing the weight and soul of 1998 hardware to the modern browser.”*
