@@ -1,17 +1,14 @@
----
-// Import styles
+﻿---
 import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="studio-panel hidden lg:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_80px_12px] h-[calc(100vh-40px)] overflow-y-auto overflow-x-hidden relative">
-    
-    <!-- Branding Plate (Embossed) -->
-    <div class="absolute top-8 right-6 flex flex-col items-end opacity-40 select-none pointer-events-none">
+
+<div class="absolute top-8 right-6 flex flex-col items-end opacity-40 select-none pointer-events-none">
         <span class="text-[8px] font-pixel text-zinc-800 tracking-tighter leading-none mb-1">DMG-01-STUDIO</span>
         <div class="w-16 h-1 bg-zinc-800/10 rounded-full"></div>
     </div>
 
-    <!-- PANEL TITLE (High Fidelity Relief) -->
-    <div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
+<div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
         <h2 class="text-[13px] font-pixel text-[#302080] italic uppercase tracking-tighter embossed-text">
             Studio Processor
         </h2>
@@ -22,9 +19,8 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-    <!-- MECHANICAL CONTROLS (Wells/Pockets) -->
-    <div class="space-y-8 shrink-0">
-        <!-- BRIGHTNESS WELL -->
+<div class="space-y-8 shrink-0">
+        
         <div class="space-y-3">
             <div class="flex justify-between items-end px-1">
                 <label class="text-[8px] font-pixel text-[#3a2a6b] font-bold uppercase tracking-widest opacity-60">Brightness</label>
@@ -36,8 +32,7 @@ import "../../styles/components/StudioSidePanel.css";
             </div>
         </div>
 
-        <!-- CONTRAST WELL -->
-        <div class="space-y-3">
+<div class="space-y-3">
             <div class="flex justify-between items-end px-1">
                 <label class="text-[8px] font-pixel text-[#3a2a6b] font-bold uppercase tracking-widest opacity-60">Contrast</label>
                 <span id="val-contrast" class="text-[8px] font-pixel text-magenta-600 font-bold">1.0</span>
@@ -49,23 +44,21 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-    <!-- STOCK SELECTION (Physical Slot) -->
-    <div class="space-y-4 shrink-0 pt-4">
+<div class="space-y-4 shrink-0 pt-4">
         <label class="text-[8px] font-pixel text-[#302080]/50 uppercase tracking-[0.2em] mb-2 block">Film Stock</label>
         <div id="palette-grid" class="grid grid-cols-2 gap-4 p-3 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner">
-            <!-- Injected via StudioController -->
+            
         </div>
     </div>
 
-    <!-- FILM ROLL RECEPTACLE (Deep Inset) -->
-    <div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0">
+<div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0">
         <div class="flex justify-between items-center px-1">
             <label class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-widest">Lab Buffer</label>
             <div class="w-6 h-1 bg-black/10 rounded-full"></div>
         </div>
         <div class="relative p-1 debossed-panel rounded-lg shadow-2xl border-t border-black/60">
              <div id="recent-photos" class="flex gap-3 overflow-x-auto overflow-y-hidden p-3 min-h-[100px] border border-white/5 rounded-sm custom-scrollbar-h">
-                <!-- Empty State physical frame -->
+                
                 <div class="w-20 h-20 shrink-0 bg-black/40 border-2 border-[#1a1b1c] rounded-xs flex items-center justify-center relative shadow-lg">
                      <span class="text-[5px] font-pixel text-zinc-700 uppercase">Empty</span>
                      <div class="absolute inset-0 bg-white/5 pointer-events-none"></div>

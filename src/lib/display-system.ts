@@ -1,5 +1,4 @@
 import { AppStore } from "../store/app";
-import { PhotoStore } from "../store/photos";
 import { CameraEngine } from "../features/camera/CameraEngine";
 
 /**
@@ -79,9 +78,6 @@ export class DisplaySystem {
             if (button === "a") {
                 this.takePhoto();
             }
-            if (button === "start" && this.lastSavedPhoto) {
-                this.savePhoto();
-            }
         }
     }
 
@@ -90,13 +86,8 @@ export class DisplaySystem {
      */
     private startMainLoop(): void {
         const loop = () => {
-            switch (AppStore.state.mode) {
-                case "SPLASH":
-                    this.renderSplash();
-                    break;
-                case "VIEW":
-                    // Gallery rendering implementation pending
-                    break;
+            if (AppStore.state.mode === "SPLASH") {
+                this.renderSplash();
             }
             if (AppStore.state.mode !== "SHOOT") {
                 requestAnimationFrame(loop);
@@ -151,7 +142,8 @@ export class DisplaySystem {
         if (elements.tl) elements.tl.innerText = `BRIGHT:${(AppStore.state.brightness * 10).toFixed(0)}`;
         if (elements.tr) elements.tr.innerText = `${AppStore.state.paletteName} (SEL)`;
         if (elements.bl) elements.bl.innerText = "SEL: PALETTE";
-        if (elements.br) elements.br.innerText = this.lastSavedPhoto ? "A: SHOOT" : "START: LAB ▶";
+        if (elements.br) elements.br.innerText = "START: LAB ▶";
+
 
         this.uiOverlay?.classList.remove("hidden");
     }
@@ -194,26 +186,11 @@ export class DisplaySystem {
         this.lastSavedPhoto = this.camera.takePhoto();
         AppStore.playSound("shutter");
         this.flashEffect();
-        
-        // Save to permanent lab storage
-        PhotoStore.savePhoto(this.lastSavedPhoto.dataUrl);
 
         window.dispatchEvent(new CustomEvent("gb-print-start", {
             detail: { dataUrl: this.lastSavedPhoto.dataUrl },
         }));
-        
-        this.updateShootUI();
-    }
 
-    /**
-     * Downloads the last captured frame to the user's device.
-     */
-    private savePhoto(): void {
-        const link = document.createElement("a");
-        link.download = `gb-cam-${Date.now()}.png`;
-        link.href = this.lastSavedPhoto.dataUrl;
-        link.click();
-        this.lastSavedPhoto = null;
         this.updateShootUI();
     }
 

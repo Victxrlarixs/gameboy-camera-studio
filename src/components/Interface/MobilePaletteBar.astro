@@ -1,0 +1,157 @@
+﻿---
+
+---
+
+<div id="mobile-bottom-bar"
+    class="lg:hidden fixed bottom-0 inset-x-0 z-[150] transition-transform duration-500 translate-y-full"
+>
+    
+    <div class="flex justify-center pb-2 pt-1" id="mobile-bar-handle">
+        <div class="w-10 h-1 bg-white/20 rounded-full"></div>
+    </div>
+
+    <div class="matte-plastic rounded-t-[24px] px-5 pt-4 pb-6 border-t-2 border-white/30 shadow-[0_-20px_60px_rgba(0,0,0,0.6)]">
+
+<div class="flex flex-col gap-3">
+            <div class="flex justify-between items-center">
+                <span class="text-[8px] font-pixel text-[#3a2a6b] uppercase opacity-60 tracking-widest">Film Stock</span>
+                <span id="mobile-palette-name" class="text-[8px] font-pixel text-[#302080] font-bold uppercase">DMG</span>
+            </div>
+            <div id="mobile-palette-grid" class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar-h">
+                
+            </div>
+        </div>
+
+<div class="h-px bg-black/10 my-4"></div>
+
+<div class="flex flex-col gap-3">
+            <span class="text-[8px] font-pixel text-[#3a2a6b] uppercase opacity-60 tracking-widest">Overlay Stamp</span>
+            <div id="mobile-stamp-grid" class="flex gap-2 flex-wrap">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="mobile-palette-toggle"
+    class="lg:hidden fixed bottom-4 right-4 z-[160] w-12 h-12 matte-plastic rounded-full shadow-[inset_-2px_-2px_6px_rgba(0,0,0,0.4),inset_1px_1px_3px_rgba(255,255,255,0.3),0_8px_20px_rgba(0,0,0,0.5)] flex items-center justify-center border-t border-white/30 active:translate-y-1 transition-all"
+    aria-label="Open palette selector"
+>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(48,32,128,0.7)" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="3"/>
+        <circle cx="6" cy="6" r="2" fill="rgba(48,32,128,0.5)" stroke="none"/>
+        <circle cx="18" cy="6" r="2" fill="rgba(160,16,80,0.5)" stroke="none"/>
+        <circle cx="6" cy="18" r="2" fill="rgba(0,128,64,0.5)" stroke="none"/>
+        <circle cx="18" cy="18" r="2" fill="rgba(200,128,0,0.5)" stroke="none"/>
+    </svg>
+</button>
+
+<script>
+    import { AppStore, STAMPS } from "../../store/app";
+    import { PALETTES } from "../../lib/dither";
+
+    const bar = document.getElementById('mobile-bottom-bar');
+    const toggle = document.getElementById('mobile-palette-toggle');
+    const handle = document.getElementById('mobile-bar-handle');
+    const paletteGrid = document.getElementById('mobile-palette-grid');
+    const stampGrid = document.getElementById('mobile-stamp-grid');
+    const paletteName = document.getElementById('mobile-palette-name');
+
+    let isOpen = false;
+
+    function openBar() {
+        isOpen = true;
+        bar?.classList.remove('translate-y-full');
+        toggle?.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function closeBar() {
+        isOpen = false;
+        bar?.classList.add('translate-y-full');
+        toggle?.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    toggle?.addEventListener('click', () => {
+        openBar();
+        AppStore.playSound('click');
+    });
+    handle?.addEventListener('click', () => {
+        closeBar();
+        AppStore.playSound('click');
+    });
+    window.addEventListener('gb-mode-change', (e: any) => {
+        if (e.detail.mode !== 'SHOOT') closeBar();
+        if (e.detail.mode === 'SHOOT') {
+            renderPalettes();
+            renderStamps();
+        }
+    });
+    const STAMP_ICONS: Record<string, string> = {
+        NONE: '✕',
+        HEART: '♥',
+        STAR: '★',
+        SMILE: '☺',
+        SKULL: '☠',
+        FLOWER: '✿',
+        GHOST: '◉',
+        GRID: '▦',
+        CROSS: '✚',
+        CORNER: '⌐',
+    };
+
+    function renderPalettes() {
+        if (!paletteGrid) return;
+        paletteGrid.innerHTML = Object.keys(PALETTES).map(name => {
+            const colors = (PALETTES as any)[name];
+            const isActive = AppStore.state.paletteName === name;
+            return `
+                <button data-palette="${name}" class="palette-btn shrink-0 flex flex-col items-center gap-1 p-2 rounded-lg border-2 ${isActive ? 'border-[#302080] bg-[#c8c7c5]' : 'border-transparent bg-black/5'} transition-all active:scale-95">
+                    <div class="flex w-12 h-5 rounded-sm overflow-hidden border border-black/20 shadow-inner">
+                        ${colors.map((c: number[]) => `<div style="background:rgb(${c.join(',')});flex:1"></div>`).join('')}
+                    </div>
+                    <span class="text-[6px] font-pixel text-[#302080]/70 uppercase whitespace-nowrap">${name}</span>
+                </button>
+            `;
+        }).join('');
+
+        paletteGrid.querySelectorAll('.palette-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const name = btn.getAttribute('data-palette')!;
+                AppStore.state.paletteName = name;
+                AppStore.playSound('click');
+                window.dispatchEvent(new CustomEvent('gb-state-change'));
+                if (paletteName) paletteName.textContent = name;
+                renderPalettes();
+            });
+        });
+    }
+
+    function renderStamps() {
+        if (!stampGrid) return;
+        stampGrid.innerHTML = STAMPS.map((stamp, idx) => {
+            const isActive = AppStore.state.stampIndex === idx;
+            const icon = STAMP_ICONS[stamp] || stamp;
+            return `
+                <button data-stamp="${idx}" class="stamp-btn w-11 h-11 rounded-lg border-2 ${isActive ? 'border-[#302080] bg-[#c8c7c5]' : 'border-transparent bg-black/5'} flex items-center justify-center text-[16px] transition-all active:scale-90">
+                    <span title="${stamp}">${icon}</span>
+                </button>
+            `;
+        }).join('');
+
+        stampGrid.querySelectorAll('.stamp-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.getAttribute('data-stamp')!);
+                AppStore.state.stampIndex = idx;
+                AppStore.playSound('click');
+                window.dispatchEvent(new CustomEvent('gb-state-change'));
+                renderStamps();
+            });
+        });
+    }
+    window.addEventListener('gb-state-change', () => {
+        if (paletteName) paletteName.textContent = AppStore.state.paletteName;
+    });
+
+    renderPalettes();
+    renderStamps();
+</script>

@@ -1,16 +1,14 @@
----
+﻿---
 import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="manual-panel hidden xl:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_12px_80px] h-[calc(100vh-40px)] overflow-y-auto relative">
-    
-    <!-- Branding Plate (Embossed) -->
-    <div class="absolute top-8 left-6 flex flex-col items-start opacity-40 select-none pointer-events-none">
+
+<div class="absolute top-8 left-6 flex flex-col items-start opacity-40 select-none pointer-events-none">
         <span class="text-[8px] font-pixel text-zinc-800 tracking-tighter leading-none mb-1">DMG-01-SERVICE</span>
         <div class="w-16 h-1 bg-zinc-800/10 rounded-full"></div>
     </div>
 
-    <!-- SERVICE HEADER (Relief Style) -->
-    <div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
+<div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
         <h2 class="text-[13px] font-pixel text-[#3a2a6b] italic uppercase tracking-tighter embossed-text">
             Service Console
         </h2>
@@ -21,12 +19,11 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-    <!-- CONTROL SCHEME (Physical Mechanical Keys) -->
-    <div class="space-y-6 pt-2">
+<div class="space-y-6 pt-2">
         <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest pl-1">Key Assignment</label>
         
         <div class="grid grid-cols-1 gap-4">
-            <!-- Key: ACTION A -->
+            
             <div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
                 <div class="w-10 h-7 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg">
                     <span class="text-[9px] font-pixel text-white drop-shadow-md">Z</span>
@@ -37,8 +34,7 @@ import "../../styles/components/StudioSidePanel.css";
                 </div>
             </div>
 
-            <!-- Key: ACTION B -->
-            <div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
+<div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
                 <div class="w-10 h-7 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg">
                     <span class="text-[9px] font-pixel text-white drop-shadow-md">X</span>
                 </div>
@@ -48,8 +44,7 @@ import "../../styles/components/StudioSidePanel.css";
                 </div>
             </div>
 
-            <!-- Key: START -->
-            <div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
+<div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
                 <div class="w-14 h-7 bg-zinc-700 rounded-md flex items-center justify-center border-t-2 border-white/10 border-r-4 border-b-4 border-black/60 shadow-lg px-2">
                     <span class="text-[5px] font-pixel text-white uppercase opacity-80">Enter</span>
                 </div>
@@ -61,12 +56,11 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-    <!-- HARDWARE DIAGNOSTICS (Recessed Wells) -->
-    <div class="space-y-4 pt-8 border-t-2 border-black/10">
+<div class="space-y-4 pt-8 border-t-2 border-black/10">
         <label class="text-[8px] font-pixel text-[#302080]/60 uppercase block text-center tracking-widest">Real-Time Diag</label>
         
         <div class="p-5 debossed-panel space-y-5 rounded-xl border-t border-black/50 shadow-2xl">
-             <!-- Status bar: SRAM -->
+             
              <div class="space-y-2.5">
                 <div class="flex justify-between items-end border-b border-white/5 pb-1">
                     <span class="text-[6px] font-pixel text-zinc-500 uppercase">SRAM Photo Storage</span>
@@ -76,9 +70,8 @@ import "../../styles/components/StudioSidePanel.css";
                     <div id="diag-photo-bar" class="h-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-500" style="width: 0%"></div>
                 </div>
              </div>
-             
-             <!-- Status bar: Buffer -->
-             <div class="space-y-2.5">
+
+<div class="space-y-2.5">
                 <div class="flex justify-between items-end border-b border-white/5 pb-1">
                     <span class="text-[6px] font-pixel text-zinc-500 uppercase">Parallel Print Buffer</span>
                     <span id="diag-print-status" class="text-[6px] font-pixel text-emerald-400">STATUS: READY</span>
@@ -92,8 +85,7 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-    <!-- INDUSTRIAL PLATE (Relief) -->
-    <div class="mt-auto p-4 bg-black/10 border-t border-l border-white/10 border-r-4 border-b-4 border-black/40 rounded-lg shadow-lg">
+<div class="mt-auto p-4 bg-black/10 border-t border-l border-white/10 border-r-4 border-b-4 border-black/40 rounded-lg shadow-lg">
         <div class="flex flex-col gap-1.5 opacity-60 italic">
             <p class="text-[6px] font-pixel text-[#302080] uppercase tracking-tighter font-bold">Nintendo Co., Ltd.</p>
             <div class="w-full h-[1px] bg-black/20"></div>
@@ -112,13 +104,11 @@ import "../../styles/components/StudioSidePanel.css";
     function updateDiagnostics() {
         const photos = PhotoStore.getPhotos();
         const count = photos.length;
-        const max = 30; // Standard GB Camera capacity
+        const max = 30;
         const percent = Math.min((count / max) * 100, 100);
         
         const countLabel = document.getElementById('diag-photo-count');
         const bar = document.getElementById('diag-photo-bar');
-        
-        // Make the diagnostics container clickable to open Lab Book
         const container = countLabel?.closest('.debossed-panel') as any;
         if (container && !container.dataset.hasListener) {
             container.style.cursor = 'pointer';
@@ -131,8 +121,6 @@ import "../../styles/components/StudioSidePanel.css";
         
         if (countLabel) countLabel.innerText = `${count}/${max}`;
         if (bar) bar.style.width = `${percent}%`;
-
-        // If storage is full, change bar color to alert
         if (count >= max && bar) {
             bar.classList.add('bg-red-500');
             bar.classList.remove('bg-emerald-500');
@@ -141,12 +129,8 @@ import "../../styles/components/StudioSidePanel.css";
             bar.classList.remove('bg-red-500');
         }
     }
-
-    // React to photo events
     window.addEventListener('gb-photo-saved', updateDiagnostics);
     window.addEventListener('gb-photo-deleted', updateDiagnostics);
-
-    // Print Buffer Visualization
     window.addEventListener('gb-print-start', () => {
         const label = document.getElementById('diag-print-status');
         if (label) {
@@ -176,7 +160,5 @@ import "../../styles/components/StudioSidePanel.css";
             cell.style.backgroundColor = '';
         });
     });
-
-    // Run on init
     updateDiagnostics();
 </script>
