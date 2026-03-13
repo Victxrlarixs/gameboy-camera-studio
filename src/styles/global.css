@@ -124,3 +124,11 @@ body::before {
         justify-content: center !important;
     }
 }
+
+.custom-scrollbar-v::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar-v::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+.custom-scrollbar-v::-webkit-scrollbar-thumb { background: rgba(48, 32, 128, 0.3); border-radius: 10px; }
+
+.custom-scrollbar-h::-webkit-scrollbar { height: 6px; }
+.custom-scrollbar-h::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+.custom-scrollbar-h::-webkit-scrollbar-thumb { background: rgba(48, 32, 128, 0.3); border-radius: 10px; }

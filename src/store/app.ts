@@ -60,6 +60,7 @@ export const AppStore = {
 
             case 'SHOOT':
                 if (button === 'select') this.cyclePalette();
+                if (button === 'start') this.setMode('VIEW');
                 if (button === 'up') this.adjustBrightness(0.1);
                 if (button === 'down') this.adjustBrightness(-0.1);
                 if (button === 'left') this.cycleStamp(-1);

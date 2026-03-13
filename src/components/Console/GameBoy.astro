@@ -5,6 +5,7 @@ import Printer from "./Printer.astro";
 import Cartridge from "./Cartridge.astro";
 import StudioSidePanel from "../Interface/StudioSidePanel.astro";
 import ServiceManualPanel from "../Interface/ServiceManualPanel.astro";
+import LabBook from "../Interface/LabBook.astro";
 
 // Import styles (Astro will bundle them)
 import "../../styles/components/GameBoy.css";
@@ -94,6 +95,8 @@ import "../../styles/components/GameBoy.css";
     <div class="hidden xl:flex h-full items-center">
         <ServiceManualPanel />
     </div>
+
+    <LabBook />
 </div>
 
 <script>

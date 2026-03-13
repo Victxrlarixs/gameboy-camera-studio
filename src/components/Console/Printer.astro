@@ -54,20 +54,19 @@
                     class="w-[78%] h-0 transition-[height] duration-[5000ms] cubic-bezier(0.4, 0, 0.2, 1) bg-[#f4f4ec] flex flex-col items-center overflow-hidden shadow-[0_-15px_45px_rgba(0,0,0,0.5),inset_0_-20px_40px_rgba(0,0,0,0.05)] origin-bottom border-x border-zinc-300 rounded-b-sm relative pointer-events-auto"
                 >
                     <!-- Paper Grain Texture -->
-                    <div
-                        class="absolute inset-0 opacity-[0.03] pointer-events-none paper-grain"
-                    >
-                    </div>
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none paper-grain"></div>
 
                     <!-- Top edge curl -->
-                    <div
-                        class="w-full h-8 bg-gradient-to-b from-zinc-200 to-transparent mb-3 opacity-40"
-                    >
+                    <div class="w-full h-6 bg-gradient-to-b from-zinc-200 to-transparent opacity-40 flex-shrink-0"></div>
+
+                    <!-- Header (matches preview) -->
+                    <div class="w-full px-5 pb-2 flex flex-col items-center border-b border-dashed border-zinc-300 mb-2">
+                        <span class="text-[7px] font-pixel text-zinc-800 tracking-wider uppercase">GAME BOY CAMERA</span>
+                        <span class="text-[5px] font-pixel text-zinc-400 tracking-widest uppercase mt-0.5">Studio /// Lab Output</span>
                     </div>
 
-                    <div
-                        class="relative w-[88%] transition-transform duration-500 hover:scale-[1.02] shadow-[0_12px_25px_rgba(0,0,0,0.15)]"
-                    >
+                    <!-- Image (matches preview) -->
+                    <div class="relative w-[88%] shadow-[0_12px_25px_rgba(0,0,0,0.15)]">
                         <img
                             id="printer-image"
                             src=""
@@ -76,29 +75,57 @@
                         />
                         <!-- Thermal scanline/dust texture -->
                         <div class="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-multiply bg-[length:100%_4px] bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.05)_50%)]"></div>
-                        <div
-                            class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"
-                        >
+                        <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"></div>
+                    </div>
+
+                    <!-- Receipt details (matches preview) -->
+                    <div class="w-full px-5 py-3 border-t border-dashed border-zinc-300 flex flex-col gap-2 mt-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[5px] font-pixel text-zinc-400 uppercase">Date</span>
+                            <span id="printer-date" class="text-[5px] font-pixel text-zinc-600 uppercase">--/--/----</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[5px] font-pixel text-zinc-400 uppercase">Format</span>
+                            <span class="text-[5px] font-pixel text-zinc-600 uppercase">160×144 / 8X UP</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[5px] font-pixel text-zinc-400 uppercase">Output</span>
+                            <span class="text-[5px] font-pixel text-zinc-600 uppercase">THERMAL / DITH.</span>
                         </div>
                     </div>
 
-                    <div
-                        class="mt-8 p-6 text-[8px] font-pixel text-zinc-600 uppercase tracking-[0.25em] text-center leading-loose opacity-70"
-                    >
-                        <span id="printer-date">03/13/2026 02:11</span><br />
-                        GAME BOY CAMERA STUDIO
+                    <!-- Barcode (matches preview) -->
+                    <div class="w-full px-5 pb-4 flex flex-col items-center gap-1 border-t border-dashed border-zinc-300 pt-3">
+                        <div class="flex gap-[2px] items-end h-8">
+                            <div class="bg-zinc-800" style="width:3px;height:80%"></div>
+                            <div class="bg-zinc-800" style="width:1px;height:60%"></div>
+                            <div class="bg-zinc-800" style="width:4px;height:90%"></div>
+                            <div class="bg-zinc-800" style="width:1px;height:70%"></div>
+                            <div class="bg-zinc-800" style="width:5px;height:100%"></div>
+                            <div class="bg-zinc-800" style="width:2px;height:65%"></div>
+                            <div class="bg-zinc-800" style="width:3px;height:85%"></div>
+                            <div class="bg-zinc-800" style="width:2px;height:75%"></div>
+                            <div class="bg-zinc-800" style="width:1px;height:60%"></div>
+                            <div class="bg-zinc-800" style="width:4px;height:95%"></div>
+                            <div class="bg-zinc-800" style="width:2px;height:70%"></div>
+                            <div class="bg-zinc-800" style="width:1px;height:80%"></div>
+                            <div class="bg-zinc-800" style="width:3px;height:90%"></div>
+                            <div class="bg-zinc-800" style="width:4px;height:65%"></div>
+                            <div class="bg-zinc-800" style="width:1px;height:75%"></div>
+                            <div class="bg-zinc-800" style="width:2px;height:85%"></div>
+                            <div class="bg-zinc-800" style="width:3px;height:100%"></div>
+                            <div class="bg-zinc-800" style="width:1px;height:60%"></div>
+                            <div class="bg-zinc-800" style="width:4px;height:80%"></div>
+                            <div class="bg-zinc-800" style="width:2px;height:70%"></div>
+                        </div>
+                        <span class="text-[5px] font-pixel text-zinc-400 tracking-[0.3em]">GB-CAM-LAB-001</span>
                     </div>
 
                     <!-- Zig-Zag Tear Pattern -->
                     <div
                         class="absolute bottom-0 left-0 right-0 h-5 z-30"
-                        style="background-image: 
-                            linear-gradient(135deg, white 25%, transparent 25%),
-                            linear-gradient(225deg, white 25%, transparent 25%);
-                            background-size: 10px 10px;
-                            background-repeat: repeat-x;"
-                    >
-                    </div>
+                        style="background-image: linear-gradient(135deg, #f4f4ec 25%, transparent 25%), linear-gradient(225deg, #f4f4ec 25%, transparent 25%); background-size: 10px 10px; background-repeat: repeat-x; background-position: 0 top;"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -164,89 +191,104 @@
         </div>
     </div>
 
-    <!-- THERMAL PREVIEW OVERLAY (Industrial UI) -->
+    <!-- THERMAL PREVIEW OVERLAY — Darkroom Scene -->
     <div
         id="thermal-preview-overlay"
-        class="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-500 scale-95 overflow-y-auto overflow-x-hidden"
+        class="fixed inset-0 z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-700"
     >
-        <div
-            class="matte-plastic m-4 p-8 sm:p-12 rounded-[24px_24px_120px_24px] border-t-2 border-l-2 border-white/40 border-r-[12px] border-b-[12px] border-black/40 shadow-2xl flex flex-col items-center gap-10 max-w-full"
-        >
-            <!-- Branding Header -->
-            <div
-                class="w-full flex justify-between items-center border-b-2 border-black/10 pb-4"
+        <!-- Darkroom atmosphere -->
+        <div class="absolute inset-0 bg-[#0a0a0c]">
+            <!-- Spotlight from above -->
+            <div class="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(248,240,200,0.07)_0%,transparent_100%)] pointer-events-none"></div>
+        </div>
+
+        <!-- The Ticket — drops onto the surface -->
+        <div id="ticket-drop" class="relative flex flex-col items-center z-10 translate-y-[-20px] opacity-0 transition-all duration-700 ease-out">
+
+            <!-- Receipt/Ticket itself -->
+            <div id="torn-paper"
+                class="relative flex flex-col items-center bg-[#f4f4ec] shadow-[0_60px_120px_rgba(0,0,0,0.9),0_20px_40px_rgba(0,0,0,0.6)] w-[90vw] max-w-[420px] sm:w-[420px]"
+                style="rotate: -0.6deg;"
             >
-                <span
-                    class="text-[10px] font-pixel text-[#302080] italic opacity-60 uppercase"
-                    >Print Preview</span
-                >
-                <div class="flex gap-1">
-                    <div class="w-2 h-2 rounded-full bg-[#a01050]"></div>
-                    <div class="w-6 h-2 bg-black/10 rounded-full"></div>
+                <!-- Jagged top tear -->
+                <div class="w-full h-4 overflow-hidden flex-shrink-0"
+                    style="background-image: linear-gradient(135deg, transparent 33.33%, #f7f5ee 33.33%), linear-gradient(225deg, transparent 33.33%, #f7f5ee 33.33%); background-size: 8px 8px; background-position: 0 bottom; background-repeat: repeat-x;"
+                ></div>
+
+                <!-- Header -->
+                <div class="w-full px-6 pt-4 pb-3 flex flex-col items-center border-b border-dashed border-zinc-300 mb-2">
+                    <span class="text-[10px] font-pixel text-zinc-800 tracking-wider uppercase">GAME BOY CAMERA</span>
+                    <span class="text-[7px] font-pixel text-zinc-400 tracking-widest uppercase mt-1">Studio /// Lab Output</span>
                 </div>
+
+                <!-- Photo -->
+                <div class="w-full px-5 py-3 relative">
+                    <div class="relative w-full shadow-[0_12px_25px_rgba(0,0,0,0.15)]">
+                        <img id="preview-image" src="" class="w-full pixelated contrast-[1.1] brightness-[1.05] border border-black/5" />
+                        <!-- Same thermal scanline overlay as during printing -->
+                        <div class="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-multiply bg-[length:100%_4px] bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.05)_50%)]"></div>
+                        <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"></div>
+                    </div>
+                </div>
+
+                <!-- Receipt details -->
+                <div class="w-full px-6 py-4 border-t border-dashed border-zinc-300 flex flex-col gap-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[8px] font-pixel text-zinc-400 uppercase">Date</span>
+                        <span id="preview-date" class="text-[8px] font-pixel text-zinc-600 uppercase">--/--/----</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[8px] font-pixel text-zinc-400 uppercase">Format</span>
+                        <span class="text-[8px] font-pixel text-zinc-600 uppercase">160×144 / 8X UP</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[8px] font-pixel text-zinc-400 uppercase">Output</span>
+                        <span class="text-[8px] font-pixel text-zinc-600 uppercase">THERMAL / DITH.</span>
+                    </div>
+                </div>
+
+                <!-- Barcode area -->
+                <div class="w-full px-6 pb-5 flex flex-col items-center gap-2 border-t border-dashed border-zinc-300 pt-4">
+                    <div class="flex gap-[2px] items-end h-12">
+                        {[3,1,4,1,5,2,3,2,1,4,2,1,3,4,1,2,3,1,4,2,3,1,2,4,3,2,1,3,2,4,1,3,2].map(w => (
+                            <div class="bg-zinc-800" style={`width: ${w}px; height: ${60 + Math.random()*40}%;`}></div>
+                        ))}
+                    </div>
+                    <span class="text-[7px] font-pixel text-zinc-400 tracking-[0.3em]">GB-CAM-LAB-001</span>
+                </div>
+
+                <!-- Jagged bottom tear -->
+                <div class="w-full h-4 overflow-hidden flex-shrink-0"
+                    style="background-image: linear-gradient(315deg, transparent 33.33%, #f7f5ee 33.33%), linear-gradient(45deg, transparent 33.33%, #f7f5ee 33.33%); background-size: 8px 8px; background-position: 0 top; background-repeat: repeat-x;"
+                ></div>
+
+                <!-- Paper grain -->
+                <div class="absolute inset-0 pointer-events-none paper-grain opacity-[0.04]"></div>
+                <!-- Fold lines -->
+                <div class="absolute inset-y-0 left-[30%] w-[1px] bg-black/[0.03] pointer-events-none"></div>
+                <div class="absolute inset-y-0 right-[25%] w-[1px] bg-black/[0.03] pointer-events-none"></div>
             </div>
 
-            <!-- The 'Torn' Paper Fragment in a Well -->
-            <div
-                class="p-2 debossed-panel rounded-xl shadow-2xl border-t-2 border-black/60 scale-95 sm:scale-100"
-            >
-                <div
-                    id="torn-paper"
-                    class="bg-[#f4f4ec] p-6 shadow-xl border-x border-zinc-300 relative flex flex-col items-center"
-                >
-                    <!-- Jagged Top Edge -->
-                    <div
-                        class="absolute -top-3 left-0 right-0 h-4 z-30"
-                        style="background-image: linear-gradient(135deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%), linear-gradient(225deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%); background-size: 8px 8px; background-repeat: repeat-x;"
-                    >
-                    </div>
-
-                    <img id="preview-image" src="" class="w-64 h-64 object-cover pixelated border-2 border-black/5 shadow-inner" />
-                    
-                    <!-- Paper Folds/Texture Overlay -->
-                    <div class="absolute inset-0 pointer-events-none opacity-40">
-                         <div class="absolute inset-y-0 left-1/4 w-[1px] bg-black/5 shadow-[0_0_10px_rgba(0,0,0,0.1)]"></div>
-                         <div class="absolute inset-y-0 right-1/3 w-[1px] bg-black/5 shadow-[0_0_10px_rgba(0,0,0,0.1)]"></div>
-                    </div>
-
-                    <div class="mt-6 text-[7px] font-pixel text-zinc-500 uppercase tracking-widest text-center leading-loose opacity-60">
-                        <span id="preview-date">03/13/2026 02:11</span><br/>
-                        GAME BOY CAMERA STUDIO
-                    </div>
-
-                    <!-- Jagged Bottom Edge -->
-                    <div
-                        class="absolute -bottom-3 left-0 right-0 h-4 z-30"
-                        style="background-image: linear-gradient(135deg, #f4f4ec 25%, transparent 25.5%), linear-gradient(225deg, #f4f4ec 25%, transparent 25.5%); background-size: 8px 8px; background-repeat: repeat-x;"
-                    >
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons (Mechanical Style) -->
-            <div class="flex gap-8 mt-4">
+            <!-- Action buttons below ticket -->
+            <div class="flex gap-10 mt-10">
                 <div class="flex flex-col items-center gap-4">
-                    <button
-                        id="confirm-download-btn"
-                        class="w-16 h-16 bg-[#a01050] rounded-full shadow-[inset_-4px_-4px_8px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.2),0_8px_0_#7a0b3c,10px_12px_20px_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_#7a0b3c] transition-all flex items-center justify-center font-pixel text-[12px] text-white"
-                    >
+                    <button id="confirm-download-btn"
+                        class="w-20 h-20 bg-[#a01050] rounded-full shadow-[inset_-4px_-4px_10px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.2),0_10px_0_#7a0b3c,0_20px_40px_rgba(0,0,0,0.7)] active:translate-y-2 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_#7a0b3c] transition-all flex items-center justify-center">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M12 4v12M6 14l6 6 6-6"/>
+                        </svg>
                     </button>
-                    <span
-                        class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-tighter"
-                        >SAVE</span
-                    >
+                    <span class="text-[9px] font-pixel text-zinc-300 uppercase tracking-widest">Export</span>
                 </div>
 
                 <div class="flex flex-col items-center gap-4">
-                    <button
-                        id="cancel-preview-btn"
-                        class="w-16 h-16 bg-zinc-600 rounded-full shadow-[inset_-4px_-4px_8px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.2),0_8px_0_zinc-800,10px_12px_20px_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_zinc-800] transition-all flex items-center justify-center font-pixel text-[12px] text-white"
-                    >
+                    <button id="cancel-preview-btn"
+                        class="w-20 h-20 bg-zinc-700 rounded-full shadow-[inset_-4px_-4px_10px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.08),0_10px_0_rgba(0,0,0,0.6),0_20px_40px_rgba(0,0,0,0.7)] active:translate-y-2 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_rgba(0,0,0,0.5)] transition-all flex items-center justify-center">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
                     </button>
-                    <span
-                        class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-tighter"
-                        >BACK</span
-                    >
+                    <span class="text-[9px] font-pixel text-zinc-500 uppercase tracking-widest">Eject</span>
                 </div>
             </div>
         </div>
@@ -355,26 +397,45 @@
             if (btnCut) {
                 btnCut.onclick = (e) => {
                     e.stopPropagation();
-                    // Tear Sound (Sharp high-pass noise)
+                    // Tear Sound
                     playSound(800, "square", 0.1, 0.1);
                     playSound(400, "sawtooth", 0.15, 0.05);
 
                     paper.classList.add("animate-tear");
                     paper.classList.remove("printing-vibration");
 
+                    const ticketDrop = document.getElementById("ticket-drop");
+
                     setTimeout(() => {
                         if (previewImg) previewImg.src = dataUrl;
                         if (overlay) {
-                            overlay.classList.remove(
-                                "opacity-0",
-                                "pointer-events-none",
-                                "scale-95",
-                            );
-                            overlay.classList.add("opacity-100", "scale-100");
+                            overlay.classList.remove("opacity-0", "pointer-events-none");
+                            overlay.classList.add("opacity-100");
+                        }
+                        // Animate ticket drop in
+                        if (ticketDrop) {
+                            requestAnimationFrame(() => {
+                                setTimeout(() => {
+                                    ticketDrop.classList.remove("translate-y-[-20px]", "opacity-0");
+                                    ticketDrop.classList.add("translate-y-0", "opacity-100");
+                                }, 100);
+                            });
                         }
                     }, 400);
                 };
             }
+
+            const hideOverlay = () => {
+                const ticketDrop = document.getElementById("ticket-drop");
+                if (ticketDrop) {
+                    ticketDrop.classList.add("translate-y-[-20px]", "opacity-0");
+                    ticketDrop.classList.remove("translate-y-0", "opacity-100");
+                }
+                if (overlay) {
+                    overlay.classList.add("opacity-0", "pointer-events-none");
+                    overlay.classList.remove("opacity-100");
+                }
+            };
 
             if (confirmBtn) {
                 confirmBtn.onclick = () => {
@@ -387,7 +448,7 @@
                     sourceImg.onload = () => {
                         tempCanvas.width = sourceImg.width * upscaleFactor;
                         tempCanvas.height = sourceImg.height * upscaleFactor;
-                        tempCtx.imageSmoothingEnabled = false; // PIXEL PERFECT
+                        tempCtx.imageSmoothingEnabled = false;
                         tempCtx.drawImage(sourceImg, 0, 0, tempCanvas.width, tempCanvas.height);
                         
                         const link = document.createElement("a");
@@ -395,7 +456,7 @@
                         link.href = tempCanvas.toDataURL("image/png");
                         link.click();
                         
-                        if (overlay) overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
+                        hideOverlay();
                         setTimeout(() => window.dispatchEvent(new CustomEvent("gb-print-end")), 300);
                     };
                     sourceImg.src = dataUrl;
@@ -404,12 +465,7 @@
 
             if (cancelBtn) {
                 cancelBtn.onclick = () => {
-                    if (overlay)
-                        overlay.classList.add(
-                            "opacity-0",
-                            "pointer-events-none",
-                            "scale-95",
-                        );
+                    hideOverlay();
                     window.dispatchEvent(new CustomEvent("gb-print-end"));
                 };
             }
@@ -426,7 +482,8 @@
             // 3. START EJECTION WITH MOTOR SOUND
             setTimeout(() => {
                 const motor = playMotor();
-                paper.style.height = "420px";
+                paper.style.height = "620px";
+
                 paper.classList.add("printing-vibration");
 
                 setTimeout(() => {

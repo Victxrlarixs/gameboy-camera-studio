@@ -1,4 +1,5 @@
 import { AppStore } from "../store/app";
+import { PhotoStore } from "../store/photos";
 import { CameraEngine } from "../features/camera/CameraEngine";
 
 /**
@@ -150,7 +151,7 @@ export class DisplaySystem {
         if (elements.tl) elements.tl.innerText = `BRIGHT:${(AppStore.state.brightness * 10).toFixed(0)}`;
         if (elements.tr) elements.tr.innerText = `${AppStore.state.paletteName} (SEL)`;
         if (elements.bl) elements.bl.innerText = "SEL: PALETTE";
-        if (elements.br) elements.br.innerText = this.lastSavedPhoto ? "START: SAVE" : "A: SHOOT";
+        if (elements.br) elements.br.innerText = this.lastSavedPhoto ? "A: SHOOT" : "START: LAB ▶";
 
         this.uiOverlay?.classList.remove("hidden");
     }
@@ -194,6 +195,9 @@ export class DisplaySystem {
         AppStore.playSound("shutter");
         this.flashEffect();
         
+        // Save to permanent lab storage
+        PhotoStore.savePhoto(this.lastSavedPhoto.dataUrl);
+
         window.dispatchEvent(new CustomEvent("gb-print-start", {
             detail: { dataUrl: this.lastSavedPhoto.dataUrl },
         }));

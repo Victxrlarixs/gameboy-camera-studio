@@ -1,0 +1,135 @@
+---
+/**
+ * LabBook.astro
+ * A high-fidelity photo gallery overlay designed to look like an industrial laboratory binder.
+ */
+---
+<div id="lab-book-overlay" class="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500 scale-95 overflow-hidden">
+    <div class="matte-plastic w-[90%] max-w-[1000px] h-[85vh] p-8 sm:p-12 rounded-[24px_24px_120px_24px] border-t-2 border-l-2 border-white/40 border-r-[12px] border-b-[12px] border-black/40 shadow-2xl flex flex-col relative">
+        
+        <!-- Binder Rings (Visual detail) -->
+        <div class="absolute left-[-15px] top-[10%] bottom-[15%] w-8 flex flex-col justify-around pointer-events-none">
+            {[...Array(6)].map((_, i) => (
+                <div class="w-12 h-6 bg-gradient-to-r from-zinc-400 to-zinc-600 rounded-full shadow-lg border border-black/20 translate-x-1/2"></div>
+            ))}
+        </div>
+
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b-2 border-black/10 pb-6 mb-8">
+            <div class="flex flex-col">
+                <span class="text-[14px] font-pixel text-[#302080] italic uppercase tracking-tighter embossed-text">Lab Asset Inventory</span>
+                <span class="text-[8px] font-pixel text-zinc-500 uppercase mt-1">Classification: Confidential / Internal Use Only</span>
+            </div>
+            <div class="flex gap-4">
+                 <div class="text-[10px] font-pixel text-[#302080] opacity-60">STORAGE: <span id="lab-storage-stats">0/30</span></div>
+                 <button id="close-lab-book" class="w-10 h-10 bg-zinc-600 rounded-full shadow-md active:translate-y-1 transition-all flex items-center justify-center border-t border-white/20">
+                    <span class="text-white text-[12px]">×</span>
+                 </button>
+            </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div id="lab-grid" class="flex-1 overflow-y-auto pr-4 custom-scrollbar-v grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 content-start p-2">
+            <!-- Empty state injected if no photos -->
+        </div>
+
+        <!-- Footer / Controls -->
+        <div class="mt-8 pt-6 border-t-2 border-black/10 flex justify-between items-center">
+            <span class="text-[8px] font-pixel text-zinc-400 uppercase italic">DMG-CAM-LAB-BINDER-V1</span>
+            <div class="flex gap-4">
+                 <span class="text-[8px] font-pixel text-[#3a2a6b] animate-pulse">SYSTEM READY</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    import { PhotoStore } from "../../store/photos";
+    import { AppStore } from "../../store/app";
+
+    const overlay = document.getElementById('lab-book-overlay');
+    const grid = document.getElementById('lab-grid');
+    const stats = document.getElementById('lab-storage-stats');
+    const closeBtn = document.getElementById('close-lab-book');
+
+    function renderGallery() {
+        if (!grid || !stats) return;
+        const photos = PhotoStore.getPhotos();
+        stats.innerText = `${photos.length}/30`;
+
+        if (photos.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full h-64 flex flex-col items-center justify-center opacity-30 grayscale">
+                    <div class="w-24 h-24 mb-4 border-2 border-dashed border-[#302080] flex items-center justify-center">
+                        <span class="text-[24px]">?</span>
+                    </div>
+                    <span class="text-[10px] font-pixel uppercase">No Lab Assets Detected</span>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = photos.map(photo => `
+            <div class="group relative bg-[#f4f4ec] p-3 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.05] border-x border-zinc-300 flex flex-col items-center gap-3 cursor-pointer lab-photo-card" data-id="${photo.id}">
+                <!-- Jagged Edge Detail -->
+                <div class="absolute -top-1 left-0 right-0 h-2 bg-[length:6px_6px]" style="background-image: linear-gradient(135deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%), linear-gradient(225deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%); background-repeat: repeat-x;"></div>
+                
+                <img src="${photo.dataUrl}" class="w-full aspect-square object-cover pixelated border border-black/5 shadow-inner" />
+                
+                <div class="w-full flex justify-between items-center opacity-40 group-hover:opacity-100 transition-opacity">
+                    <span class="text-[6px] font-pixel text-zinc-500">${new Date(photo.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    <button class="delete-photo-btn p-1 hover:text-red-600 transition-colors" data-id="${photo.id}">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <!-- Paper Grain -->
+                <div class="absolute inset-0 pointer-events-none opacity-[0.03] paper-grain"></div>
+            </div>
+        `).join('');
+
+        // Attachment events
+        grid.querySelectorAll('.lab-photo-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if ((e.target as HTMLElement).closest('.delete-photo-btn')) return;
+                const id = card.getAttribute('data-id');
+                const photo = PhotoStore.getPhotos().find(p => p.id === id);
+                if (photo) {
+                    // Trigger reprint / view
+                    window.dispatchEvent(new CustomEvent('gb-print-start', { detail: { dataUrl: photo.dataUrl } }));
+                    AppStore.setMode('SHOOT');
+                }
+            });
+        });
+
+        grid.querySelectorAll('.delete-photo-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = btn.getAttribute('data-id');
+                if (id) PhotoStore.deletePhoto(id);
+            });
+        });
+    }
+
+    window.addEventListener('gb-mode-change', (e: any) => {
+        if (e.detail.mode === 'VIEW') {
+            renderGallery();
+            overlay?.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+            overlay?.classList.add('opacity-100', 'scale-100');
+        } else {
+            overlay?.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+            overlay?.classList.remove('opacity-100', 'scale-100');
+        }
+    });
+
+    window.addEventListener('gb-photo-saved', renderGallery);
+    window.addEventListener('gb-photo-deleted', renderGallery);
+
+    closeBtn?.addEventListener('click', () => AppStore.setMode('SHOOT'));
+</script>
+
+<style>
+    .paper-grain {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+</style>

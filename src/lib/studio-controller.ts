@@ -1,4 +1,5 @@
 import { AppStore } from "../store/app";
+import { PhotoStore } from "../store/photos";
 import { PALETTES } from "./dither";
 
 /**
@@ -119,39 +120,46 @@ export class StudioController {
      * Subscribes to system-wide events relevant to the studio.
      */
     private registerGlobalEvents(): void {
-        window.addEventListener('gb-print-start', (e: any) => this.handleNewPhoto(e.detail.dataUrl));
+        window.addEventListener('gb-photo-saved', () => this.renderRecentPhotos());
+        window.addEventListener('gb-photo-deleted', () => this.renderRecentPhotos());
         window.addEventListener('gb-state-change', () => this.syncUI());
+        
+        // Make the buffer container clickable to open the Lab Book
+        if (this.recentPhotos) {
+            this.recentPhotos.parentElement?.addEventListener('click', () => {
+                AppStore.setMode('VIEW');
+                AppStore.playSound('click');
+            });
+            this.recentPhotos.parentElement?.classList.add('cursor-pointer');
+        }
+
+        this.renderRecentPhotos();
     }
 
     /**
-     * Adds a newly captured frame to the laboratory film strip.
-     * @param dataUrl Image source in base64 format
+     * Renders the most recent photos from the PhotoStore.
      */
-    private handleNewPhoto(dataUrl: string): void {
+    private renderRecentPhotos(): void {
         if (!this.recentPhotos) return;
-
-        const frame = document.createElement('div');
-        frame.className = 'w-24 h-24 shrink-0 bg-black p-1 border border-white/10 relative flex flex-col items-center justify-center group cursor-pointer hover:border-[#a01050] transition-all overflow-hidden';
-        frame.innerHTML = `
-            <div class="absolute top-1 inset-x-0 flex justify-around opacity-20"><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div></div>
-            <img src="${dataUrl}" class="w-[85%] h-[85%] object-cover pixelated grayscale contrast-[1.4] shadow-2xl">
-            <div class="absolute bottom-1 inset-x-0 flex justify-around opacity-20"><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div></div>
-        `;
+        const photos = PhotoStore.getPhotos().slice(0, 5);
         
-        frame.onclick = () => {
-            const link = document.createElement('a');
-            link.download = `negative-${Date.now()}.png`;
-            link.href = dataUrl;
-            link.click();
-        };
-
-        if (this.recentPhotos.children.length >= 6) {
-            this.recentPhotos.removeChild(this.recentPhotos.lastChild!);
+        if (photos.length === 0) {
+            this.recentPhotos.innerHTML = `
+                <div class="w-20 h-20 shrink-0 bg-black/40 border-2 border-[#1a1b1c] rounded-xs flex items-center justify-center relative shadow-lg">
+                     <span class="text-[5px] font-pixel text-zinc-700 uppercase">Empty</span>
+                     <div class="absolute inset-0 bg-white/5 pointer-events-none"></div>
+                </div>
+            `;
+            return;
         }
-        this.recentPhotos.prepend(frame);
 
-        const empty = this.recentPhotos.querySelector('span');
-        if (empty && empty.innerText === 'NO FILM') empty.parentElement?.remove();
+        this.recentPhotos.innerHTML = photos.map(photo => `
+            <div class="w-24 h-24 shrink-0 bg-black p-1 border border-white/10 relative flex flex-col items-center justify-center group cursor-pointer hover:border-[#a01050] transition-all overflow-hidden shadow-xl">
+                <div class="absolute top-1 inset-x-0 flex justify-around opacity-20"><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div></div>
+                <img src="${photo.dataUrl}" class="w-[85%] h-[85%] object-cover pixelated grayscale contrast-[1.4] shadow-2xl">
+                <div class="absolute bottom-1 inset-x-0 flex justify-around opacity-20"><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div></div>
+            </div>
+        `).join('');
     }
 
     /**

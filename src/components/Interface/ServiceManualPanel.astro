@@ -105,9 +105,9 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 </div>
-
 <script>
     import { PhotoStore } from "../../store/photos";
+    import { AppStore } from "../../store/app";
     
     function updateDiagnostics() {
         const photos = PhotoStore.getPhotos();
@@ -118,20 +118,33 @@ import "../../styles/components/StudioSidePanel.css";
         const countLabel = document.getElementById('diag-photo-count');
         const bar = document.getElementById('diag-photo-bar');
         
+        // Make the diagnostics container clickable to open Lab Book
+        const container = countLabel?.closest('.debossed-panel') as any;
+        if (container && !container.dataset.hasListener) {
+            container.style.cursor = 'pointer';
+            container.addEventListener('click', () => {
+                AppStore.setMode('VIEW');
+                AppStore.playSound('click');
+            });
+            container.dataset.hasListener = 'true';
+        }
+        
         if (countLabel) countLabel.innerText = `${count}/${max}`;
         if (bar) bar.style.width = `${percent}%`;
 
         // If storage is full, change bar color to alert
         if (count >= max && bar) {
-            bar.classList.replace('bg-emerald-500', 'bg-red-500');
+            bar.classList.add('bg-red-500');
+            bar.classList.remove('bg-emerald-500');
         } else if (bar) {
             bar.classList.add('bg-emerald-500');
             bar.classList.remove('bg-red-500');
         }
     }
 
-    // React to photo saves
+    // React to photo events
     window.addEventListener('gb-photo-saved', updateDiagnostics);
+    window.addEventListener('gb-photo-deleted', updateDiagnostics);
 
     // Print Buffer Visualization
     window.addEventListener('gb-print-start', () => {
@@ -143,9 +156,9 @@ import "../../styles/components/StudioSidePanel.css";
         }
         
         const cells = document.querySelectorAll('.diag-buffer-cell');
-        cells.forEach((cell, i) => {
+        cells.forEach((cell: any, i) => {
             setTimeout(() => {
-                (cell as HTMLElement).style.backgroundColor = 'rgba(245, 158, 11, 0.6)';
+                cell.style.backgroundColor = 'rgba(245, 158, 11, 0.6)';
             }, i * 150);
         });
     });
@@ -159,8 +172,8 @@ import "../../styles/components/StudioSidePanel.css";
         }
         
         const cells = document.querySelectorAll('.diag-buffer-cell');
-        cells.forEach((cell) => {
-            (cell as HTMLElement).style.backgroundColor = '';
+        cells.forEach((cell: any) => {
+            cell.style.backgroundColor = '';
         });
     });
 
