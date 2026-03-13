@@ -1,0 +1,61 @@
+/* Studio Controller Side Panel Styles */
+.studio-panel, .manual-panel {
+    display: none;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (min-width: 1024px) {
+    .studio-panel {
+        display: flex;
+    }
+}
+
+@media (min-width: 1280px) {
+    .manual-panel {
+        display: flex;
+    }
+}
+
+/* Common Hardware Module Look */
+.studio-panel, .manual-panel {
+    background-color: var(--gb-gray);
+    position: relative;
+    z-index: 10;
+}
+
+/* Custom Scrollbar for both panels */
+.studio-panel::-webkit-scrollbar, .manual-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.studio-panel::-webkit-scrollbar-track, .manual-panel::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.studio-panel::-webkit-scrollbar-thumb, .manual-panel::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+/* DMG Slider Styles */
+.dmg-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 10;
+    width: 100%;
+}
+
+.dmg-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+    background: #6b6d70;
+    border: 2px solid black;
+    box-shadow: 1px 2px 0 rgba(0,0,0,0.4), inset 1px 1px 0 rgba(255,255,255,0.2);
+    cursor: pointer;
+}

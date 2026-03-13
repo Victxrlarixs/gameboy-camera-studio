@@ -1,0 +1,33 @@
+/* GameBoy Layout & Orchestration Styles */
+#studio-layout {
+    display: flex;
+    width: 100vw;
+    height: 100svh;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+#hardware-hub {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-out;
+    transform-origin: center center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ensure the units transitions are smooth */
+#camera-unit, #printer-unit {
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 1024px) {
+    #studio-layout {
+        justify-content: center !important;
+    }
+}

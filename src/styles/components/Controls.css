@@ -1,0 +1,14 @@
+/* GameBoy Controls Specific Styles */
+.controls-container button {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+.controls-container .dpad {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}

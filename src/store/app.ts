@@ -1,18 +1,22 @@
 import { PALETTES } from '../lib/dither';
 
+/** Valid operational modes for the Game Boy system */
 export type GBMode = 'MENU' | 'SHOOT' | 'VIEW' | 'EDIT' | 'PLAY' | 'PRINT' | 'SPLASH';
 
+/** Represents a selectable option in the system menu */
 export interface MenuOption {
     label: string;
     mode: GBMode;
 }
 
+/** Predefined main menu structure */
 export const MAIN_MENU: MenuOption[] = [
     { label: 'SHOOT', mode: 'SHOOT' },
     { label: 'VIEW', mode: 'VIEW' },
     { label: 'PLAY', mode: 'PLAY' }
 ];
 
+/** Internal state structure for the application */
 interface State {
     mode: GBMode;
     menuIndex: number;
@@ -22,9 +26,15 @@ interface State {
     stampIndex: number;
 }
 
+/** Available decorative stamps for camera mode */
 export const STAMPS = ['NONE', 'HEART', 'STAR', 'SMILE', 'SKULL', 'FLOWER', 'GHOST'];
 
+/**
+ * Global Store following a simple pattern to manage the application state.
+ * Dispatches custom events on window to notify systems of changes.
+ */
 export const AppStore = {
+    /** Reactive state object */
     state: {
         mode: 'SPLASH' as GBMode,
         menuIndex: 0,
@@ -34,15 +44,17 @@ export const AppStore = {
         stampIndex: 0,
     },
 
-    handleInput(button: string) {
+    /**
+     * Processes input from physical or virtual buttons.
+     * @param button identifier of the pressed button
+     */
+    handleInput(button: string): void {
         switch (this.state.mode) {
             case 'SPLASH':
-                // Clicking anything during splash can potentially jump to camera
                 this.setMode('SHOOT');
                 break;
 
             case 'MENU':
-                // If we ever end up here, just go back to shoot
                 this.setMode('SHOOT');
                 break;
 
@@ -64,28 +76,45 @@ export const AppStore = {
         this.playSound('click');
     },
 
-    setMode(mode: GBMode) {
+    /**
+     * Updates the global operation mode.
+     * @param mode destination mode
+     */
+    setMode(mode: GBMode): void {
         this.state.mode = mode;
         window.dispatchEvent(new CustomEvent('gb-mode-change', { detail: { mode } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
     },
 
-    cyclePalette() {
+    /** Cycles through available color palettes */
+    cyclePalette(): void {
         const names = Object.keys(PALETTES);
         const currentIndex = names.indexOf(this.state.paletteName);
         const nextIndex = (currentIndex + 1) % names.length;
         this.state.paletteName = names[nextIndex];
     },
 
-    cycleStamp(dir: number) {
+    /**
+     * Cycles through available camera stamps.
+     * @param dir direction of cycling (1 or -1)
+     */
+    cycleStamp(dir: number): void {
         this.state.stampIndex = (this.state.stampIndex + dir + STAMPS.length) % STAMPS.length;
     },
 
-    adjustBrightness(delta: number) {
+    /**
+     * Modifies the camera brightness exposure.
+     * @param delta amount to shift brightness
+     */
+    adjustBrightness(delta: number): void {
         this.state.brightness = Math.max(-1, Math.min(1, this.state.brightness + delta));
     },
 
-    playSound(type: 'click' | 'shutter' | 'print') {
+    /**
+     * Generates vintage-style sound effects using the Web Audio API.
+     * @param type the sound identifier
+     */
+    playSound(type: 'click' | 'shutter' | 'print'): void {
         const AudioCtx = (window.AudioContext || (window as any).webkitAudioContext);
         if (!AudioCtx) return;
         const ctx = new AudioCtx();
