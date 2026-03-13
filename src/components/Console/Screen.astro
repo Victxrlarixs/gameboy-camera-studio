@@ -121,13 +121,13 @@
         ctx.fillStyle = "#0f380f";
         ctx.textAlign = "center";
 
-        // Classic Nintendo logo drop animation simulation
-        const y = Math.min(60, splashStep * 2);
-        ctx.fillText("Nintendo", 80, y);
+        // Classic logo drop animation simulation
+        const y = Math.min(64, splashStep * 2.5);
+        ctx.fillText("CAMERA", 80, y);
 
-        if (splashStep > 30) {
+        if (splashStep > 35) {
             ctx.font = '8px "Press Start 2P"';
-            ctx.fillText("Game Boy", 80, 80);
+            ctx.fillText("STUDIO", 80, 85);
         }
 
         if (splashStep > 60) {
