@@ -1,10 +1,7 @@
 # Game Boy Camera Studio
-### *A Tactile Sensory Journey into 8-Bit Photography*
-
 [![Enter the Studio](https://img.shields.io/badge/LIVE_EXPERIENCE-Enter_Studio-A01050?style=for-the-badge&logo=gameboy&logoColor=white)](https://victxrlarixs.github.io/gameboy-camera-studio)
-> **Direct Access**: [victxrlarixs.github.io/gameboy-camera-studio](https://victxrlarixs.github.io/gameboy-camera-studio)  
-
-
+> **Direct Access**: [victxrlarixs.github.io/gameboy-camera-studio](https://victxrlarixs.github.io/gameboy-camera-studio)
+> 
 ![Hero Experience](public/readme/hardware-desktop.png)
 
 Game Boy Camera Studio is designed to transform the act of digital photography into a tactile, mechanical experience that honors the 1998 classic hardware.
@@ -49,8 +46,6 @@ Whether on Desktop or Mobile, the Studio adapts to keep the hardware at the cent
 
 <div align="center">
   <img src="public/readme/hardware-mobile.png" width="300" alt="Mobile Experience" />
-  <br/>
-  <em>Optimized for perfect centering and tactile reach on all touchscreens</em>
 </div>
 
 ---
