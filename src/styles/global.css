@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+    --gb-green: #9bbc0f;
+    --gb-dark-green: #0f380f;
+    --gb-gray: #d2d2c8;
+    --font-pixel: "Press Start 2P", system-ui;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(circle at center, #2c3e50 0%, #000000 100%);
+    height: 100vh;
+    height: 100svh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Wood texture */
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), transparent),
+        url('https://www.transparenttextures.com/patterns/dark-wood.png');
+    background-size: cover;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+#hardware-hub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-out;
+}
+
+/* Stable centering logic */
+@media (max-height: 950px) {
+    #hardware-hub {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-height: 850px) {
+    #hardware-hub {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-height: 750px) {
+    #hardware-hub {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-height: 650px) {
+    #hardware-hub {
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 500px) {
+    #hardware-hub {
+        transform: scale(0.8);
+    }
+}
+
+.pixelated {
+    image-rendering: pixelated;
+}
+
+.font-pixel {
+    font-family: var(--font-pixel);
+}
+
+.scanlines {
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+}
