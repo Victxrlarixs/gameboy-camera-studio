@@ -1,22 +1,48 @@
-﻿---
+---
 import "../../styles/components/Controls.css";
 ---
 <div class="controls-container flex flex-col gap-10 py-8 px-6 select-none w-full">
     
     <div class="flex justify-between items-start w-full px-2">
         
-        <div class="relative w-36 h-36 flex items-center justify-center">
-            <div class="absolute inset-0 bg-black/10 rounded-full shadow-[inset_4px_6px_12px_rgba(0,0,0,0.4),1px_1px_0_rgba(255,255,255,0.1)] border-b border-white/5"></div>
-            <div class="dpad w-28 h-28">
-                <div class="absolute w-10 h-28 bg-[#1a1a1a] rounded-sm shadow-[4px_6px_0_rgba(0,0,0,0.7),inset_0_2px_0_rgba(255,255,255,0.05)] border-b-2 border-r-2 border-black/40"></div>
-                <div class="absolute w-28 h-10 bg-[#1a1a1a] rounded-sm shadow-[4px_6px_0_rgba(0,0,0,0.7),inset_0_2px_0_rgba(255,255,255,0.05)] border-b-2 border-r-2 border-black/40"></div>
-                <div class="absolute w-10 h-10 rounded-full border-[3px] border-black/80 shadow-[inset_2px_3px_5px_rgba(0,0,0,0.8)] opacity-90"></div>
+        <div class="relative w-[140px] h-[140px] flex items-center justify-center -translate-x-2">
+            <!-- Circular Recess Base -->
+            <div class="absolute inset-[0px] bg-black/5 rounded-full shadow-[inset_3px_5px_8px_rgba(0,0,0,0.4),inset_0_-2px_4px_rgba(255,255,255,0.5),0_1px_1px_rgba(255,255,255,0.7)] border-[1px] border-black/10"></div>
+            
+            <div class="dpad relative w-[95px] h-[95px] z-10 drop-shadow-[2px_5px_6px_rgba(0,0,0,0.8)]">
+                <!-- D-PAD Base Pluses -->
+                <div class="absolute w-[32px] h-[100px] left-1/2 -translate-x-1/2 bg-[#1a1c1d] rounded-[4px] shadow-[inset_-3px_-5px_8px_rgba(0,0,0,0.95),inset_3px_3px_5px_rgba(255,255,255,0.3)]">
+                    <div class="absolute inset-0 plastic-grain opacity-50 mix-blend-overlay"></div>
+                </div>
+                <div class="absolute w-[100px] h-[32px] top-1/2 -translate-y-1/2 bg-[#1a1c1d] rounded-[4px] shadow-[inset_-3px_-5px_8px_rgba(0,0,0,0.95),inset_3px_3px_5px_rgba(255,255,255,0.3)]">
+                    <div class="absolute inset-0 plastic-grain opacity-50 mix-blend-overlay"></div>
+                </div>
+                <!-- Center Pivot -->
+                <div class="absolute w-9 h-9 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1px] border-[#0a0a0a] shadow-[inset_1px_3px_3px_rgba(0,0,0,0.9),0_0_2px_rgba(255,255,255,0.1)] bg-[#111] opacity-90"></div>
                 
-                <div class="absolute top-3 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[8px] border-b-black/60 opacity-80"></div>
-                <div class="absolute bottom-3 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-black/60 opacity-80"></div>
-                <div class="absolute left-3 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-black/60 opacity-80"></div>
-                <div class="absolute right-3 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-black/60 opacity-80"></div>
+                <!-- Tactile Grooves -->
+                <div class="absolute top-1.5 left-1/2 -translate-x-1/2 flex flex-col gap-1 items-center opacity-80 mix-blend-multiply">
+                    <div class="w-5 h-[1.5px] bg-[#444] rounded-full shadow-[0_1px_0_rgba(255,255,255,0.3),inset_0_1px_1px_black]"></div>
+                    <div class="w-5 h-[1.5px] bg-[#444] rounded-full shadow-[0_1px_0_rgba(255,255,255,0.3),inset_0_1px_1px_black]"></div>
+                    <div class="w-5 h-[1.5px] bg-[#444] rounded-full shadow-[0_1px_0_rgba(255,255,255,0.3),inset_0_1px_1px_black]"></div>
+                </div>
+                <div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex flex-col gap-1 items-center opacity-80 mix-blend-multiply">
+                    <div class="w-5 h-[1.5px] bg-[#444] rounded-full shadow-[0_1px_0_rgba(255,255,255,0.3),inset_0_1px_1px_black]"></div>
+                    <div class="w-5 h-[1.5px] bg-[#444] rounded-full shadow-[0_1px_0_rgba(255,255,255,0.3),inset_0_1px_1px_black]"></div>
+                    <div class="w-5 h-[1.5px] bg-[#444] rounded-full shadow-[0_1px_0_rgba(255,255,255,0.3),inset_0_1px_1px_black]"></div>
+                </div>
+                <div class="absolute left-1.5 top-1/2 -translate-y-1/2 flex gap-1 items-center opacity-80 mix-blend-multiply">
+                    <div class="h-5 w-[1.5px] bg-[#444] rounded-full shadow-[1px_0_0_rgba(255,255,255,0.3),inset_1px_0_1px_black]"></div>
+                    <div class="h-5 w-[1.5px] bg-[#444] rounded-full shadow-[1px_0_0_rgba(255,255,255,0.3),inset_1px_0_1px_black]"></div>
+                    <div class="h-5 w-[1.5px] bg-[#444] rounded-full shadow-[1px_0_0_rgba(255,255,255,0.3),inset_1px_0_1px_black]"></div>
+                </div>
+                <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex gap-1 items-center opacity-80 mix-blend-multiply">
+                    <div class="h-5 w-[1.5px] bg-[#444] rounded-full shadow-[1px_0_0_rgba(255,255,255,0.3),inset_1px_0_1px_black]"></div>
+                    <div class="h-5 w-[1.5px] bg-[#444] rounded-full shadow-[1px_0_0_rgba(255,255,255,0.3),inset_1px_0_1px_black]"></div>
+                    <div class="h-5 w-[1.5px] bg-[#444] rounded-full shadow-[1px_0_0_rgba(255,255,255,0.3),inset_1px_0_1px_black]"></div>
+                </div>
             </div>
+
             
             <div class="absolute inset-0 grid grid-cols-3 grid-rows-3 z-10">
                 <div class="col-start-2"><button id="btn-up" class="w-full h-full active:brightness-90"></button></div>
@@ -26,44 +52,56 @@ import "../../styles/components/Controls.css";
             </div>
         </div>
 
-<div class="flex gap-10 mt-12 rotate-[-25deg] translate-x-4">
+        <div class="flex gap-6 mt-16 rotate-[-30deg] translate-x-3 z-10 w-[160px]">
             <div class="flex flex-col items-center">
                 <div class="relative group">
-                    <div class="absolute inset-x-[-8px] inset-y-[-8px] bg-black/25 rounded-full shadow-[inset_3px_4px_8px_rgba(0,0,0,0.6)]"></div>
-                    <button id="btn-b" class="relative w-18 h-18 bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-2px_-2px_6px_rgba(0,0,0,0.6),0_8px_0_var(--gb-button-magenta-dark)] active:translate-y-2 transition-all">
-                        <div class="absolute top-1 left-3 w-12 h-6 bg-white/10 rounded-full blur-[2px] opacity-60"></div>
+                    <button id="btn-b" class="relative w-[50px] h-[50px] bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-4px_-6px_10px_rgba(0,0,0,0.4),inset_4px_6px_10px_rgba(255,255,255,0.3),0_6px_10px_rgba(0,0,0,0.8),0_8px_0_var(--gb-button-magenta-dark)] active:translate-y-[8px] active:shadow-[inset_-2px_-4px_6px_rgba(0,0,0,0.5),inset_2px_4px_6px_rgba(255,255,255,0.3),0_2px_6px_rgba(0,0,0,0.8),0_2px_0_var(--gb-button-magenta-dark)] transition-all duration-[50ms]">
+                        <!-- Specular Glare -->
+                        <div class="absolute top-[12%] left-[12%] w-[25%] h-[25%] bg-white rounded-full opacity-20 blur-[1px]"></div>
                     </button>
-                    <span class="absolute -bottom-12 left-1/2 -translate-x-1/2 text-[14px] font-pixel text-[#3a2a6b] opacity-60 font-bold tracking-widest">B</span>
+                    <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-[14px] font-pixel text-[#302080] font-bold tracking-widest drop-shadow-[0_1px_0_rgba(255,255,255,0.5)]">B</span>
                 </div>
             </div>
-            <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center translate-y-[-24px]">
                 <div class="relative group">
-                    <div class="absolute inset-x-[-8px] inset-y-[-8px] bg-black/25 rounded-full shadow-[inset_3px_4px_8px_rgba(0,0,0,0.6)]"></div>
-                    <button id="btn-a" class="relative w-18 h-18 bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-2px_-2px_6px_rgba(0,0,0,0.6),0_8px_0_var(--gb-button-magenta-dark)] active:translate-y-2 transition-all">
-                        <div class="absolute top-1 left-3 w-12 h-6 bg-white/10 rounded-full blur-[2px] opacity-60"></div>
+                    <button id="btn-a" class="relative w-[50px] h-[50px] bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-4px_-6px_10px_rgba(0,0,0,0.4),inset_4px_6px_10px_rgba(255,255,255,0.3),0_6px_10px_rgba(0,0,0,0.8),0_8px_0_var(--gb-button-magenta-dark)] active:translate-y-[8px] active:shadow-[inset_-2px_-4px_6px_rgba(0,0,0,0.5),inset_2px_4px_6px_rgba(255,255,255,0.3),0_2px_6px_rgba(0,0,0,0.8),0_2px_0_var(--gb-button-magenta-dark)] transition-all duration-[50ms]">
+                        <div class="absolute top-[12%] left-[12%] w-[25%] h-[25%] bg-white rounded-full opacity-20 blur-[1px]"></div>
                     </button>
-                    <span class="absolute -bottom-12 left-1/2 -translate-x-1/2 text-[14px] font-pixel text-[#3a2a6b] opacity-60 font-bold tracking-widest">A</span>
+                    <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-[14px] font-pixel text-[#302080] font-bold tracking-widest drop-shadow-[0_1px_0_rgba(255,255,255,0.5)]">A</span>
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <div class="flex justify-center gap-10 mt-16 mr-[30px] relative z-10 w-full">
+        <div class="flex flex-col items-center">
+            <div class="relative w-[80px] h-[22px]">
+                <!-- Base housing inset -->
+                <div class="absolute inset-x-[-10px] inset-y-[-14px] bg-[#00000008] rounded-full rotate-[-30deg] shadow-[inset_3px_5px_8px_rgba(0,0,0,0.4),1px_1px_0_rgba(255,255,255,0.7)] overflow-hidden">
+                    <div class="absolute inset-0 shadow-[inset_-3px_-5px_8px_rgba(0,0,0,0.1)]"></div>
+                </div>
+                <!-- Actual grey button -->
+                <button id="btn-select" class="absolute inset-x-0 inset-y-[-4px] bg-[#65676a] rounded-full rotate-[-30deg] shadow-[inset_-2px_-3px_5px_rgba(0,0,0,0.5),inset_2px_3px_5px_rgba(255,255,255,0.3),0_5px_8px_rgba(0,0,0,0.8),0_5px_0_#444] active:translate-y-[4px] active:shadow-[inset_-1px_-2px_3px_rgba(0,0,0,0.5),inset_1px_2px_3px_rgba(255,255,255,0.3),0_2px_4px_rgba(0,0,0,0.8),0_2px_0_#444] transition-all duration-[50ms]">
+                    <div class="absolute inset-0 rounded-full plastic-grain opacity-50 mix-blend-overlay"></div>
+                </button>
+            </div>
+            <span class="text-[14px] font-pixel text-[#302080] font-bold uppercase tracking-wide drop-shadow-[0_1px_0_rgba(255,255,255,0.5)] rotate-[-30deg] translate-x-[-20px] mt-[40px]">SELECT</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="relative w-[80px] h-[22px]">
+                 <!-- Base housing inset -->
+                 <div class="absolute inset-x-[-10px] inset-y-[-14px] bg-[#00000008] rounded-full rotate-[-30deg] shadow-[inset_3px_5px_8px_rgba(0,0,0,0.4),1px_1px_0_rgba(255,255,255,0.7)] overflow-hidden">
+                    <div class="absolute inset-0 shadow-[inset_-3px_-5px_8px_rgba(0,0,0,0.1)]"></div>
+                </div>
+                <button id="btn-start" class="absolute inset-x-0 inset-y-[-4px] bg-[#65676a] rounded-full rotate-[-30deg] shadow-[inset_-2px_-3px_5px_rgba(0,0,0,0.5),inset_2px_3px_5px_rgba(255,255,255,0.3),0_5px_8px_rgba(0,0,0,0.8),0_5px_0_#444] active:translate-y-[4px] active:shadow-[inset_-1px_-2px_3px_rgba(0,0,0,0.5),inset_1px_2px_3px_rgba(255,255,255,0.3),0_2px_4px_rgba(0,0,0,0.8),0_2px_0_#444] transition-all duration-[50ms]">
+                    <div class="absolute inset-0 rounded-full plastic-grain opacity-50 mix-blend-overlay"></div>
+                </button>
+            </div>
+            <span class="text-[14px] font-pixel text-[#302080] font-bold uppercase tracking-wide drop-shadow-[0_1px_0_rgba(255,255,255,0.5)] rotate-[-30deg] translate-x-[-20px] mt-[40px]">START</span>
         </div>
     </div>
 
-<div class="flex justify-center gap-16 mt-16">
-        <div class="flex flex-col items-center">
-            <div class="relative w-20 h-6">
-                <div class="absolute inset-x-[-2px] inset-y-[-2px] bg-black/20 rounded-full rotate-[-30deg] shadow-[inset_1px_2px_4px_rgba(0,0,0,0.6)]"></div>
-                <button id="btn-select" class="absolute inset-0 bg-[#6b6d70] rounded-full rotate-[-30deg] shadow-[0_4px_0_#333] active:translate-y-[2px] transition-all"></button>
-            </div>
-            <span class="text-[10px] font-pixel text-[#302080] mt-10 uppercase opacity-60 tracking-[0.2em] font-bold">SELECT</span>
-        </div>
-        <div class="flex flex-col items-center">
-            <div class="relative w-20 h-6">
-                <div class="absolute inset-x-[-2px] inset-y-[-2px] bg-black/20 rounded-full rotate-[-30deg] shadow-[inset_1px_2px_4px_rgba(0,0,0,0.6)]"></div>
-                <button id="btn-start" class="absolute inset-0 bg-[#6b6d70] rounded-full rotate-[-30deg] shadow-[0_4px_0_#333] active:translate-y-[2px] transition-all"></button>
-            </div>
-            <span class="text-[10px] font-pixel text-[#302080] mt-10 uppercase opacity-60 tracking-[0.2em] font-bold">START</span>
-        </div>
-    </div>
 </div>
 
 <script>

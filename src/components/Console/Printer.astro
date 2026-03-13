@@ -1,26 +1,48 @@
-﻿---
+---
 
 ---
 
 <div id="gb-printer" class="printer-device relative w-[340px]">
     
     <div
-        class="matte-plastic relative p-8 pt-12 rounded-[12px_12px_60px_12px] shadow-[40px_60px_100px_rgba(0,0,0,0.7),inset_3px_3px_0_rgba(255,255,255,0.4),0_12px_0_var(--gb-gray-dark)] border-t-2 border-l-2 border-white/20 border-r-[12px] border-b-[12px] border-black/25"
+        id="printer-chassis"
+        class="matte-plastic relative p-8 pt-12 rounded-[14px_14px_80px_14px] shadow-[40px_50px_80px_rgba(0,0,0,0.8),inset_-8px_-10px_25px_rgba(0,0,0,0.4),inset_6px_8px_20px_rgba(255,255,255,0.7),inset_-20px_-30px_40px_rgba(0,0,0,0.1)] border-t-[2.5px] border-l-[2.5px] border-r-[32px] border-b-[38px] border-solid border-t-white/50 border-l-white/50 border-r-[#8b8d8c] border-b-[#8b8d8c] flex flex-col items-center z-20"
     >
-        
-        <div
-            class="absolute top-[45%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.05)] pointer-events-none"
-        >
+        <!-- Texture Overlays -->
+        <div class="absolute -top-[2.5px] -left-[2.5px] -right-[32px] -bottom-[38px] rounded-[16px_16px_85px_16px] pointer-events-none plastic-grain opacity-[0.45] mix-blend-multiply z-[5]"></div>
+        <div class="absolute inset-0 rounded-[14px_14px_80px_14px] pointer-events-none plastic-grain opacity-[0.18] mix-blend-overlay z-[5]"></div>
+
+        <!-- Shell Parting Lines (Seams) -->
+        <div class="absolute top-[48%] -left-[2.5px] -right-[32px] h-[1.5px] bg-black/20 shadow-[0_1px_0_rgba(255,255,255,0.3)] z-10 pointer-events-none border-y border-black/5"></div>
+        <div class="absolute top-0 right-[-14px] bottom-0 w-[1px] bg-black/15 shadow-[1px_0_0_rgba(255,255,255,0.4)] z-10 pointer-events-none"></div>
+
+        <!-- Left Side Data Connector Port (Link Cable) -->
+        <div class="absolute top-[75px] left-[-4px] w-[8px] h-[36px] bg-[#8c8e8d] shadow-[inset_-1px_0_4px_rgba(255,255,255,0.4),inset_1px_1px_3px_rgba(0,0,0,0.5)] border-[0.5px] border-black/20 flex items-center justify-center rounded-r-sm z-10">
+            <div class="w-[3px] h-[70%] bg-black/40 rounded-full shadow-[inset_1px_1px_2px_black]"></div>
         </div>
 
-<div
-            class="relative w-full h-42 bg-[#8e9092] rounded-t-2xl shadow-[inset_8px_8px_25px_rgba(0,0,0,0.6),inset_-4px_-4px_12px_rgba(255,255,255,0.1)] border-2 border-black/30 mb-8 overflow-visible"
+        <!-- Side Grip Grooves (Like console) -->
+        <div class="absolute top-[130px] right-[-14px] w-[10px] flex flex-col gap-[3.5px] z-10 opacity-70">
+            {[...Array(8)].map((_, i) => (
+                <div key={i} class="w-full h-[2.5px] bg-[#919392] rounded-l-[1px] shadow-[inset_-1px_1px_2px_rgba(0,0,0,0.8),inset_0_-1px_1px_rgba(255,255,255,0.4)]"></div>
+            ))}
+        </div>
+
+        <!-- Paper Cover Container -->
+        <div
+            class="relative w-full h-42 bg-[#8c8e8f] rounded-t-[18px] shadow-[inset_12px_12px_25px_rgba(0,0,0,0.8),inset_-4px_-4px_10px_rgba(255,255,255,0.2),0_1px_2px_black/20] border-[2px] border-black/40 mb-8 overflow-visible z-20"
         >
+            <div class="absolute inset-x-0 top-[45%] h-[1px] bg-black/20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+            
+            <!-- Top "PUSH" Handle Engraving -->
+            <div class="absolute -top-7 left-1/2 -translate-x-1/2 w-20 h-4 flex flex-col items-center opacity-30">
+                <div class="w-full h-[1.5px] bg-black/40 rounded-full mb-1 shadow-[0_0.5px_0_white/40]"></div>
+                <span class="text-[5px] font-pixel text-black font-bold tracking-[0.3em] uppercase">PUSH</span>
+            </div>
             
             <div
-                class="absolute top-6 left-1/2 -translate-x-1/2 w-[85%] h-28 bg-gradient-to-b from-zinc-300 via-zinc-400 to-zinc-600 rounded-t-3xl opacity-95 overflow-hidden shadow-inner border-t border-white/10"
+                class="absolute top-8 left-1/2 -translate-x-1/2 w-[85%] h-28 bg-gradient-to-b from-zinc-400 via-zinc-600 to-[#111] rounded-t-[30px] opacity-95 overflow-hidden shadow-[inset_0_20px_30px_rgba(0,0,0,0.5),0_1px_1px_rgba(255,255,255,0.4)] border-t-[2px] border-white/20"
             >
-                
                 <div class="absolute inset-0 opacity-20 roll-grain"></div>
                 
                 <div
@@ -29,37 +51,35 @@
                 </div>
             </div>
 
-<div
+            <div
                 class="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.2)_0%,transparent_40%,rgba(255,255,255,0.05)_50%,rgba(0,0,0,0.3)_100%)] rounded-t-2xl pointer-events-none border-b border-black/40"
             >
             </div>
 
-<div
+            <div
                 class="absolute bottom-0 w-full h-8 bg-[#080808] shadow-[inset_0_6px_15px_black] z-10 rounded-b-sm border-t border-white/5"
             >
-                
                 <div class="absolute top-0 inset-x-4 h-[1px] bg-zinc-700/50">
                 </div>
             </div>
 
-<div
+            <div
                 class="absolute inset-x-0 bottom-4 flex justify-center pointer-events-none z-50"
             >
                 <div
                     id="printer-paper-roll"
                     class="w-[78%] h-0 transition-[height] duration-[5000ms] cubic-bezier(0.4, 0, 0.2, 1) bg-[#f4f4ec] flex flex-col items-center overflow-hidden shadow-[0_-15px_45px_rgba(0,0,0,0.5),inset_0_-20px_40px_rgba(0,0,0,0.05)] origin-bottom border-x border-zinc-300 rounded-b-sm relative pointer-events-auto"
                 >
-                    
                     <div class="absolute inset-0 opacity-[0.03] pointer-events-none paper-grain"></div>
 
-<div class="w-full h-6 bg-gradient-to-b from-zinc-200 to-transparent opacity-40 flex-shrink-0"></div>
+                    <div class="w-full h-6 bg-gradient-to-b from-zinc-200 to-transparent opacity-40 flex-shrink-0"></div>
 
-<div class="w-full px-5 pb-2 flex flex-col items-center border-b border-dashed border-zinc-300 mb-2">
+                    <div class="w-full px-5 pb-2 flex flex-col items-center border-b border-dashed border-zinc-300 mb-2">
                         <span class="text-[7px] font-pixel text-zinc-800 tracking-wider uppercase">GAME BOY CAMERA</span>
-                        <span class="text-[5px] font-pixel text-zinc-400 tracking-widest uppercase mt-0.5">Studio 
+                        <span class="text-[5px] font-pixel text-zinc-400 tracking-widest uppercase mt-0.5">Studio </span>
                     </div>
 
-<div class="relative w-[88%] shadow-[0_12px_25px_rgba(0,0,0,0.15)]">
+                    <div class="relative w-[88%] shadow-[0_12px_25px_rgba(0,0,0,0.15)]">
                         <img
                             id="printer-image"
                             src=""
@@ -71,7 +91,7 @@
                         <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"></div>
                     </div>
 
-<div class="w-full px-5 py-3 border-t border-dashed border-zinc-300 flex flex-col gap-2 mt-3">
+                    <div class="w-full px-5 py-3 border-t border-dashed border-zinc-300 flex flex-col gap-2 mt-3">
                         <div class="flex justify-between items-center">
                             <span class="text-[5px] font-pixel text-zinc-400 uppercase">Date</span>
                             <span id="printer-date" class="text-[5px] font-pixel text-zinc-600 uppercase">--/--/----</span>
@@ -86,33 +106,16 @@
                         </div>
                     </div>
 
-<div class="w-full px-5 pb-4 flex flex-col items-center gap-1 border-t border-dashed border-zinc-300 pt-3">
+                    <div class="w-full px-5 pb-4 flex flex-col items-center gap-1 border-t border-dashed border-zinc-300 pt-3">
                         <div class="flex gap-[2px] items-end h-8">
-                            <div class="bg-zinc-800" style="width:3px;height:80%"></div>
-                            <div class="bg-zinc-800" style="width:1px;height:60%"></div>
-                            <div class="bg-zinc-800" style="width:4px;height:90%"></div>
-                            <div class="bg-zinc-800" style="width:1px;height:70%"></div>
-                            <div class="bg-zinc-800" style="width:5px;height:100%"></div>
-                            <div class="bg-zinc-800" style="width:2px;height:65%"></div>
-                            <div class="bg-zinc-800" style="width:3px;height:85%"></div>
-                            <div class="bg-zinc-800" style="width:2px;height:75%"></div>
-                            <div class="bg-zinc-800" style="width:1px;height:60%"></div>
-                            <div class="bg-zinc-800" style="width:4px;height:95%"></div>
-                            <div class="bg-zinc-800" style="width:2px;height:70%"></div>
-                            <div class="bg-zinc-800" style="width:1px;height:80%"></div>
-                            <div class="bg-zinc-800" style="width:3px;height:90%"></div>
-                            <div class="bg-zinc-800" style="width:4px;height:65%"></div>
-                            <div class="bg-zinc-800" style="width:1px;height:75%"></div>
-                            <div class="bg-zinc-800" style="width:2px;height:85%"></div>
-                            <div class="bg-zinc-800" style="width:3px;height:100%"></div>
-                            <div class="bg-zinc-800" style="width:1px;height:60%"></div>
-                            <div class="bg-zinc-800" style="width:4px;height:80%"></div>
-                            <div class="bg-zinc-800" style="width:2px;height:70%"></div>
+                            {[3,1,4,1,5,2,3,2,1,4,2,1,3,4,1,2,3,1,4,2].map(w => (
+                                <div class="bg-zinc-800" style={`width:${w}px;height:${60 + Math.random()*40}%`}></div>
+                            ))}
                         </div>
                         <span class="text-[5px] font-pixel text-zinc-400 tracking-[0.3em]">GB-CAM-LAB-001</span>
                     </div>
 
-<div
+                    <div
                         class="absolute bottom-0 left-0 right-0 h-5 z-30"
                         style="background-image: linear-gradient(135deg, #f4f4ec 25%, transparent 25%), linear-gradient(225deg, #f4f4ec 25%, transparent 25%); background-size: 10px 10px; background-repeat: repeat-x; background-position: 0 top;"
                     ></div>
@@ -120,91 +123,88 @@
             </div>
         </div>
 
-<div
-            class="flex flex-col items-center mb-14 drop-shadow-[1px_1px_rgba(255,255,255,0.1)]"
+        <!-- Printer Branding -->
+        <div
+            class="flex flex-col items-center mb-14 drop-shadow-[0_1px_0_rgba(255,255,255,0.5)] z-20 relative"
         >
-            <div
-                class="text-[12px] font-pixel text-[#3a3b3c] font-bold italic opacity-40 mb-1"
-            >
-                STUDIO
+            <div class="flex items-center gap-2 mb-1 opacity-70">
+                <span class="text-transparent bg-clip-text bg-gradient-to-b from-[#302080] to-[#1a1155] font-bold text-[10px] tracking-tight drop-shadow-[0_0.5px_0_rgba(255,255,255,0.3)]">Nintendo</span>
+                <span class="text-[7px] font-pixel text-[#302080]/80 font-bold uppercase tracking-widest">Printer</span>
             </div>
+            
             <div
-                class="text-[28px] font-pixel text-[#4a4c4e] font-bold italic tracking-tighter scale-y-90"
+                class="text-[28px] font-pixel text-transparent bg-clip-text bg-gradient-to-b from-[#3a3b3c] to-[#111] font-bold italic tracking-tighter scale-y-95 drop-shadow-[-1px_-1px_0_rgba(0,0,0,0.3)] opacity-90"
             >
-                printer
+                GAME BOY
             </div>
         </div>
 
-<div class="flex justify-between items-center px-8 mb-14">
-            
-            <div class="flex flex-col items-center">
-                <div class="relative">
-                    <div
-                        class="absolute inset-0 bg-black/30 rounded-full blur-xl translate-y-8"
-                    >
-                    </div>
+        <div class="flex justify-between items-center px-8 mb-14 w-full">
+            <!-- FEED Button -->
+            <div class="flex flex-col items-center gap-3">
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-black/40 rounded-full blur-lg translate-y-4 opacity-70 group-active:opacity-40"></div>
                     <button
                         id="btn-feed"
-                        class="relative w-22 h-22 bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-6px_-6px_10px_rgba(0,0,0,0.5),inset_4px_4px_10px_rgba(255,255,255,0.2),0_10px_0_var(--gb-button-magenta-dark),12px_16px_30px_rgba(0,0,0,0.6)] active:translate-y-2 active:shadow-[inset_-3px_-3px_5px_rgba(0,0,0,0.5),0_2px_0_var(--gb-button-magenta-dark)] transition-all flex items-center justify-center font-pixel text-[10px] text-white/40 tracking-widest font-bold"
-                    >
-                        BACK
-                    </button>
+                        class="relative w-[70px] h-[70px] bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-4px_-6px_10px_rgba(0,0,0,0.7),inset_4px_6px_10px_rgba(255,100,200,0.5),0_12px_20px_rgba(0,0,0,0.8),0_12px_0_#7a0b3c] active:translate-y-[8px] active:shadow-[inset_-2px_-3px_5px_rgba(0,0,0,0.7),inset_2px_3px_5px_rgba(255,100,200,0.4),0_4px_8px_rgba(0,0,0,0.8),0_4px_0_#7a0b3c] transition-all duration-[50ms] border-[0.5px] border-black/20"
+                    ></button>
                 </div>
+                <span class="text-[10px] font-pixel text-[#302080]/60 uppercase font-bold tracking-[0.15em] drop-shadow-[0_1px_0_rgba(255,255,255,0.4)]">FEED</span>
             </div>
 
-<div class="flex flex-col items-center">
+            <!-- Power/Ready Section -->
+            <div class="flex flex-col items-center gap-3">
                 <div class="relative">
-                    <div
-                        class="absolute inset-x-[-4px] inset-y-[-4px] bg-black/30 rounded shadow-[inset_4px_6px_10px_rgba(0,0,0,0.6)]"
-                    >
-                    </div>
-                    <button
-                        id="btn-cut"
-                        class="relative w-20 h-20 bg-[#d6d6d6] rounded shadow-[inset_2px_2px_5px_rgba(255,255,255,0.5),inset_-2px_-2px_5px_rgba(0,0,0,0.2),0_8px_0_var(--gb-gray-dark),10px_14px_20px_rgba(0,0,0,0.5)] border-2 border-black/10 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center justify-center gap-2"
-                    >
+                    <div class="absolute inset-x-[-10px] inset-y-[-10px] bg-black/15 rounded-xl shadow-[inset_4px_8px_15px_rgba(0,0,0,0.6),1px_2px_0_rgba(255,255,255,0.5)] border border-black/5"></div>
+                    
+                    <div class="relative w-20 h-20 bg-[#c0c2c3] rounded shadow-[inset_2px_2px_4px_rgba(255,255,255,0.5),inset_-2px_-2px_4px_rgba(0,0,0,0.2),12px_18px_25px_rgba(0,0,0,0.6)] border-[0.5px] border-black/20 overflow-hidden flex flex-col items-center justify-center gap-1.5">
+                        <div class="absolute inset-0 plastic-grain opacity-10 pointer-events-none"></div>
+                        
                         <div
                             id="printer-led"
-                            class="w-3.5 h-3.5 rounded-full bg-red-950 border border-black/50 shadow-[inset_1px_1px_2px_black]"
+                            class="w-4 h-4 rounded-full bg-[#3a0000] border-[1.5px] border-black/80 shadow-[inset_1px_2px_4px_black,0_1px_1px_rgba(255,255,255,0.4)] z-10 transition-colors duration-200"
                         >
+                            <div class="absolute top-[20%] left-[20%] w-[30%] h-[30%] bg-white/20 rounded-full blur-[1px]"></div>
                         </div>
-                        <div class="w-2.5 h-2.5 bg-[#a01050]/80 rounded-full shadow-inner border border-black/20"></div>
-                    </button>
-                    <span
-                        class="absolute -bottom-12 left-1/2 -translate-x-1/2 text-[9px] font-pixel text-[#302080] uppercase opacity-50 font-bold tracking-widest"
-                        >CUT</span
-                    >
+
+                        <div class="h-[1.5px] w-8 bg-black/20 rounded-full"></div>
+
+                        <div class="flex flex-col items-center opacity-70">
+                             <div class="w-1.5 h-1.5 bg-[#a01050] rounded-full shadow-[inset_1px_1px_2px_rgba(0,0,0,0.5)] border border-black/20 mb-1"></div>
+                             <span class="text-[5px] font-pixel text-zinc-600 uppercase tracking-widest leading-none">READY</span>
+                        </div>
+                    </div>
+                    <button id="btn-cut" class="absolute inset-0 opacity-0 cursor-pointer"></button>
                 </div>
+                <span class="text-[10px] font-pixel text-[#302080]/60 uppercase font-bold tracking-[0.15em] drop-shadow-[0_1px_0_rgba(255,255,255,0.4)]">POWER</span>
             </div>
         </div>
     </div>
 
-<div
+    <!-- Thermal Preview Overlay -->
+    <div
         id="thermal-preview-overlay"
         class="fixed inset-0 z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-700"
     >
-        
         <div class="absolute inset-0 bg-[#0a0a0c]">
-            
             <div class="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(248,240,200,0.07)_0%,transparent_100%)] pointer-events-none"></div>
         </div>
 
-<div id="ticket-drop" class="relative flex flex-col items-center z-10 translate-y-[-20px] opacity-0 transition-all duration-700 ease-out">
-
-<div id="torn-paper"
+        <div id="ticket-drop" class="relative flex flex-col items-center z-10 translate-y-[-20px] opacity-0 transition-all duration-700 ease-out">
+            <div id="torn-paper"
                 class="relative flex flex-col items-center bg-[#f4f4ec] shadow-[0_60px_120px_rgba(0,0,0,0.9),0_20px_40px_rgba(0,0,0,0.6)] w-[90vw] max-w-[420px] sm:w-[420px]"
                 style="rotate: -0.6deg;"
             >
-                
                 <div class="w-full h-4 overflow-hidden flex-shrink-0"
                     style="background-image: linear-gradient(135deg, transparent 33.33%, #f7f5ee 33.33%), linear-gradient(225deg, transparent 33.33%, #f7f5ee 33.33%); background-size: 8px 8px; background-position: 0 bottom; background-repeat: repeat-x;"
                 ></div>
 
-<div class="w-full px-6 pt-4 pb-3 flex flex-col items-center border-b border-dashed border-zinc-300 mb-2">
+                <div class="w-full px-6 pt-4 pb-3 flex flex-col items-center border-b border-dashed border-zinc-300 mb-2">
                     <span class="text-[10px] font-pixel text-zinc-800 tracking-wider uppercase">GAME BOY CAMERA</span>
-                    <span class="text-[7px] font-pixel text-zinc-400 tracking-widest uppercase mt-1">Studio 
+                    <span class="text-[7px] font-pixel text-zinc-400 tracking-widest uppercase mt-1">Studio </span>
                 </div>
 
-<div class="w-full px-5 py-3 relative">
+                <div class="w-full px-5 py-3 relative">
                     <div class="relative w-full shadow-[0_12px_25px_rgba(0,0,0,0.15)]">
                         <img id="preview-image" src="" class="w-full pixelated contrast-[1.1] brightness-[1.05] border border-black/5" />
                         
@@ -213,14 +213,14 @@
                     </div>
                 </div>
 
-<div class="w-full px-6 py-4 border-t border-dashed border-zinc-300 flex flex-col gap-3">
+                <div class="w-full px-6 py-4 border-t border-dashed border-zinc-300 flex flex-col gap-3">
                     <div class="flex justify-between items-center">
                         <span class="text-[8px] font-pixel text-zinc-400 uppercase">Date</span>
                         <span id="preview-date" class="text-[8px] font-pixel text-zinc-600 uppercase">--/--/----</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-[8px] font-pixel text-zinc-400 uppercase">Format</span>
-                        <span class="text-[8px] font-pixel text-zinc-600 uppercase">160×144 / 8X UP</span>
+                        <span id="preview-format" class="text-[8px] font-pixel text-zinc-600 uppercase">160×144 / 8X UP</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-[8px] font-pixel text-zinc-400 uppercase">Output</span>
@@ -228,26 +228,25 @@
                     </div>
                 </div>
 
-<div class="w-full px-6 pb-5 flex flex-col items-center gap-2 border-t border-dashed border-zinc-300 pt-4">
+                <div class="w-full px-6 pb-5 flex flex-col items-center gap-2 border-t border-dashed border-zinc-300 pt-4">
                     <div class="flex gap-[2px] items-end h-12">
                         {[3,1,4,1,5,2,3,2,1,4,2,1,3,4,1,2,3,1,4,2,3,1,2,4,3,2,1,3,2,4,1,3,2].map(w => (
-                            <div class="bg-zinc-800" style={`width: ${w}px; height: ${60 + Math.random()*40}%;`}></div>
+                            <div class="bg-zinc-800" style={`width:${w}px;height:${60 + Math.random()*40}%`}></div>
                         ))}
                     </div>
                     <span class="text-[7px] font-pixel text-zinc-400 tracking-[0.3em]">GB-CAM-LAB-001</span>
                 </div>
 
-<div class="w-full h-4 overflow-hidden flex-shrink-0"
+                <div class="w-full h-4 overflow-hidden flex-shrink-0"
                     style="background-image: linear-gradient(315deg, transparent 33.33%, #f7f5ee 33.33%), linear-gradient(45deg, transparent 33.33%, #f7f5ee 33.33%); background-size: 8px 8px; background-position: 0 top; background-repeat: repeat-x;"
                 ></div>
 
-<div class="absolute inset-0 pointer-events-none paper-grain opacity-[0.04]"></div>
-                
+                <div class="absolute inset-0 pointer-events-none paper-grain opacity-[0.04]"></div>
                 <div class="absolute inset-y-0 left-[30%] w-[1px] bg-black/[0.03] pointer-events-none"></div>
                 <div class="absolute inset-y-0 right-[25%] w-[1px] bg-black/[0.03] pointer-events-none"></div>
             </div>
 
-<div class="flex gap-10 mt-10">
+            <div class="flex gap-10 mt-10">
                 <div class="flex flex-col items-center gap-4">
                     <button id="confirm-download-btn"
                         class="w-20 h-20 bg-[#a01050] rounded-full shadow-[inset_-4px_-4px_10px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.2),0_10px_0_#7a0b3c,0_20px_40px_rgba(0,0,0,0.7)] active:translate-y-2 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_#7a0b3c] transition-all flex items-center justify-center">
@@ -288,52 +287,32 @@
         const { dataUrl } = e.detail;
         const printer = document.getElementById("gb-printer");
         const paper = document.getElementById("printer-paper-roll");
-        const img = document.getElementById(
-            "printer-image",
-        ) as HTMLImageElement;
+        const img = document.getElementById("printer-image") as HTMLImageElement;
         const led = document.getElementById("printer-led");
-        const actions = document.getElementById("printer-actions");
         const btnCut = document.getElementById("btn-cut");
         const returnBtn = document.getElementById("btn-feed");
         const overlay = document.getElementById("thermal-preview-overlay");
-        const previewImg = document.getElementById(
-            "preview-image",
-        ) as HTMLImageElement;
+        const previewImg = document.getElementById("preview-image") as HTMLImageElement;
         const confirmBtn = document.getElementById("confirm-download-btn");
         const cancelBtn = document.getElementById("cancel-preview-btn");
 
         if (printer && paper && img && led) {
             const now = new Date();
-            const dateStr =
-                now.toLocaleDateString() +
-                " " +
-                now.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                });
+            const dateStr = now.toLocaleDateString() + " " + now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
             const dateLabel = document.getElementById("printer-date");
             const previewDateLabel = document.getElementById("preview-date");
             if (dateLabel) dateLabel.innerText = dateStr;
             if (previewDateLabel) previewDateLabel.innerText = dateStr;
-            const audioCtx = new (
-                window.AudioContext || (window as any).webkitAudioContext
-            )();
 
-            const playSound = (
-                freq: number,
-                type: OscillatorType,
-                duration: number,
-                volume: number,
-            ) => {
+            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+
+            const playSound = (freq: number, type: OscillatorType, duration: number, volume: number) => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                 gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(
-                    0.01,
-                    audioCtx.currentTime + duration,
-                );
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
@@ -351,38 +330,29 @@
                 noise.start();
                 return { noise, gain };
             };
+
             paper.style.transition = "none";
             paper.style.height = "0px";
             paper.classList.remove("animate-tear", "printing-vibration");
             img.src = dataUrl;
 
             if (overlay) {
-                overlay.classList.add(
-                    "opacity-0",
-                    "pointer-events-none",
-                    "scale-95",
-                );
+                overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
                 overlay.classList.remove("opacity-100", "scale-100");
-            }
-            if (actions) {
-                actions.classList.add("opacity-0", "pointer-events-none");
             }
 
             void paper.offsetHeight;
-            paper.style.transition =
-                "height 5000ms cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease-out";
+            paper.style.transition = "height 5000ms cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease-out";
 
             if (btnCut) {
                 btnCut.onclick = (e) => {
                     e.stopPropagation();
                     playSound(800, "square", 0.1, 0.1);
                     playSound(400, "sawtooth", 0.15, 0.05);
-
                     paper.classList.add("animate-tear");
                     paper.classList.remove("printing-vibration");
 
                     const ticketDrop = document.getElementById("ticket-drop");
-
                     setTimeout(() => {
                         if (previewImg) previewImg.src = dataUrl;
                         if (overlay) {
@@ -390,12 +360,8 @@
                             overlay.classList.add("opacity-100");
                         }
                         if (ticketDrop) {
-                            requestAnimationFrame(() => {
-                                setTimeout(() => {
-                                    ticketDrop.classList.remove("translate-y-[-20px]", "opacity-0");
-                                    ticketDrop.classList.add("translate-y-0", "opacity-100");
-                                }, 100);
-                            });
+                            ticketDrop.classList.remove("translate-y-[-20px]", "opacity-0");
+                            ticketDrop.classList.add("translate-y-0", "opacity-100");
                         }
                     }, 400);
                 };
@@ -419,18 +385,15 @@
                     const tempCanvas = document.createElement("canvas");
                     const tempCtx = tempCanvas.getContext("2d")!;
                     const sourceImg = new Image();
-                    
                     sourceImg.onload = () => {
                         tempCanvas.width = sourceImg.width * upscaleFactor;
                         tempCanvas.height = sourceImg.height * upscaleFactor;
                         tempCtx.imageSmoothingEnabled = false;
                         tempCtx.drawImage(sourceImg, 0, 0, tempCanvas.width, tempCanvas.height);
-                        
                         const link = document.createElement("a");
                         link.download = `gb-cam-studio-${Date.now()}.png`;
                         link.href = tempCanvas.toDataURL("image/png");
                         link.click();
-                        
                         hideOverlay();
                         setTimeout(() => window.dispatchEvent(new CustomEvent("gb-print-end")), 300);
                     };
@@ -446,73 +409,20 @@
                 };
             }
 
-            const shareBtn = document.getElementById("share-photo-btn");
-            if (shareBtn) {
-                shareBtn.onclick = async () => {
-                    import("../../store/app").then(({ AppStore }) => AppStore.playSound('save'));
-                    const upscaleFactor = 8;
-                    const tempCanvas = document.createElement("canvas");
-                    const tempCtx = tempCanvas.getContext("2d")!;
-                    const sourceImg = new Image();
-
-                    sourceImg.onload = async () => {
-                        tempCanvas.width = sourceImg.width * upscaleFactor;
-                        tempCanvas.height = sourceImg.height * upscaleFactor;
-                        tempCtx.imageSmoothingEnabled = false;
-                        tempCtx.drawImage(sourceImg, 0, 0, tempCanvas.width, tempCanvas.height);
-
-                        tempCanvas.toBlob(async (blob) => {
-                            if (!blob) return;
-                            const file = new File([blob], `gb-cam-${Date.now()}.png`, { type: 'image/png' });
-
-                            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                                try {
-                                    await navigator.share({
-                                        files: [file],
-                                        title: 'Game Boy Camera Studio',
-                                        text: 'Shot with Game Boy Camera Studio'
-                                    });
-                                } catch (e) {
-                                }
-                            } else {
-                                const link = document.createElement("a");
-                                link.download = file.name;
-                                link.href = URL.createObjectURL(blob);
-                                link.click();
-                            }
-                        }, 'image/png');
-                    };
-                    sourceImg.src = dataUrl;
-                };
-            }
-
             if (returnBtn) {
-                returnBtn.onclick = () =>
-                    window.dispatchEvent(new CustomEvent("gb-print-end"));
+                returnBtn.onclick = () => window.dispatchEvent(new CustomEvent("gb-print-end"));
             }
+
             led.style.backgroundColor = "#ff0000";
             led.style.boxShadow = "0 0 12px red";
             setTimeout(() => {
                 const motor = playMotor();
                 paper.style.height = "620px";
-
                 paper.classList.add("printing-vibration");
-
                 setTimeout(() => {
-                    motor.gain.gain.exponentialRampToValueAtTime(
-                        0.001,
-                        audioCtx.currentTime + 0.1,
-                    );
+                    motor.gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                     setTimeout(() => motor.noise.stop(), 100);
                     paper.classList.remove("printing-vibration");
-
-                    if (actions) {
-                        actions.classList.remove(
-                            "opacity-0",
-                            "pointer-events-none",
-                        );
-                        actions.classList.add("opacity-100");
-                    }
                 }, 5000);
             }, 600);
 
@@ -529,77 +439,26 @@
         image-rendering: -moz-pixelated;
         image-rendering: pixelated;
     }
-    .translate-x-center {
-        transform: translateX(-50%);
-    }
-    .printer-device-shadow {
-        filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
-    }
-
+    
     @keyframes printingJitter {
-        0% {
-            transform: translate(0, 0);
-        }
-        33% {
-            transform: translate(1px, 0.5px);
-        }
-        66% {
-            transform: translate(-1px, -0.5px);
-        }
-        100% {
-            transform: translate(0, 0);
-        }
+        0% { transform: translate(0, 0); }
+        33% { transform: translate(1px, 0.5px); }
+        66% { transform: translate(-1px, -0.5px); }
+        100% { transform: translate(0, 0); }
     }
 
     .printing-vibration {
         animation: printingJitter 0.1s infinite linear;
     }
 
-    #tear-trigger {
-        pointer-events: none; 
-        cursor: pointer;
-    }
-
-    #tear-trigger {
-        cursor: pointer;
-    }
-    #thermal-preview-overlay {
-        background: radial-gradient(
-            circle at center,
-            rgba(0, 0, 0, 0.85) 0%,
-            rgba(0, 0, 0, 0.95) 100%
-        );
-    }
-
-    #torn-paper {
-        transform: rotate(-0.5deg);
-        box-shadow:
-            0 40px 100px rgba(0, 0, 0, 0.8),
-            0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-.paper-grain {
+    .paper-grain {
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         background-repeat: repeat;
         mix-blend-mode: multiply;
         opacity: 0.08;
     }
 
-#printer-paper-roll::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            to right,
-            transparent 30%,
-            rgba(0,0,0,0.02) 30.5%,
-            rgba(255,255,255,0.05) 31%,
-            transparent 31.5%,
-            transparent 69%,
-            rgba(0,0,0,0.02) 69.5%,
-            rgba(255,255,255,0.05) 70%,
-            transparent 70.5%
-        );
-        pointer-events: none;
+    #ticket-drop {
+        filter: drop-shadow(0 40px 100px rgba(0,0,0,0.8));
     }
 </style>

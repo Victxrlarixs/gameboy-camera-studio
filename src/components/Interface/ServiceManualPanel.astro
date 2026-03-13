@@ -1,4 +1,4 @@
-﻿---
+---
 import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="manual-panel hidden xl:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_12px_80px] h-[calc(100vh-40px)] overflow-y-auto relative">
@@ -22,37 +22,60 @@ import "../../styles/components/StudioSidePanel.css";
 <div class="space-y-6 pt-2">
         <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest pl-1">Key Assignment</label>
         
-        <div class="grid grid-cols-1 gap-4">
+        <div class="grid grid-cols-2 gap-3">
             
-            <div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
-                <div class="w-10 h-7 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg">
-                    <span class="text-[9px] font-pixel text-white drop-shadow-md">Z</span>
+            <!-- A Button -->
+            <div data-action="a" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-[#a01050]/10 hover:border-[#a01050]/30 transition-all cursor-pointer">
+                <div class="w-12 h-8 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg group-active:translate-y-px group-active:border-b-2">
+                    <span class="text-[10px] font-pixel text-white drop-shadow-md">Z</span>
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase mb-0.5">Primary</span>
-                    <span class="text-[6px] font-pixel text-zinc-500 uppercase tracking-tighter">Action A / Shoot</span>
-                </div>
-            </div>
-
-<div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
-                <div class="w-10 h-7 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg">
-                    <span class="text-[9px] font-pixel text-white drop-shadow-md">X</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase mb-0.5">Secondary</span>
-                    <span class="text-[6px] font-pixel text-zinc-500 uppercase tracking-tighter">Action B / Back</span>
+                <div class="flex flex-col items-center">
+                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">A / SHOOT</span>
                 </div>
             </div>
 
-<div class="flex items-center gap-4 group bg-black/5 p-2 rounded-lg border border-black/5">
-                <div class="w-14 h-7 bg-zinc-700 rounded-md flex items-center justify-center border-t-2 border-white/10 border-r-4 border-b-4 border-black/60 shadow-lg px-2">
-                    <span class="text-[5px] font-pixel text-white uppercase opacity-80">Enter</span>
+            <!-- B Button -->
+            <div data-action="b" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-[#a01050]/10 hover:border-[#a01050]/30 transition-all cursor-pointer">
+                <div class="w-12 h-8 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg group-active:translate-y-px group-active:border-b-2">
+                    <span class="text-[10px] font-pixel text-white drop-shadow-md">X</span>
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase mb-0.5">System</span>
-                    <span class="text-[6px] font-pixel text-zinc-500 uppercase tracking-tighter">Menu / Pause</span>
+                <div class="flex flex-col items-center">
+                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">B / BACK</span>
                 </div>
             </div>
+
+            <!-- START Button -->
+            <div data-action="start" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-zinc-700/10 hover:border-zinc-700/30 transition-all cursor-pointer">
+                <div class="w-12 h-8 bg-zinc-700 rounded-md flex items-center justify-center border-t-2 border-white/10 border-r-4 border-b-4 border-black/60 shadow-lg group-active:translate-y-px group-active:border-b-2 px-2">
+                    <span class="text-[6px] font-pixel text-white uppercase opacity-80">ENTER</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">START</span>
+                </div>
+            </div>
+
+             <!-- SELECT Button -->
+            <div data-action="select" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-zinc-700/10 hover:border-zinc-700/30 transition-all cursor-pointer">
+                <div class="w-12 h-8 bg-zinc-700 rounded-md flex items-center justify-center border-t-2 border-white/10 border-r-4 border-b-4 border-black/60 shadow-lg group-active:translate-y-px group-active:border-b-2 px-2">
+                    <span class="text-[5px] font-pixel text-white uppercase opacity-80">SHIFT</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">SELECT</span>
+                </div>
+            </div>
+
+            <!-- Arrows Section -->
+             <div class="col-span-2 grid grid-cols-4 gap-2 mt-2">
+                {['up', 'down', 'left', 'right'].map((dir) => (
+                    <div data-action={dir} class="flex flex-col items-center justify-center gap-2 group bg-black/5 p-2 rounded-lg border border-black/5 hover:bg-zinc-800/10 transition-all cursor-pointer">
+                        <div class="w-8 h-8 bg-zinc-800 rounded-sm flex items-center justify-center border-t border-white/10 border-r-2 border-b-2 border-black/60 shadow-md group-active:translate-y-px group-active:border-b">
+                            <span class="text-[10px] text-white/80">
+                                {dir === 'up' ? '↑' : dir === 'down' ? '↓' : dir === 'left' ? '←' : '→'}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+             </div>
         </div>
     </div>
 
@@ -161,4 +184,18 @@ import "../../styles/components/StudioSidePanel.css";
         });
     });
     updateDiagnostics();
+
+    // Bind Key Assignment cards to AppStore actions
+    document.querySelectorAll('[data-action]').forEach(el => {
+        el.addEventListener('click', () => {
+            const action = el.getAttribute('data-action');
+            if (action) {
+                AppStore.handleInput(action);
+                
+                // Visual feedback
+                el.classList.add('scale-95', 'brightness-125');
+                setTimeout(() => el.classList.remove('scale-95', 'brightness-125'), 100);
+            }
+        });
+    });
 </script>

@@ -35,16 +35,27 @@ export const AppStore = {
                 break;
 
             case 'SHOOT':
+                if (button === 'a')      window.dispatchEvent(new CustomEvent('gb-input', { detail: { button: 'a' } }));
                 if (button === 'select') this.cyclePalette();
                 if (button === 'start')  this.setMode('VIEW');
                 if (button === 'up')     this.adjustBrightness(0.1);
                 if (button === 'down')   this.adjustBrightness(-0.1);
                 if (button === 'left')   this.cycleStamp(-1);
                 if (button === 'right')  this.cycleStamp(1);
+                if (button === 'b') {
+                    // Reset to defaults
+                    this.state.brightness = 0;
+                    this.state.stampIndex = 0;
+                    this.playSound('click');
+                }
                 break;
 
             case 'VIEW':
-                if (button === 'b') this.setMode('SHOOT');
+                if (button === 'b' || button === 'start') this.setMode('SHOOT');
+                if (button === 'a') {
+                    // Possible future action: Print current photo in gallery
+                    window.dispatchEvent(new CustomEvent('gb-input', { detail: { button: 'a' } }));
+                }
                 break;
         }
 

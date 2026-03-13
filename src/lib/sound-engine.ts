@@ -21,12 +21,31 @@ export interface ISoundEngine {
  */
 export class SoundEngine implements ISoundEngine {
 
-    /**
-     * Creates and returns a fresh `AudioContext`, or `null` if unsupported.
-     */
-    private getContext(): AudioContext | null {
-        const AudioCtx = (window.AudioContext || (window as any).webkitAudioContext);
-        return AudioCtx ? new AudioCtx() : null;
+    private audioCtx: AudioContext | null = null;
+    private masterGain: GainNode | null = null;
+    private _volume: number = 0.5;
+
+    public setVolume(vol: number) {
+        this._volume = Math.max(0, Math.min(1, vol));
+        if (this.masterGain && this.audioCtx) {
+            this.masterGain.gain.setValueAtTime(this._volume, this.audioCtx.currentTime);
+        }
+    }
+
+    private getContextAndDest(): { ctx: AudioContext, dest: AudioNode } | null {
+        if (!this.audioCtx) {
+            const AudioCtx = (window.AudioContext || (window as any).webkitAudioContext);
+            if (AudioCtx) {
+                this.audioCtx = new AudioCtx();
+                this.masterGain = this.audioCtx.createGain();
+                this.masterGain.gain.value = this._volume;
+                this.masterGain.connect(this.audioCtx.destination);
+            }
+        }
+        if (this.audioCtx && this.masterGain) {
+            return { ctx: this.audioCtx, dest: this.masterGain };
+        }
+        return null;
     }
 
     /**
@@ -42,6 +61,7 @@ export class SoundEngine implements ISoundEngine {
      */
     private note(
         ctx: AudioContext,
+        dest: AudioNode,
         freq: number,
         oscType: OscillatorType,
         startTime: number,
@@ -59,7 +79,7 @@ export class SoundEngine implements ISoundEngine {
         gain.gain.setValueAtTime(vol, ctx.currentTime + startTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(dest);
         osc.start(ctx.currentTime + startTime);
         osc.stop(ctx.currentTime + startTime + duration + 0.01);
     }
@@ -72,7 +92,7 @@ export class SoundEngine implements ISoundEngine {
      * @param duration  - Noise duration in seconds.
      * @param vol       - Initial gain amplitude.
      */
-    private noise(ctx: AudioContext, startTime: number, duration: number, vol: number): void {
+    private noise(ctx: AudioContext, dest: AudioNode, startTime: number, duration: number, vol: number): void {
         const bufSize = ctx.sampleRate * duration;
         const buffer  = ctx.createBuffer(1, bufSize, ctx.sampleRate);
         const data    = buffer.getChannelData(0);
@@ -89,7 +109,7 @@ export class SoundEngine implements ISoundEngine {
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
         src.connect(filter);
         filter.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(dest);
         src.start(ctx.currentTime + startTime);
         src.stop(ctx.currentTime + startTime + duration + 0.01);
     }
@@ -101,11 +121,12 @@ export class SoundEngine implements ISoundEngine {
      * @param type - The sound effect to play.
      */
     play(type: SoundType): void {
-        const ctx = this.getContext();
-        if (!ctx) return;
+        const result = this.getContextAndDest();
+        if (!result) return;
+        const { ctx, dest } = result;
 
         const n = (freq: number, t: OscillatorType, s: number, d: number, v: number, e?: number) =>
-            this.note(ctx, freq, t, s, d, v, e);
+            this.note(ctx, dest, freq, t, s, d, v, e);
 
         switch (type) {
             case 'click':
@@ -117,7 +138,7 @@ export class SoundEngine implements ISoundEngine {
                 n(180,  'sawtooth', 0,    0.08, 0.12, 80);
                 n(3200, 'square',   0,    0.03, 0.06, 400);
                 n(900,  'square',   0.03, 0.06, 0.04, 200);
-                this.noise(ctx, 0, 0.06, 0.08);
+                this.noise(ctx, dest, 0, 0.06, 0.08);
                 n(55,   'sine',     0,    0.1,  0.08);
                 break;
 

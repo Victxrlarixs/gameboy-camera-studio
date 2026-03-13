@@ -24,10 +24,21 @@ export class ControlsController {
         'ArrowDown': 'down',
         'ArrowLeft': 'left',
         'ArrowRight': 'right',
+        'w': 'up',
+        's': 'down',
+        'a': 'left',
+        'd': 'right',
+        'W': 'up',
+        'S': 'down',
+        'A': 'left',
+        'D': 'right',
         'z': 'a',
+        'Z': 'a',
         'x': 'b',
+        'X': 'b',
         'Enter': 'start',
-        'Shift': 'select'
+        'Shift': 'select',
+        ' ': 'a' // Spacebar as A
     };
 
     constructor() {

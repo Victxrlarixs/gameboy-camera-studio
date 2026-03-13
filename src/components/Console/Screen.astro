@@ -1,4 +1,4 @@
-﻿<div class="w-full h-full relative cursor-crosshair overflow-hidden">
+<div class="w-full h-full relative cursor-crosshair overflow-hidden">
     <canvas
         id="gb-canvas"
         width="160"
@@ -19,9 +19,8 @@
         </div>
     </div>
 
-    <div class="absolute inset-0 pointer-events-none scanlines"></div>
-    <div class="absolute inset-0 pointer-events-none crt-flicker opacity-10 bg-white"></div>
-    <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.3)]"></div>
+    <div class="absolute inset-0 pointer-events-none scanlines opacity-60 mix-blend-multiply"></div>
+    <div class="absolute inset-0 pointer-events-none shadow-[inset_4px_6px_12px_rgba(0,0,0,0.8),inset_-2px_-2px_6px_rgba(0,0,0,0.2),inset_0_0_2px_rgba(255,255,255,0.1)]"></div>
 </div>
 
 <script>
