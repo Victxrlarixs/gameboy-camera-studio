@@ -10,7 +10,7 @@ import ServiceManualPanel from "../Interface/ServiceManualPanel.astro";
 import "../../styles/components/GameBoy.css";
 ---
 
-<div id="studio-layout" class="flex w-full h-full gap-8 overflow-hidden bg-[#111]">
+<div id="studio-layout" class="flex w-full h-full gap-8 overflow-hidden">
     <!-- LEFT CONTROL PANEL (Hidden on very small mobile if necessary) -->
     <div class="hidden xl:flex h-full items-center">
         <StudioSidePanel />
@@ -81,7 +81,7 @@ import "../../styles/components/GameBoy.css";
                 <!-- PRINTER UNIT -->
                 <div 
                     id="printer-unit" 
-                    class="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center pointer-events-none opacity-0 translate-y-[300px] transition-all duration-1000 transform-gpu z-[100] scale-110"
+                    class="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center pointer-events-none opacity-0 z-[100]"
                 >
                     <Printer />
                 </div>

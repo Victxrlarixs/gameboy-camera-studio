@@ -35,18 +35,21 @@ export class HardwareOrchestrator {
     private handlePrintStart(): void {
         if (!this.cameraUnit || !this.printerUnit) return;
 
-        // Animate Camera out
+        // Animate Camera out (Clean fade and scale)
+        this.cameraUnit.style.transition = "transform 0.4s ease-in-out, opacity 0.3s ease-out";
         this.cameraUnit.style.opacity = "0";
-        this.cameraUnit.style.transform = "translateY(-600px) rotate(-20deg) scale(0.5)";
+        this.cameraUnit.style.transform = "scale(0.95)";
         this.cameraUnit.style.pointerEvents = "none";
 
-        // Animate Printer in
+        // Animate Printer in (Perfectly Centered)
         setTimeout(() => {
             if (this.printerUnit) {
-                this.printerUnit.classList.remove("opacity-0", "translate-y-[300px]", "pointer-events-none");
-                this.printerUnit.classList.add("opacity-100", "translate-y-0");
+                this.printerUnit.style.transition = "transform 0.5s ease-out, opacity 0.4s ease-out";
+                this.printerUnit.classList.remove("opacity-0", "pointer-events-none");
+                this.printerUnit.classList.add("opacity-100");
+                this.printerUnit.style.transform = "translateX(0) scale(1)";
             }
-        }, 400);
+        }, 150);
     }
 
     private handlePrintEnd(): void {
@@ -54,17 +57,18 @@ export class HardwareOrchestrator {
             if (!this.cameraUnit || !this.printerUnit) return;
 
             // Animate Printer out
-            this.printerUnit.classList.add("opacity-0", "translate-y-[300px]", "pointer-events-none");
-            this.printerUnit.classList.remove("opacity-100", "translate-y-0");
+            this.printerUnit.style.transform = "scale(0.95)";
+            this.printerUnit.classList.add("opacity-0", "pointer-events-none");
+            this.printerUnit.classList.remove("opacity-100");
 
             // Animate Camera back
             setTimeout(() => {
                 if (this.cameraUnit) {
                     this.cameraUnit.style.opacity = "1";
-                    this.cameraUnit.style.transform = "translateY(0) rotate(0) scale(1)";
+                    this.cameraUnit.style.transform = "scale(1)";
                     this.cameraUnit.style.pointerEvents = "auto";
                 }
-            }, 500);
-        }, 1000);
+            }, 300);
+        }, 600);
     }
 }

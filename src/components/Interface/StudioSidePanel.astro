@@ -2,79 +2,74 @@
 // Import styles
 import "../../styles/components/StudioSidePanel.css";
 ---
-<div class="studio-panel hidden lg:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[20px_20px_100px_20px] border-t-2 border-l-2 border-white/30 border-r-[10px] border-b-[10px] border-black/30 matte-plastic shadow-[20px_20px_60px_rgba(0,0,0,0.5),inset_3px_3px_0_rgba(255,255,255,0.2)] h-[calc(100vh-40px)] overflow-y-auto overflow-x-hidden relative">
-    <!-- Panel Grip Texture -->
-    <div class="absolute top-10 right-2 w-1 h-32 flex flex-col gap-2 opacity-20">
-        <div class="w-full h-full bg-black rounded-full"></div>
-        <div class="w-full h-full bg-black rounded-full"></div>
-        <div class="w-full h-full bg-black rounded-full"></div>
+<div class="studio-panel hidden lg:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_80px_12px] h-[calc(100vh-40px)] overflow-y-auto overflow-x-hidden relative">
+    
+    <!-- Branding Plate (Embossed) -->
+    <div class="absolute top-8 right-6 flex flex-col items-end opacity-40 select-none pointer-events-none">
+        <span class="text-[8px] font-pixel text-zinc-800 tracking-tighter leading-none mb-1">DMG-01-STUDIO</span>
+        <div class="w-16 h-1 bg-zinc-800/10 rounded-full"></div>
     </div>
-    <!-- LABEL TOP -->
-    <div class="flex flex-col gap-1 border-b-4 border-black/20 pb-4 shrink-0">
-        <h2 class="text-[12px] font-pixel text-[#302080] italic opacity-80 uppercase tracking-tighter">
-            Studio Controller <span class="text-[8px] not-italic opacity-60">GB-01</span>
+
+    <!-- PANEL TITLE (High Fidelity Relief) -->
+    <div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
+        <h2 class="text-[13px] font-pixel text-[#302080] italic uppercase tracking-tighter embossed-text">
+            Studio Processor
         </h2>
-        <div class="flex gap-1">
-            <div class="w-full h-1 bg-[#a01050] opacity-40"></div>
-            <div class="w-full h-1 bg-[#302080] opacity-40"></div>
+        <div class="flex gap-1.5 mt-1">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#a01050] shadow-md border border-black/20"></div>
+            <div class="w-12 h-1 bg-[#302080]/30 rounded-full"></div>
+            <div class="flex grow h-1 bg-black/5 rounded-full shadow-inner"></div>
         </div>
     </div>
 
-    <!-- DEVELOPMENT SECTION -->
-    <div class="space-y-6 shrink-0">
-        <div class="flex items-center gap-2">
-            <div class="w-2 h-6 bg-black/20"></div>
-            <label class="text-[9px] font-pixel text-[#302080] opacity-70 uppercase">Image Processor</label>
-        </div>
-
-        <!-- BRIGHTNESS -->
-        <div class="bg-black/5 p-4 rounded-sm border-2 border-black/10 shadow-inner space-y-4">
-            <div class="flex justify-between items-center px-1">
-                <span class="text-[8px] font-pixel text-[#1a1a1a]">BRIGHT</span>
-                <div class="flex gap-1" id="brightness-dots"></div>
+    <!-- MECHANICAL CONTROLS (Wells/Pockets) -->
+    <div class="space-y-8 shrink-0">
+        <!-- BRIGHTNESS WELL -->
+        <div class="space-y-3">
+            <div class="flex justify-between items-end px-1">
+                <label class="text-[8px] font-pixel text-[#3a2a6b] font-bold uppercase tracking-widest opacity-60">Brightness</label>
+                <div class="flex gap-0.5" id="brightness-dots"></div>
             </div>
-            <div class="relative h-6 bg-black/10 rounded-full border-b-2 border-white/20 flex items-center px-2">
-                <input type="range" id="input-brightness" min="-1" max="1" step="0.1" value="0" class="dmg-slider">
-                <div class="absolute inset-x-4 h-1 bg-black/20 rounded-full"></div>
+            <div class="relative h-10 debossed-panel flex items-center px-4 rounded-lg overflow-hidden border-t border-black/40">
+                <input type="range" id="input-brightness" min="-1" max="1" step="0.1" value="0" class="dmg-slider relative z-20">
+                <div class="absolute inset-x-4 h-1.5 bg-black/40 rounded-full shadow-inner z-10"></div>
             </div>
         </div>
 
-        <!-- CONTRAST -->
-        <div class="bg-black/5 p-4 rounded-sm border-2 border-black/10 shadow-inner space-y-4">
-            <div class="flex justify-between items-center px-1">
-                <span class="text-[8px] font-pixel text-[#1a1a1a]">CONTRAST</span>
-                <span id="val-contrast" class="text-[8px] font-pixel text-[#a01050]">1.0</span>
+        <!-- CONTRAST WELL -->
+        <div class="space-y-3">
+            <div class="flex justify-between items-end px-1">
+                <label class="text-[8px] font-pixel text-[#3a2a6b] font-bold uppercase tracking-widest opacity-60">Contrast</label>
+                <span id="val-contrast" class="text-[8px] font-pixel text-magenta-600 font-bold">1.0</span>
             </div>
-            <div class="relative h-6 bg-black/10 rounded-full border-b-2 border-white/20 flex items-center px-2">
-                <input type="range" id="input-contrast" min="0" max="2" step="0.1" value="1" class="dmg-slider">
-                <div class="absolute inset-x-4 h-1 bg-black/20 rounded-full"></div>
+            <div class="relative h-10 debossed-panel flex items-center px-4 rounded-lg overflow-hidden border-t border-black/40">
+                <input type="range" id="input-contrast" min="0" max="2" step="0.1" value="1" class="dmg-slider relative z-20">
+                <div class="absolute inset-x-4 h-1.5 bg-black/40 rounded-full shadow-inner z-10"></div>
             </div>
         </div>
     </div>
 
-    <!-- PALETTE GRID -->
-    <div class="space-y-4 shrink-0">
-        <label class="text-[9px] font-pixel text-[#302080] opacity-70 uppercase mb-4 block">Film Stock Selection</label>
-        <div id="palette-grid" class="grid grid-cols-2 gap-3">
+    <!-- STOCK SELECTION (Physical Slot) -->
+    <div class="space-y-4 shrink-0 pt-4">
+        <label class="text-[8px] font-pixel text-[#302080]/50 uppercase tracking-[0.2em] mb-2 block">Film Stock</label>
+        <div id="palette-grid" class="grid grid-cols-2 gap-4 p-3 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner">
             <!-- Injected via StudioController -->
         </div>
     </div>
 
-    <!-- RECENT LAB -->
-    <div class="mt-auto space-y-4 pt-6 border-t-4 border-black/10 shrink-0">
-        <div class="flex justify-between items-center">
-            <label class="text-[8px] font-pixel text-[#302080] opacity-50 uppercase">Lab Roll</label>
-            <div class="flex gap-1">
-                <div class="w-1.5 h-1.5 rounded-full bg-red-900 shadow-inner"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-red-900 shadow-inner"></div>
-            </div>
+    <!-- FILM ROLL RECEPTACLE (Deep Inset) -->
+    <div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0">
+        <div class="flex justify-between items-center px-1">
+            <label class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-widest">Lab Buffer</label>
+            <div class="w-6 h-1 bg-black/10 rounded-full"></div>
         </div>
-        <div id="recent-photos" class="flex gap-3 overflow-x-auto overflow-y-hidden p-3 bg-black/80 rounded border-2 border-black/40 shadow-2xl custom-scrollbar-h">
-            <!-- Photos Look like film frames -->
-            <div class="w-20 h-20 shrink-0 bg-[#0f380f]/20 border border-white/5 flex items-center justify-center relative">
-                 <div class="w-full h-1 bg-white/5 absolute top-2"></div>
-                 <span class="text-[5px] font-pixel text-white/20 uppercase">No Film</span>
-                 <div class="w-full h-1 bg-white/5 absolute bottom-2"></div>
+        <div class="relative p-1 debossed-panel rounded-lg shadow-2xl border-t border-black/60">
+             <div id="recent-photos" class="flex gap-3 overflow-x-auto overflow-y-hidden p-3 min-h-[100px] border border-white/5 rounded-sm custom-scrollbar-h">
+                <!-- Empty State physical frame -->
+                <div class="w-20 h-20 shrink-0 bg-black/40 border-2 border-[#1a1b1c] rounded-xs flex items-center justify-center relative shadow-lg">
+                     <span class="text-[5px] font-pixel text-zinc-700 uppercase">Empty</span>
+                     <div class="absolute inset-0 bg-white/5 pointer-events-none"></div>
+                </div>
             </div>
         </div>
     </div>

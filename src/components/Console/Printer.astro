@@ -8,7 +8,10 @@
         class="matte-plastic relative p-8 pt-12 rounded-[12px_12px_60px_12px] shadow-[40px_60px_100px_rgba(0,0,0,0.7),inset_3px_3px_0_rgba(255,255,255,0.4),0_12px_0_var(--gb-gray-dark)] border-t-2 border-l-2 border-white/20 border-r-[12px] border-b-[12px] border-black/25"
     >
         <!-- Panel Seam -->
-        <div class="absolute top-[45%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.05)] pointer-events-none"></div>
+        <div
+            class="absolute top-[45%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.05)] pointer-events-none"
+        >
+        </div>
 
         <!-- Top Thick Acrylic Roll Cover (Improved Realism) -->
         <div
@@ -21,7 +24,10 @@
                 <!-- Roll Grain -->
                 <div class="absolute inset-0 opacity-20 roll-grain"></div>
                 <!-- Gloss -->
-                <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent"></div>
+                <div
+                    class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent"
+                >
+                </div>
             </div>
 
             <!-- Thick Tinted Glass Refraction -->
@@ -35,32 +41,50 @@
                 class="absolute bottom-0 w-full h-8 bg-[#080808] shadow-[inset_0_6px_15px_black] z-10 rounded-b-sm border-t border-white/5"
             >
                 <!-- Tear Blade Details -->
-                <div class="absolute top-0 inset-x-4 h-[1px] bg-zinc-700/50"></div>
+                <div class="absolute top-0 inset-x-4 h-[1px] bg-zinc-700/50">
+                </div>
             </div>
 
             <!-- Thermal Paper Ejection System -->
-            <div class="absolute inset-x-0 bottom-4 flex justify-center pointer-events-none z-50">
+            <div
+                class="absolute inset-x-0 bottom-4 flex justify-center pointer-events-none z-50"
+            >
                 <div
                     id="printer-paper-roll"
                     class="w-[78%] h-0 transition-[height] duration-[5000ms] cubic-bezier(0.4, 0, 0.2, 1) bg-[#f4f4ec] flex flex-col items-center overflow-hidden shadow-[0_-15px_45px_rgba(0,0,0,0.5),inset_0_-20px_40px_rgba(0,0,0,0.05)] origin-bottom border-x border-zinc-300 rounded-b-sm relative pointer-events-auto"
                 >
                     <!-- Paper Grain Texture -->
-                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none paper-grain"></div>
+                    <div
+                        class="absolute inset-0 opacity-[0.03] pointer-events-none paper-grain"
+                    >
+                    </div>
 
                     <!-- Top edge curl -->
-                    <div class="w-full h-8 bg-gradient-to-b from-zinc-200 to-transparent mb-3 opacity-40"></div>
+                    <div
+                        class="w-full h-8 bg-gradient-to-b from-zinc-200 to-transparent mb-3 opacity-40"
+                    >
+                    </div>
 
-                    <div class="relative w-[88%] transition-transform duration-500 hover:scale-[1.02]">
+                    <div
+                        class="relative w-[88%] transition-transform duration-500 hover:scale-[1.02] shadow-[0_12px_25px_rgba(0,0,0,0.15)]"
+                    >
                         <img
                             id="printer-image"
                             src=""
                             alt="Printed"
-                            class="w-full pixelated shadow-md border-[3px] border-white/80"
+                            class="w-full pixelated contrast-[1.1] brightness-[1.05]"
                         />
-                        <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"></div>
+                        <!-- Thermal scanline/dust texture -->
+                        <div class="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-multiply bg-[length:100%_4px] bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.05)_50%)]"></div>
+                        <div
+                            class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"
+                        >
+                        </div>
                     </div>
 
-                    <div class="mt-8 p-6 text-[8px] font-pixel text-zinc-600 uppercase tracking-[0.25em] text-center leading-loose opacity-70">
+                    <div
+                        class="mt-8 p-6 text-[8px] font-pixel text-zinc-600 uppercase tracking-[0.25em] text-center leading-loose opacity-70"
+                    >
                         <span id="printer-date">03/13/2026 02:11</span><br />
                         GAME BOY CAMERA STUDIO
                     </div>
@@ -75,20 +99,14 @@
                             background-repeat: repeat-x;"
                     >
                     </div>
-
-                    <!-- Tear to Save Interaction Overlay -->
-                    <div id="tear-trigger" class="absolute inset-0 z-[100] cursor-[url(https://img.icons8.com/ios-filled/20/000000/scissors.png),_pointer] flex items-end justify-center pb-12 opacity-0 hover:opacity-100 transition-opacity duration-300 group">
-                        <div class="bg-black/80 text-white font-pixel text-[7px] py-2 px-4 rounded-full border border-white/20 shadow-xl backdrop-blur-sm tracking-widest animate-bounce">
-                            CLICK TO TEAR
-                        </div>
-                        <div class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-t from-emerald-500/60 to-transparent tear-glow"></div>
-                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Machine Branding -->
-        <div class="flex flex-col items-center mb-14 drop-shadow-[1px_1px_rgba(255,255,255,0.1)]">
+        <div
+            class="flex flex-col items-center mb-14 drop-shadow-[1px_1px_rgba(255,255,255,0.1)]"
+        >
             <div
                 class="text-[12px] font-pixel text-[#3a3b3c] font-bold italic opacity-40 mb-1"
             >
@@ -106,7 +124,10 @@
             <!-- BACK Button (Formerly FEED) -->
             <div class="flex flex-col items-center">
                 <div class="relative">
-                    <div class="absolute inset-0 bg-black/30 rounded-full blur-xl translate-y-8"></div>
+                    <div
+                        class="absolute inset-0 bg-black/30 rounded-full blur-xl translate-y-8"
+                    >
+                    </div>
                     <button
                         id="btn-feed"
                         class="relative w-22 h-22 bg-[var(--gb-button-magenta)] rounded-full shadow-[inset_-6px_-6px_10px_rgba(0,0,0,0.5),inset_4px_4px_10px_rgba(255,255,255,0.2),0_10px_0_var(--gb-button-magenta-dark),12px_16px_30px_rgba(0,0,0,0.6)] active:translate-y-2 active:shadow-[inset_-3px_-3px_5px_rgba(0,0,0,0.5),0_2px_0_var(--gb-button-magenta-dark)] transition-all flex items-center justify-center font-pixel text-[10px] text-white/40 tracking-widest font-bold"
@@ -116,12 +137,15 @@
                 </div>
             </div>
 
-            <!-- POWER Button -->
+            <!-- CUT Button (Physical Interaction) -->
             <div class="flex flex-col items-center">
                 <div class="relative">
-                    <div class="absolute inset-x-[-4px] inset-y-[-4px] bg-black/30 rounded shadow-[inset_4px_6px_10px_rgba(0,0,0,0.6)]"></div>
+                    <div
+                        class="absolute inset-x-[-4px] inset-y-[-4px] bg-black/30 rounded shadow-[inset_4px_6px_10px_rgba(0,0,0,0.6)]"
+                    >
+                    </div>
                     <button
-                        id="btn-power"
+                        id="btn-cut"
                         class="relative w-20 h-20 bg-[#d6d6d6] rounded shadow-[inset_2px_2px_5px_rgba(255,255,255,0.5),inset_-2px_-2px_5px_rgba(0,0,0,0.2),0_8px_0_var(--gb-gray-dark),10px_14px_20px_rgba(0,0,0,0.5)] border-2 border-black/10 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center justify-center gap-2"
                     >
                         <div
@@ -129,89 +153,163 @@
                             class="w-3.5 h-3.5 rounded-full bg-red-950 border border-black/50 shadow-[inset_1px_1px_2px_black]"
                         >
                         </div>
-                        <div class="w-2 h-2 bg-black/30 rounded-full shadow-inner"></div>
+                        <div class="w-2.5 h-2.5 bg-[#a01050]/80 rounded-full shadow-inner border border-black/20"></div>
                     </button>
                     <span
                         class="absolute -bottom-12 left-1/2 -translate-x-1/2 text-[9px] font-pixel text-[#302080] uppercase opacity-50 font-bold tracking-widest"
-                        >POWER</span
+                        >CUT</span
                     >
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- THERMAL PREVIEW OVERLAY (The 'Cool' Experience) -->
-    <div id="thermal-preview-overlay" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500 scale-90">
-        <div class="relative flex flex-col items-center gap-8 max-w-[90vw]">
-            
-            <!-- The 'Torn' Paper Fragment -->
-            <div id="torn-paper" class="bg-[#f4f4ec] p-8 shadow-2xl border-x border-zinc-300 relative flex flex-col items-center transition-transform duration-700 hover:rotate-1">
-                <!-- Jagged Top Edge (The Cut) -->
-                <div class="absolute -top-3 left-0 right-0 h-4 z-30" style="background-image: linear-gradient(135deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%), linear-gradient(225deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%); background-size: 10px 10px; background-repeat: repeat-x;"></div>
-                
-                <img id="preview-image" src="" class="w-64 h-64 object-cover pixelated shadow-inner border-2 border-black/10" />
-                
-                <div class="mt-6 text-[8px] font-pixel text-zinc-600 uppercase tracking-widest text-center leading-loose opacity-60">
-                    <span id="preview-date">03/13/2026 02:11</span><br/>
-                    GAME BOY CAMERA STUDIO
+    <!-- THERMAL PREVIEW OVERLAY (Industrial UI) -->
+    <div
+        id="thermal-preview-overlay"
+        class="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-500 scale-95 overflow-y-auto overflow-x-hidden"
+    >
+        <div
+            class="matte-plastic m-4 p-8 sm:p-12 rounded-[24px_24px_120px_24px] border-t-2 border-l-2 border-white/40 border-r-[12px] border-b-[12px] border-black/40 shadow-2xl flex flex-col items-center gap-10 max-w-full"
+        >
+            <!-- Branding Header -->
+            <div
+                class="w-full flex justify-between items-center border-b-2 border-black/10 pb-4"
+            >
+                <span
+                    class="text-[10px] font-pixel text-[#302080] italic opacity-60 uppercase"
+                    >Print Preview</span
+                >
+                <div class="flex gap-1">
+                    <div class="w-2 h-2 rounded-full bg-[#a01050]"></div>
+                    <div class="w-6 h-2 bg-black/10 rounded-full"></div>
                 </div>
-
-                <!-- Jagged Bottom Edge -->
-                <div class="absolute -bottom-3 left-0 right-0 h-4 z-30" style="background-image: linear-gradient(135deg, #f4f4ec 25%, transparent 25.5%), linear-gradient(225deg, #f4f4ec 25%, transparent 25.5%); background-size: 10px 10px; background-repeat: repeat-x;"></div>
             </div>
 
-            <!-- Confirmation UI -->
-            <div class="flex gap-4">
-                <button id="confirm-download-btn" class="px-8 py-4 bg-emerald-600 text-white font-pixel text-[10px] rounded shadow-[0_4px_0_rgb(5,150,105)] active:translate-y-1 active:shadow-none uppercase tracking-tighter">
-                    CONFIRM DOWNLOAD
-                </button>
-                <button id="cancel-preview-btn" class="px-8 py-4 bg-zinc-700 text-white font-pixel text-[10px] rounded shadow-[0_4px_0_rgb(63,63,70)] active:translate-y-1 active:shadow-none uppercase tracking-tighter">
-                    BACK
-                </button>
+            <!-- The 'Torn' Paper Fragment in a Well -->
+            <div
+                class="p-2 debossed-panel rounded-xl shadow-2xl border-t-2 border-black/60 scale-95 sm:scale-100"
+            >
+                <div
+                    id="torn-paper"
+                    class="bg-[#f4f4ec] p-6 shadow-xl border-x border-zinc-300 relative flex flex-col items-center"
+                >
+                    <!-- Jagged Top Edge -->
+                    <div
+                        class="absolute -top-3 left-0 right-0 h-4 z-30"
+                        style="background-image: linear-gradient(135deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%), linear-gradient(225deg, transparent 25%, #f4f4ec 25.5%, #f4f4ec 50%, transparent 50.5%); background-size: 8px 8px; background-repeat: repeat-x;"
+                    >
+                    </div>
+
+                    <img id="preview-image" src="" class="w-64 h-64 object-cover pixelated border-2 border-black/5 shadow-inner" />
+                    
+                    <!-- Paper Folds/Texture Overlay -->
+                    <div class="absolute inset-0 pointer-events-none opacity-40">
+                         <div class="absolute inset-y-0 left-1/4 w-[1px] bg-black/5 shadow-[0_0_10px_rgba(0,0,0,0.1)]"></div>
+                         <div class="absolute inset-y-0 right-1/3 w-[1px] bg-black/5 shadow-[0_0_10px_rgba(0,0,0,0.1)]"></div>
+                    </div>
+
+                    <div class="mt-6 text-[7px] font-pixel text-zinc-500 uppercase tracking-widest text-center leading-loose opacity-60">
+                        <span id="preview-date">03/13/2026 02:11</span><br/>
+                        GAME BOY CAMERA STUDIO
+                    </div>
+
+                    <!-- Jagged Bottom Edge -->
+                    <div
+                        class="absolute -bottom-3 left-0 right-0 h-4 z-30"
+                        style="background-image: linear-gradient(135deg, #f4f4ec 25%, transparent 25.5%), linear-gradient(225deg, #f4f4ec 25%, transparent 25.5%); background-size: 8px 8px; background-repeat: repeat-x;"
+                    >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons (Mechanical Style) -->
+            <div class="flex gap-8 mt-4">
+                <div class="flex flex-col items-center gap-4">
+                    <button
+                        id="confirm-download-btn"
+                        class="w-16 h-16 bg-[#a01050] rounded-full shadow-[inset_-4px_-4px_8px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.2),0_8px_0_#7a0b3c,10px_12px_20px_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_#7a0b3c] transition-all flex items-center justify-center font-pixel text-[12px] text-white"
+                    >
+                    </button>
+                    <span
+                        class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-tighter"
+                        >SAVE</span
+                    >
+                </div>
+
+                <div class="flex flex-col items-center gap-4">
+                    <button
+                        id="cancel-preview-btn"
+                        class="w-16 h-16 bg-zinc-600 rounded-full shadow-[inset_-4px_-4px_8px_rgba(0,0,0,0.5),inset_3px_3px_8px_rgba(255,255,255,0.2),0_8px_0_zinc-800,10px_12px_20px_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.5),0_2px_0_zinc-800] transition-all flex items-center justify-center font-pixel text-[12px] text-white"
+                    >
+                    </button>
+                    <span
+                        class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-tighter"
+                        >BACK</span
+                    >
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <script>
     window.addEventListener("gb-print-start", (e: any) => {
         const { dataUrl } = e.detail;
         const printer = document.getElementById("gb-printer");
         const paper = document.getElementById("printer-paper-roll");
-        const img = document.getElementById("printer-image") as HTMLImageElement;
+        const img = document.getElementById(
+            "printer-image",
+        ) as HTMLImageElement;
         const led = document.getElementById("printer-led");
         const actions = document.getElementById("printer-actions");
-        const tearTrigger = document.getElementById("tear-trigger");
+        const btnCut = document.getElementById("btn-cut");
         const returnBtn = document.getElementById("btn-feed");
-        
+
         // Preview elements
         const overlay = document.getElementById("thermal-preview-overlay");
-        const previewImg = document.getElementById("preview-image") as HTMLImageElement;
+        const previewImg = document.getElementById(
+            "preview-image",
+        ) as HTMLImageElement;
         const confirmBtn = document.getElementById("confirm-download-btn");
         const cancelBtn = document.getElementById("cancel-preview-btn");
 
         if (printer && paper && img && led) {
             const now = new Date();
-            const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
+            const dateStr =
+                now.toLocaleDateString() +
+                " " +
+                now.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                });
+
             // Inject date into ticket and preview
-            const dateLabel = document.getElementById('printer-date');
-            const previewDateLabel = document.getElementById('preview-date');
+            const dateLabel = document.getElementById("printer-date");
+            const previewDateLabel = document.getElementById("preview-date");
             if (dateLabel) dateLabel.innerText = dateStr;
             if (previewDateLabel) previewDateLabel.innerText = dateStr;
 
             // Audio Context for synthesized retro sounds
-            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-            
-            const playSound = (freq: number, type: OscillatorType, duration: number, volume: number) => {
+            const audioCtx = new (
+                window.AudioContext || (window as any).webkitAudioContext
+            )();
+
+            const playSound = (
+                freq: number,
+                type: OscillatorType,
+                duration: number,
+                volume: number,
+            ) => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                 gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                gain.gain.exponentialRampToValueAtTime(
+                    0.01,
+                    audioCtx.currentTime + duration,
+                );
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
@@ -221,7 +319,7 @@
             const playMotor = () => {
                 const noise = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                noise.type = 'sawtooth';
+                noise.type = "sawtooth";
                 noise.frequency.setValueAtTime(40, audioCtx.currentTime);
                 gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
                 noise.connect(gain);
@@ -231,13 +329,17 @@
             };
 
             // 1. GLOBAL HARD RESET
-            paper.style.transition = 'none';
+            paper.style.transition = "none";
             paper.style.height = "0px";
             paper.classList.remove("animate-tear", "printing-vibration");
             img.src = dataUrl;
 
             if (overlay) {
-                overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
+                overlay.classList.add(
+                    "opacity-0",
+                    "pointer-events-none",
+                    "scale-95",
+                );
                 overlay.classList.remove("opacity-100", "scale-100");
             }
             if (actions) {
@@ -247,22 +349,27 @@
             void paper.offsetHeight;
 
             // 2. RE-PREPARE Engine
-            paper.style.transition = 'height 5000ms cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease-out';
+            paper.style.transition =
+                "height 5000ms cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease-out";
 
-            if (tearTrigger) {
-                tearTrigger.onclick = (e) => {
+            if (btnCut) {
+                btnCut.onclick = (e) => {
                     e.stopPropagation();
                     // Tear Sound (Sharp high-pass noise)
-                    playSound(800, 'square', 0.1, 0.1);
-                    playSound(400, 'sawtooth', 0.15, 0.05);
+                    playSound(800, "square", 0.1, 0.1);
+                    playSound(400, "sawtooth", 0.15, 0.05);
 
                     paper.classList.add("animate-tear");
                     paper.classList.remove("printing-vibration");
-                    
+
                     setTimeout(() => {
                         if (previewImg) previewImg.src = dataUrl;
                         if (overlay) {
-                            overlay.classList.remove("opacity-0", "pointer-events-none", "scale-95");
+                            overlay.classList.remove(
+                                "opacity-0",
+                                "pointer-events-none",
+                                "scale-95",
+                            );
                             overlay.classList.add("opacity-100", "scale-100");
                         }
                     }, 400);
@@ -270,30 +377,51 @@
             }
 
             if (confirmBtn) {
-                 confirmBtn.onclick = () => {
-                    const link = document.createElement("a");
-                    link.download = `gb-cam-studio-${Date.now()}.png`;
-                    link.href = dataUrl;
-                    link.click();
-                    if (overlay) overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
-                    setTimeout(() => window.dispatchEvent(new CustomEvent("gb-print-end")), 300);
-                 };
+                confirmBtn.onclick = () => {
+                    // UPSCALE IMAGE PIXEL-PERFECTLY
+                    const upscaleFactor = 8;
+                    const tempCanvas = document.createElement("canvas");
+                    const tempCtx = tempCanvas.getContext("2d")!;
+                    const sourceImg = new Image();
+                    
+                    sourceImg.onload = () => {
+                        tempCanvas.width = sourceImg.width * upscaleFactor;
+                        tempCanvas.height = sourceImg.height * upscaleFactor;
+                        tempCtx.imageSmoothingEnabled = false; // PIXEL PERFECT
+                        tempCtx.drawImage(sourceImg, 0, 0, tempCanvas.width, tempCanvas.height);
+                        
+                        const link = document.createElement("a");
+                        link.download = `gb-cam-studio-${Date.now()}.png`;
+                        link.href = tempCanvas.toDataURL("image/png");
+                        link.click();
+                        
+                        if (overlay) overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
+                        setTimeout(() => window.dispatchEvent(new CustomEvent("gb-print-end")), 300);
+                    };
+                    sourceImg.src = dataUrl;
+                };
             }
 
             if (cancelBtn) {
-                 cancelBtn.onclick = () => {
-                    if (overlay) overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
+                cancelBtn.onclick = () => {
+                    if (overlay)
+                        overlay.classList.add(
+                            "opacity-0",
+                            "pointer-events-none",
+                            "scale-95",
+                        );
                     window.dispatchEvent(new CustomEvent("gb-print-end"));
-                 };
+                };
             }
 
             if (returnBtn) {
-                returnBtn.onclick = () => window.dispatchEvent(new CustomEvent("gb-print-end"));
+                returnBtn.onclick = () =>
+                    window.dispatchEvent(new CustomEvent("gb-print-end"));
             }
 
             // Start hardware print cycle
-            led.style.backgroundColor = '#ff0000';
-            led.style.boxShadow = '0 0 12px red';
+            led.style.backgroundColor = "#ff0000";
+            led.style.boxShadow = "0 0 12px red";
 
             // 3. START EJECTION WITH MOTOR SOUND
             setTimeout(() => {
@@ -302,19 +430,26 @@
                 paper.classList.add("printing-vibration");
 
                 setTimeout(() => {
-                    motor.gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                    motor.gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        audioCtx.currentTime + 0.1,
+                    );
                     setTimeout(() => motor.noise.stop(), 100);
                     paper.classList.remove("printing-vibration");
+
                     if (actions) {
-                        actions.classList.remove("opacity-0", "pointer-events-none");
+                        actions.classList.remove(
+                            "opacity-0",
+                            "pointer-events-none",
+                        );
                         actions.classList.add("opacity-100");
                     }
                 }, 5000);
             }, 600);
 
             setTimeout(() => {
-                led.style.backgroundColor = '';
-                led.style.boxShadow = '';
+                led.style.backgroundColor = "";
+                led.style.boxShadow = "";
             }, 8000);
         }
     });
@@ -333,10 +468,22 @@
     }
 
     @keyframes printingJitter {
-        0% { transform: translate(0, 0); }
-        33% { transform: translate(1px, 0.5px); }
-        66% { transform: translate(-1px, -0.5px); }
-        100% { transform: translate(0, 0); }
+        0% {
+            transform: translate(0, 0);
+        }
+        33% {
+            transform: translate(1px, 0.5px);
+        }
+        66% {
+            transform: translate(-1px, -0.5px);
+        }
+        100% {
+            transform: translate(0, 0);
+        }
+    }
+
+    .printing-vibration {
+        animation: printingJitter 0.1s infinite linear;
     }
 
     #tear-trigger {
@@ -344,24 +491,48 @@
         cursor: pointer;
     }
 
-    #printer-paper-roll[style*="height: 420px"] #tear-trigger {
-        pointer-events: auto;
-    }
-
-    @keyframes pulseGlow {
-        0%, 100% { opacity: 0.3; }
-        50% { opacity: 0.7; }
-    }
-
-    .tear-glow {
-        animation: pulseGlow 2s infinite ease-in-out;
+    #tear-trigger {
+        cursor: pointer;
     }
     #thermal-preview-overlay {
-        background: radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%);
+        background: radial-gradient(
+            circle at center,
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.95) 100%
+        );
     }
 
     #torn-paper {
-        transform: rotate(-1deg);
-        box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
+        transform: rotate(-0.5deg);
+        box-shadow:
+            0 40px 100px rgba(0, 0, 0, 0.8),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Pixelated Paper Grain Overlay */
+    .paper-grain {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        mix-blend-mode: multiply;
+        opacity: 0.08;
+    }
+
+    /* Subtle Paper Folds */
+    #printer-paper-roll::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to right,
+            transparent 30%,
+            rgba(0,0,0,0.02) 30.5%,
+            rgba(255,255,255,0.05) 31%,
+            transparent 31.5%,
+            transparent 69%,
+            rgba(0,0,0,0.02) 69.5%,
+            rgba(255,255,255,0.05) 70%,
+            transparent 70.5%
+        );
+        pointer-events: none;
     }
 </style>

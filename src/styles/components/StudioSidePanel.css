@@ -17,11 +17,20 @@
     }
 }
 
-/* Common Hardware Module Look */
+/* Common Hardware Module Look (Nintendo Industrial) */
 .studio-panel, .manual-panel {
     background-color: var(--gb-gray);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay;
+    border-top: 3px solid rgba(255, 255, 255, 0.4);
+    border-left: 3px solid rgba(255, 255, 255, 0.4);
+    border-right: 12px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 12px solid rgba(0, 0, 0, 0.3);
     position: relative;
     z-index: 10;
+    box-shadow: 
+        20px 30px 60px rgba(0, 0, 0, 0.7), 
+        inset 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* Custom Scrollbar for both panels */
