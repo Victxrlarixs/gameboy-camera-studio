@@ -3,14 +3,12 @@
 :root {
     --gb-green: #9bbc0f;
     --gb-dark-green: #0f380f;
-    --gb-gray: #cfcecb; /* Warm neutral DMG gray */
+    --gb-gray: #cfcecb;
     --gb-gray-dark: #b8b7b4;
     --gb-gray-light: #e5e4e2;
     --gb-bezel: #707071;
     --gb-button-magenta: #a01050;
     --gb-button-magenta-dark: #7a0b3c;
-    --gb-button-magenta-gloss: #f94c9b;
-    --gb-plastic-charcoal: #2a2b2c;
     --font-pixel: "Press Start 2P", system-ui;
 }
 
@@ -19,7 +17,12 @@
 }
 
 body {
-    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    background-color: #1a1b1e;
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(207, 206, 203, 0.05) 0%, transparent 80%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay;
+    color: var(--gb-gray);
     height: 100vh;
     height: 100svh;
     width: 100vw;
@@ -37,18 +40,32 @@ body::before {
     position: absolute;
     inset: 0;
     background: 
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.05) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.02) 0%, transparent 50%);
+        radial-gradient(circle at 50% -20%, rgba(255,255,255,0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 120%, rgba(0,0,0,0.5) 0%, transparent 70%);
     pointer-events: none;
     z-index: 1;
 }
 
+#studio-layout {
+    display: flex;
+    width: 100vw;
+    height: 100svh;
+    overflow: hidden;
+    align-items: center; /* Ensure vertical centering of the hub */
+    justify-content: center;
+}
+
 #hardware-hub {
+    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: transform 0.3s ease-out;
+    transform-origin: center center;
+    width: 100%;
+    height: 100%;
 }
 
 /* ABS Plastic Texture */
@@ -56,27 +73,7 @@ body::before {
     background-color: var(--gb-gray);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-blend-mode: overlay;
-    opacity: 0.98;
 }
-
-.charcoal-plastic {
-    background-color: var(--gb-plastic-charcoal);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-blend-mode: overlay;
-}
-
-.paper-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
-
-.roll-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
-
-.print-noise {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
-
 
 .pixelated {
     image-rendering: pixelated;
@@ -84,13 +81,6 @@ body::before {
 
 .font-pixel {
     font-family: var(--font-pixel);
-}
-
-.scanlines {
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.08) 50%);
-    background-size: 100% 4px;
-    z-index: 10;
-    pointer-events: none;
 }
 
 .glare-effect {
@@ -102,7 +92,7 @@ body::before {
     background-image: 
         linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-    background-size: 4px 4px; /* Matches pixelated scale */
+    background-size: 4px 4px;
     pointer-events: none;
 }
 
@@ -114,10 +104,62 @@ body::before {
     filter: blur(0.5px) brightness(1.1);
 }
 
+.hardware-table-surface {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        repeating-linear-gradient(rgba(255,255,255,0.02) 0px, transparent 1px, transparent 40px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 40px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    opacity: 0.4;
+}
 
-/* Stable centering logic */
-@media (max-height: 950px) { #hardware-hub { transform: scale(0.9); } }
-@media (max-height: 850px) { #hardware-hub { transform: scale(0.8); } }
-@media (max-height: 750px) { #hardware-hub { transform: scale(0.7); } }
-@media (max-height: 650px) { #hardware-hub { transform: scale(0.6); } }
-@media (max-width: 500px) { #hardware-hub { transform: scale(0.8); } }
+/* Scaling Logic: Focused on making the Game Boy fill the screen */
+#hardware-hub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-out;
+    transform-origin: center center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Vertical Scaling (Desktop/Tablet) */
+@media (max-height: 1000px) { #hardware-hub { transform: scale(0.95); } }
+@media (max-height: 900px) { #hardware-hub { transform: scale(0.85); } }
+@media (max-height: 800px) { #hardware-hub { transform: scale(0.75); } }
+@media (max-height: 700px) { #hardware-hub { transform: scale(0.65); } }
+
+/* Mobile Scaling - Filling vertical space better without cutting top */
+@media (max-width: 639px) { 
+    #hardware-hub { 
+        transform: scale(0.9); 
+        padding-top: 20px; /* Give room for the cartridge eye */
+    } 
+}
+@media (max-width: 480px) { 
+    #hardware-hub { 
+        transform: scale(0.88); 
+        padding-top: 30px;
+    } 
+}
+@media (max-width: 400px) {
+    #hardware-hub { 
+        transform: scale(0.82); 
+    }
+}
+@media (max-width: 350px) {
+    #hardware-hub { 
+        transform: scale(0.72); 
+    }
+}
+
+/* Ensure centering on mobile */
+@media (max-width: 1024px) {
+    #studio-layout {
+        justify-content: center !important;
+    }
+}

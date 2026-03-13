@@ -3,122 +3,133 @@ import GameBoyScreen from "./Screen.astro";
 import GameBoyControls from "./Controls.astro";
 import Printer from "./Printer.astro";
 import Cartridge from "./Cartridge.astro";
+import StudioSidePanel from "../Interface/StudioSidePanel.astro";
+import ServiceManualPanel from "../Interface/ServiceManualPanel.astro";
 ---
 
-<div id="hardware-hub" class="relative group">
-    <!-- DEVICE A: THE CAMERA UNIT -->
-    <div
-        id="camera-unit"
-        class="relative transition-all duration-700 flex flex-col items-center"
-    >
-        <Cartridge />
+<div id="studio-layout" class="flex w-full h-full overflow-hidden bg-transparent">
+    <!-- LEFT CONTROL PANEL (Auto-hides on mobile) -->
+    <StudioSidePanel />
 
-        <!-- AUTHENTIC DMG GAME BOY CHASSIS -->
+    <!-- MAIN HARDWARE AREA (Fills space on mobile) -->
+    <div id="hardware-hub" class="flex-1 relative z-10">
+        <!-- DEVICE A: THE CAMERA UNIT -->
         <div
-            class="matte-plastic relative w-[440px] p-8 pt-16 rounded-[12px_12px_120px_12px] shadow-[30px_50px_100px_rgba(0,0,0,0.7),inset_3px_3px_0_rgba(255,255,255,0.4),0_12px_0_var(--gb-gray-dark)] border-t-2 border-l-2 border-white/30 border-r-[12px] border-b-[12px] border-black/30 flex flex-col items-center"
+            id="camera-unit"
+            class="relative transition-all duration-700 flex flex-col items-center -gap-2"
         >
-            <!-- Panel Seam Line -->
-            <div class="absolute top-[32%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.1)] pointer-events-none"></div>
+            <Cartridge />
 
-            <!-- SCREEN AREA -->
+            <!-- AUTHENTIC DMG GAME BOY CHASSIS -->
             <div
-                class="bg-[#707071] w-full p-8 pt-4 rounded-[12px] shadow-[inset_3px_4px_12px_rgba(0,0,0,0.8),2px_2px_0_rgba(255,255,255,0.1)] mb-8 relative border-b-2 border-white/5 flex flex-col items-center"
+                class="matte-plastic relative w-[440px] p-8 pt-16 rounded-[12px_12px_120px_12px] shadow-[30px_50px_100px_rgba(0,0,0,0.7),inset_3px_3px_0_rgba(255,255,255,0.4),0_12px_0_var(--gb-gray-dark)] border-t-2 border-l-2 border-white/30 border-r-[12px] border-b-[12px] border-black/30 flex flex-col items-center"
             >
-                <!-- Battery LED (Red) -->
+                <!-- Panel Seam Line -->
+                <div class="absolute top-[32%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.1)] pointer-events-none"></div>
+
+                <!-- SCREEN AREA (The Grey Bezel) -->
                 <div
-                    class="absolute left-5 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 pointer-events-none z-30"
+                    class="bg-[#707071] w-full p-10 pt-4 rounded-[12px] shadow-[inset_3px_4px_12px_rgba(0,0,0,0.8),2px_2px_0_rgba(255,255,255,0.1)] mb-8 relative border-b-2 border-white/5 flex flex-col items-center"
+                >
+                    <!-- Battery LED (Red) - Positioned on the bezel, NOT on the green screen -->
+                    <div
+                        class="absolute left-6 top-[45%] -translate-y-1/2 flex flex-col items-center gap-1.5 pointer-events-none z-30"
+                    >
+                        <div
+                            id="power-led"
+                            class="w-3.5 h-3.5 rounded-full bg-red-950 border border-black/60 shadow-[inset_1px_1px_2px_black]"
+                        >
+                        </div>
+                        <span
+                            class="text-[7px] text-zinc-400 font-bold uppercase tracking-widest opacity-60 font-pixel"
+                            >Battery</span
+                        >
+                    </div>
+
+                    <!-- Bezel Decorative Lines -->
+                    <div class="flex justify-between items-center w-full mb-5 px-1">
+                        <div
+                            class="h-[3px] grow bg-[#a01050] rounded-full opacity-40 shadow-inner"
+                        >
+                        </div>
+                        <div
+                            class="text-[8px] text-zinc-300 font-bold uppercase opacity-90 mx-3 font-pixel whitespace-nowrap tracking-tighter"
+                        >
+                            Dot Matrix with Stereo Sound
+                        </div>
+                        <div
+                            class="h-[3px] grow bg-[#302080] rounded-full opacity-40 shadow-inner"
+                        >
+                        </div>
+                    </div>
+
+                    <!-- THE LCD SCREEN (The Green part) -->
+                    <div
+                        class="relative w-[280px] aspect-square bg-[#9bbc0f] border-[8px] border-black/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-sm transition-all duration-500"
+                    >
+                        <div class="absolute inset-0 pixel-grid z-20"></div>
+                        <div class="absolute inset-0 glare-effect z-30"></div>
+                        <GameBoyScreen />
+                    </div>
+                </div>
+
+                <!-- Branding -->
+                <div class="w-full px-12 mb-6 select-none">
+                    <span
+                        class="text-[#302080] font-bold italic text-lg tracking-tighter opacity-80 drop-shadow-[0.5px_0.5px_0_rgba(255,255,255,0.1)]"
+                        >GAME BOY <span class="text-md"
+                            >CAMERA STUDIO<span
+                                class="text-[7px] align-top font-normal font-pixel ml-1 uppercase"
+                                >TM</span
+                            ></span
+                        ></span
+                    >
+                </div>
+
+                <!-- Controls Area -->
+                <div class="w-full">
+                    <GameBoyControls />
+                </div>
+
+                <!-- Speaker Grill -->
+                <div
+                    class="absolute bottom-14 right-12 rotate-[-45deg] flex gap-4 opacity-95"
+                >
+                    {[...Array(6)].map((_, i) => (
+                        <div
+                            class="w-2.5 h-16 bg-black/40 rounded-full shadow-[inset_2px_3px_5px_rgba(0,0,0,0.9),1px_1px_0_rgba(255,255,255,0.02)] border-r border-b border-white/5"
+                        >
+                        </div>
+                    ))}
+                </div>
+
+                <!-- Phones Jack Label -->
+                <div
+                    class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center"
                 >
                     <div
-                        id="power-led"
-                        class="w-3.5 h-3.5 rounded-full bg-red-950 border border-black/60 shadow-[inset_1px_1px_2px_black]"
+                        class="w-12 h-1.5 bg-black/40 rounded-full shadow-[inset_1px_1px_2px_black] mb-1"
                     >
                     </div>
                     <span
-                        class="text-[7px] text-zinc-400 font-bold uppercase tracking-widest opacity-60"
-                        >Battery</span
+                        class="text-[6px] text-[#5d5a5d] uppercase opacity-40 font-bold tracking-widest"
+                        >Phones</span
                     >
                 </div>
-
-                <!-- Bezel Decorative Lines -->
-                <div class="flex justify-between items-center w-full mb-5 px-1">
-                    <div
-                        class="h-[3px] grow bg-[#a01050] rounded-full opacity-40 shadow-inner"
-                    >
-                    </div>
-                    <div
-                        class="text-[8px] text-zinc-300 font-bold uppercase opacity-90 mx-3 font-pixel whitespace-nowrap tracking-tighter"
-                    >
-                        Dot Matrix with Stereo Sound
-                    </div>
-                    <div
-                        class="h-[3px] grow bg-[#302080] rounded-full opacity-40 shadow-inner"
-                    >
-                    </div>
-                </div>
-
-                <!-- THE LCD SCREEN -->
-                <div
-                    class="relative w-[300px] aspect-square bg-[#9bbc0f] border-[8px] border-black/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-sm transition-all duration-500"
-                >
-                    <div class="absolute inset-0 pixel-grid z-20"></div>
-                    <div class="absolute inset-0 glare-effect z-30"></div>
-                    <GameBoyScreen />
-                </div>
             </div>
+        </div>
 
-            <!-- Branding -->
-            <div class="w-full px-12 mb-6 select-none">
-                <span
-                    class="text-[#302080] font-bold italic text-lg tracking-tighter opacity-80 drop-shadow-[0.5px_0.5px_0_rgba(255,255,255,0.1)]"
-                    >GAME BOY <span class="text-md"
-                        >CAMERA STUDIO<span
-                            class="text-[7px] align-top font-normal font-pixel ml-1 uppercase"
-                            >TM</span
-                        ></span
-                    ></span
-                >
-            </div>
-
-            <!-- Controls Area -->
-            <div class="w-full">
-                <GameBoyControls />
-            </div>
-
-            <!-- Speaker Grill (Authentic Narrow Slots) -->
-            <div
-                class="absolute bottom-14 right-12 rotate-[-45deg] flex gap-4 opacity-95"
-            >
-                {[...Array(6)].map((_, i) => (
-                    <div
-                        class="w-2.5 h-16 bg-black/40 rounded-full shadow-[inset_2px_3px_5px_rgba(0,0,0,0.9),1px_1px_0_rgba(255,255,255,0.02)] border-r border-b border-white/5"
-                    >
-                    </div>
-                ))}
-            </div>
-
-            <!-- Phones Jack Label -->
-            <div
-                class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center"
-            >
-                <div
-                    class="w-12 h-1.5 bg-black/40 rounded-full shadow-[inset_1px_1px_2px_black] mb-1"
-                >
-                </div>
-                <span
-                    class="text-[6px] text-[#5d5a5d] uppercase opacity-40 font-bold tracking-widest"
-                    >Phones</span
-                >
-            </div>
+        <!-- DEVICE B: THE PRINTER UNIT -->
+        <div
+            id="printer-unit"
+            class="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center pointer-events-none opacity-0 translate-y-[300px] transition-all duration-1000 transform-gpu z-[100] scale-110"
+        >
+            <Printer />
         </div>
     </div>
 
-    <!-- DEVICE B: THE PRINTER UNIT -->
-    <div
-        id="printer-unit"
-        class="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center pointer-events-none opacity-0 translate-y-[300px] transition-all duration-1000 transform-gpu z-[100] scale-110"
-    >
-        <Printer />
-    </div>
+    <!-- RIGHT SERVICE PANEL (Auto-hides on smaller screens via XL hidden) -->
+    <ServiceManualPanel />
 </div>
 
 <script>
@@ -133,21 +144,12 @@ import Cartridge from "./Cartridge.astro";
         }
     });
 
+    // ... (rest of the script logic)
     window.addEventListener("gb-print-start", () => {
         if (cameraUnit && printerUnit) {
-            cameraUnit.classList.add(
-                "opacity-0",
-                "-translate-y-[600px]",
-                "rotate-[-20deg]",
-                "scale-50",
-                "pointer-events-none",
-            );
+            cameraUnit.classList.add("opacity-0", "-translate-y-[600px]", "rotate-[-20deg]", "scale-50", "pointer-events-none");
             setTimeout(() => {
-                printerUnit.classList.remove(
-                    "opacity-0",
-                    "translate-y-[300px]",
-                    "pointer-events-none",
-                );
+                printerUnit.classList.remove("opacity-0", "translate-y-[300px]", "pointer-events-none");
                 printerUnit.classList.add("opacity-100", "translate-y-0");
             }, 400);
         }
@@ -156,20 +158,10 @@ import Cartridge from "./Cartridge.astro";
     window.addEventListener("gb-print-end", () => {
         setTimeout(() => {
             if (cameraUnit && printerUnit) {
-                printerUnit.classList.add(
-                    "opacity-0",
-                    "translate-y-[300px]",
-                    "pointer-events-none",
-                );
+                printerUnit.classList.add("opacity-0", "translate-y-[300px]", "pointer-events-none");
                 printerUnit.classList.remove("opacity-100", "translate-y-0");
                 setTimeout(() => {
-                    cameraUnit.classList.remove(
-                        "opacity-0",
-                        "-translate-y-[600px]",
-                        "rotate-[-20deg]",
-                        "scale-50",
-                        "pointer-events-none",
-                    );
+                    cameraUnit.classList.remove("opacity-0", "-translate-y-[600px]", "rotate-[-20deg]", "scale-50", "pointer-events-none");
                 }, 500);
             }
         }, 3000);
