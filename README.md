@@ -47,7 +47,3 @@ Whether on Desktop or Mobile, the Studio adapts to keep the hardware at the cent
 <div align="center">
   <img src="public/readme/hardware-mobile.png" width="300" alt="Mobile Experience" />
 </div>
-
----
-
-*“Bringing the weight and soul of 1998 hardware to the modern browser.”*
