@@ -10,85 +10,205 @@ import ServiceManualPanel from "../Interface/ServiceManualPanel.astro";
 import "../../styles/components/GameBoy.css";
 ---
 
-<div id="studio-layout" class="flex w-full h-full p-6 lg:p-10 gap-8 overflow-hidden">
-    <!-- LEFT CONTROL PANEL -->
-    <StudioSidePanel />
+<div id="studio-layout" class="flex w-full h-full gap-8 overflow-hidden bg-[#111]">
+    <!-- LEFT CONTROL PANEL (Hidden on very small mobile if necessary) -->
+    <div class="hidden xl:flex h-full items-center">
+        <StudioSidePanel />
+    </div>
 
-    <!-- MAIN HARDWARE AREA -->
-    <div id="hardware-hub">
-        <!-- DEVICE A: THE CAMERA UNIT -->
-        <div id="camera-unit" class="flex flex-col items-center">
-            <Cartridge />
-
-            <!-- AUTHENTIC DMG GAME BOY CHASSIS -->
-            <div
-                class="matte-plastic relative w-[440px] p-8 pt-16 rounded-[12px_12px_120px_12px] shadow-[30px_50px_100px_rgba(0,0,0,0.7),inset_3px_3px_0_rgba(255,255,255,0.4),0_12px_0_var(--gb-gray-dark)] border-t-2 border-l-2 border-white/30 border-r-[12px] border-b-[12px] border-black/30 flex flex-col items-center"
-            >
-                <div class="absolute top-[32%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.1)] pointer-events-none"></div>
-
-                <!-- SCREEN AREA -->
-                <div class="bg-[#707071] w-full p-10 pt-4 rounded-[12px] shadow-[inset_3px_4px_12px_rgba(0,0,0,0.8),2px_2px_0_rgba(255,255,255,0.1)] mb-8 relative border-b-2 border-white/5 flex flex-col items-center">
-                    <!-- Battery LED -->
-                    <div class="absolute left-6 top-[45%] -translate-y-1/2 flex flex-col items-center gap-1.5 pointer-events-none z-30">
-                        <div id="power-led" class="w-3.5 h-3.5 rounded-full bg-red-950 border border-black/60 shadow-[inset_1px_1px_2px_black]"></div>
-                        <span class="text-[7px] text-zinc-400 font-bold uppercase tracking-widest opacity-60 font-pixel">Battery</span>
+    <!-- MAIN HARDWARE AREA (Perspective Wrap) -->
+    <div id="perspective-container" class="flex-1 flex items-center justify-center perspective-[2000px]">
+        <div id="hardware-scaler" class="transition-transform duration-500 ease-out">
+            <div id="hardware-hub" class="relative transition-transform duration-300 ease-out preserve-3d">
+                <!-- DEVICE A: THE CAMERA UNIT -->
+                <div id="camera-unit" class="flex flex-col items-center relative z-10">
+                    <div id="cartridge-wrapper" class="cartridge-land">
+                        <Cartridge />
                     </div>
 
-                    <!-- Bezel Lines -->
-                    <div class="flex justify-between items-center w-full mb-5 px-1">
-                        <div class="h-[3px] grow bg-[#a01050] rounded-full opacity-40 shadow-inner"></div>
-                        <div class="text-[8px] text-zinc-300 font-bold uppercase opacity-90 mx-3 font-pixel whitespace-nowrap tracking-tighter">Dot Matrix with Stereo Sound</div>
-                        <div class="h-[3px] grow bg-[#302080] rounded-full opacity-40 shadow-inner"></div>
+                    <!-- AUTHENTIC DMG GAME BOY CHASSIS -->
+                <div
+                    id="gb-chassis"
+                    class="matte-plastic relative w-[480px] sm:w-[500px] p-6 sm:p-8 pt-10 sm:pt-12 rounded-[12px_12px_140px_12px] shadow-[40px_60px_120px_rgba(0,0,0,0.8),inset_5px_5px_0_rgba(255,255,255,0.4),0_15px_0_var(--gb-gray-dark)] border-t-2 border-l-2 border-white/25 border-r-[15px] border-b-[15px] border-black/40 flex flex-col items-center z-20"
+                >
+                    <div class="absolute top-[32%] inset-x-0 h-[2px] bg-black/10 shadow-[0_1px_0_rgba(255,255,255,0.1)] pointer-events-none"></div>
+
+                    <!-- SCREEN AREA (OPTIMIZED BEZEL) -->
+                    <div class="bg-[#707071] w-[94%] p-3 sm:p-4 pt-1 rounded-[15px] shadow-[inset_4px_6px_16px_rgba(0,0,0,0.9),2px_2px_0_rgba(255,255,255,0.1)] mb-8 relative border-b-2 border-white/5 flex flex-col items-center">
+                        <div class="absolute left-4 top-[35%] -translate-y-1/2 flex flex-col items-center gap-1.5 pointer-events-none z-30">
+                            <div id="power-led" class="w-3.5 h-3.5 rounded-full bg-red-950 border border-black/60 shadow-[inset_1px_1px_2px_black]"></div>
+                            <span class="text-[6px] text-zinc-400 font-bold uppercase tracking-widest opacity-60 font-pixel">Battery</span>
+                        </div>
+
+                        <div class="flex justify-between items-center w-full mb-2 px-8">
+                            <div class="h-[3px] grow bg-[#a01050] rounded-full opacity-40 shadow-inner"></div>
+                            <div class="text-[8px] text-zinc-300 font-bold uppercase opacity-90 mx-6 font-pixel whitespace-nowrap tracking-tighter">Dot Matrix with Stereo Sound</div>
+                            <div class="h-[3px] grow bg-[#302080] rounded-full opacity-40 shadow-inner"></div>
+                        </div>
+
+                        <!-- THE LCD SCREEN -->
+                        <div class="relative w-full max-w-[380px] sm:max-w-[420px] aspect-square bg-[#9bbc0f] border-[12px] border-black/90 shadow-[inset_0_0_100px_rgba(0,0,0,0.7)] overflow-hidden rounded-sm transition-all duration-500">
+                                <div class="absolute inset-0 pixel-grid z-20"></div>
+                                <!-- Improved Dynamic Glare -->
+                                <div id="lcd-glare" class="absolute inset-0 z-30 opacity-20 pointer-events-none transition-transform duration-100 ease-out" style="background: linear-gradient(135deg, white 0%, transparent 40%, transparent 60%, white 100%); transform: translate(-10%, -10%) scale(1.5);"></div>
+                                <GameBoyScreen />
+                            </div>
+                        </div>
+
+                        <!-- Branding -->
+                    <div class="w-full px-12 mb-6 select-none text-center">
+                        <span class="text-[#302080] font-bold italic text-lg sm:text-xl tracking-tighter opacity-80 drop-shadow-[0.5px_0.5px_0_rgba(255,255,255,0.1)]">GAME BOY <span class="text-md sm:text-lg">CAMERA STUDIO<span class="text-[8px] align-top font-normal font-pixel ml-1 uppercase">TM</span></span></span>
                     </div>
 
-                    <!-- THE LCD SCREEN -->
-                    <div class="relative w-[280px] aspect-square bg-[#9bbc0f] border-[8px] border-black/80 shadow-[inset_0_0_60px_rgba(0,0,0,0.5)] overflow-hidden rounded-sm transition-all duration-500">
-                        <div class="absolute inset-0 pixel-grid z-20"></div>
-                        <div class="absolute inset-0 glare-effect z-30"></div>
-                        <GameBoyScreen />
+                    <!-- Controls Area -->
+                    <div class="w-full px-8 mb-4">
+                        <GameBoyControls />
+                    </div>
+
+                        <div class="absolute bottom-14 right-12 rotate-[-45deg] flex gap-4 opacity-95">
+                            {[...Array(6)].map((_, i) => (
+                                <div class="w-2.5 h-16 bg-black/40 rounded-full shadow-[inset_2px_3px_5px_rgba(0,0,0,0.9),1px_1px_0_rgba(255,255,255,0.02)] border-r border-b border-white/5"></div>
+                            ))}
+                        </div>
+
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-12 h-1.5 bg-black/40 rounded-full shadow-[inset_1px_1px_2px_black] mb-1"></div>
+                            <span class="text-[6px] text-[#5d5a5d] uppercase opacity-40 font-bold tracking-widest">Phones</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Branding -->
-                <div class="w-full px-12 mb-6 select-none">
-                    <span class="text-[#302080] font-bold italic text-lg tracking-tighter opacity-80 drop-shadow-[0.5px_0.5px_0_rgba(255,255,255,0.1)]">GAME BOY <span class="text-md">CAMERA STUDIO<span class="text-[7px] align-top font-normal font-pixel ml-1 uppercase">TM</span></span></span>
-                </div>
-
-                <!-- Controls Area -->
-                <div class="w-full">
-                    <GameBoyControls />
-                </div>
-
-                <!-- Speaker Grid -->
-                <div class="absolute bottom-14 right-12 rotate-[-45deg] flex gap-4 opacity-95">
-                    {[...Array(6)].map((_, i) => (
-                        <div class="w-2.5 h-16 bg-black/40 rounded-full shadow-[inset_2px_3px_5px_rgba(0,0,0,0.9),1px_1px_0_rgba(255,255,255,0.02)] border-r border-b border-white/5"></div>
-                    ))}
-                </div>
-
-                <!-- Phones Label -->
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                    <div class="w-12 h-1.5 bg-black/40 rounded-full shadow-[inset_1px_1px_2px_black] mb-1"></div>
-                    <span class="text-[6px] text-[#5d5a5d] uppercase opacity-40 font-bold tracking-widest">Phones</span>
+                <!-- PRINTER UNIT -->
+                <div 
+                    id="printer-unit" 
+                    class="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center pointer-events-none opacity-0 translate-y-[300px] transition-all duration-1000 transform-gpu z-[100] scale-110"
+                >
+                    <Printer />
                 </div>
             </div>
         </div>
-
-        <!-- PRINTER UNIT -->
-        <div 
-            id="printer-unit" 
-            class="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center pointer-events-none opacity-0 translate-y-[300px] transition-all duration-1000 transform-gpu z-[100] scale-110"
-        >
-            <Printer />
-        </div>
+    </div>
     </div>
 
-    <!-- RIGHT SERVICE PANEL -->
-    <ServiceManualPanel />
+    <!-- RIGHT SERVICE PANEL (Hidden on landscape mobile) -->
+    <div class="hidden xl:flex h-full items-center">
+        <ServiceManualPanel />
+    </div>
 </div>
 
 <script>
     import { HardwareOrchestrator } from "../../lib/hardware-orchestrator";
-    // Initialize the orchestrator on client load
+    
+    // Initialize Hardware
     new HardwareOrchestrator();
+
+    const hub = document.getElementById('hardware-hub');
+    const scaler = document.getElementById('hardware-scaler');
+    const glare = document.getElementById('lcd-glare');
+    const cartridge = document.getElementById('cartridge-wrapper');
+    
+    // 3D TILT LOGIC
+    document.addEventListener('mousemove', (e) => {
+        if (!hub || !glare) return;
+        
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        
+        const mouseX = (e.clientX / winW) - 0.5;
+        const mouseY = (e.clientY / winH) - 0.5;
+        
+        // Tilt amount (Subtle and smooth)
+        const tiltX = mouseY * 12; 
+        const tiltY = mouseX * -12;
+        
+        hub.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        
+        // Inverse glare movement for depth
+        const glareX = mouseX * 40;
+        const glareY = mouseY * 40;
+        glare.style.transform = `translate(${glareX}%, ${glareY}%) scale(1.8)`;
+    });
+
+    // CARTRIDGE SOUND SYNC
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const playSnap = () => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            };
+            playSnap();
+        }, 1800); // 800ms delay + 1000ms anim duration
+    });
+
+    // AUTO-SCALE (MAXIMUM VISIBILITY)
+    function autoScale() {
+        if (!scaler) return;
+        const container = document.getElementById('perspective-container');
+        if (!container) return;
+        
+        const availableH = container.offsetHeight;
+        const availableW = container.offsetWidth;
+        const isMobile = window.innerWidth < 640;
+        
+        // Target dimensions for 100% full view (Camera Lens to Phones Jack)
+        // Values must be high enough to represent the FULL hardware height
+        const targetH = isMobile ? 1350 : 1550; 
+        const targetW = isMobile ? 650 : 900;
+        
+        // Calculate scale with dynamic padding (80px safety for mobile)
+        const vPadding = isMobile ? 80 : 140;
+        const hPadding = isMobile ? 40 : 80;
+        
+        const scaleH = (availableH - vPadding) / targetH; 
+        const scaleW = (availableW - hPadding) / targetW;
+        
+        // Smallest scale wins to ensure total containment
+        let finalScale = Math.min(Math.min(scaleH, scaleW), 1.0);
+        
+        // Guard against zero/negative
+        if (finalScale < 0.1) finalScale = 0.1;
+        
+        scaler.style.transform = `scale(${finalScale})`;
+        scaler.style.transformOrigin = 'center center';
+    }
+
+    window.addEventListener('resize', autoScale);
+    autoScale();
 </script>
+
+<style>
+    .cartridge-land {
+        animation: landAnim 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        animation-delay: 0.8s;
+        transform: translateY(-500px);
+        will-change: transform;
+    }
+
+    @keyframes landAnim {
+        from { transform: translateY(-500px); }
+        to { transform: translateY(0); }
+    }
+
+    .perspective-2000 {
+        perspective: 2000px;
+    }
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+    /* Simple zoom fallback for Safari if hub.style.zoom fails */
+    @supports not (zoom: 1) {
+        #hardware-hub {
+            transform: scale(var(--mobile-scale, 1));
+        }
+    }
+</style>

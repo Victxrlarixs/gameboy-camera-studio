@@ -55,6 +55,13 @@ body::before {
     background-blend-mode: overlay;
 }
 
+.charcoal-plastic {
+    background-color: #1a1b1c;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay;
+    box-shadow: inset 2px 2px 0 rgba(255,255,255,0.05);
+}
+
 .pixelated {
     image-rendering: pixelated;
 }
@@ -64,8 +71,9 @@ body::before {
 }
 
 .glare-effect {
-    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
     pointer-events: none;
+    mix-blend-mode: soft-light;
 }
 
 .pixel-grid {
@@ -96,36 +104,6 @@ body::before {
 }
 
 /* Scaling Logic: Focused on making the Game Boy fill the screen */
-
-/* Vertical Scaling (Desktop/Tablet) */
-@media (max-height: 1000px) { #hardware-hub { transform: scale(0.95); } }
-@media (max-height: 900px) { #hardware-hub { transform: scale(0.85); } }
-@media (max-height: 800px) { #hardware-hub { transform: scale(0.75); } }
-@media (max-height: 700px) { #hardware-hub { transform: scale(0.65); } }
-
-/* Mobile Scaling - Filling vertical space better without cutting top */
-@media (max-width: 639px) { 
-    #hardware-hub { 
-        transform: scale(0.9); 
-        padding-top: 20px; /* Give room for the cartridge eye */
-    } 
-}
-@media (max-width: 480px) { 
-    #hardware-hub { 
-        transform: scale(0.88); 
-        padding-top: 30px;
-    } 
-}
-@media (max-width: 400px) {
-    #hardware-hub { 
-        transform: scale(0.82); 
-    }
-}
-@media (max-width: 350px) {
-    #hardware-hub { 
-        transform: scale(0.72); 
-    }
-}
 
 /* Ensure centering on mobile */
 @media (max-width: 1024px) {
