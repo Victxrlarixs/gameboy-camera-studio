@@ -62,28 +62,33 @@ export function setupPrinterLogic() {
             void paper.offsetHeight;
             paper.style.transition = "height 5000ms cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease-out";
 
-            if (btnCut) {
-                btnCut.onclick = (e) => {
-                    e.stopPropagation();
-                    playSound(800, "square", 0.1, 0.1);
-                    playSound(400, "sawtooth", 0.15, 0.05);
-                    paper.classList.add("animate-tear");
-                    paper.classList.remove("printing-vibration");
+            const handleCut = (e: MouseEvent) => {
+                e.stopPropagation();
+                if (paper.classList.contains("animate-tear")) return; // Prevent double cut
 
-                    const ticketDrop = document.getElementById("ticket-drop");
-                    setTimeout(() => {
-                        if (previewImg) previewImg.src = dataUrl;
-                        if (overlay) {
-                            overlay.classList.remove("opacity-0", "pointer-events-none");
-                            overlay.classList.add("opacity-100");
-                        }
-                        if (ticketDrop) {
-                            ticketDrop.classList.remove("translate-y-[-20px]", "opacity-0");
-                            ticketDrop.classList.add("translate-y-0", "opacity-100");
-                        }
-                    }, 400);
-                };
-            }
+                playSound(800, "square", 0.1, 0.1);
+                playSound(400, "sawtooth", 0.15, 0.05);
+                paper.classList.add("animate-tear");
+                paper.classList.remove("printing-vibration");
+                paper.style.cursor = "default";
+
+                const ticketDrop = document.getElementById("ticket-drop");
+                setTimeout(() => {
+                    if (previewImg) previewImg.src = dataUrl;
+                    if (overlay) {
+                        overlay.classList.remove("opacity-0", "pointer-events-none");
+                        overlay.classList.add("opacity-100");
+                    }
+                    if (ticketDrop) {
+                        ticketDrop.classList.remove("translate-y-[-20px]", "opacity-0");
+                        ticketDrop.classList.add("translate-y-0", "opacity-100");
+                    }
+                }, 400);
+            };
+
+            if (btnCut) btnCut.onclick = handleCut;
+            paper.onclick = handleCut;
+            paper.style.cursor = "pointer";
 
             const hideOverlay = () => {
                 const ticketDrop = document.getElementById("ticket-drop");
@@ -132,15 +137,21 @@ export function setupPrinterLogic() {
             }
 
             led.style.backgroundColor = "#ff0000";
-            led.style.boxShadow = "0 0 12px red";
+            led.style.boxShadow = "0 0 12px #ff0000, inset 0 0 4px rgba(255,255,255,0.5)";
+            
             setTimeout(() => {
                 const motor = playMotor();
-                paper.style.height = "620px";
+                paper.style.height = "210px";
                 paper.classList.add("printing-vibration");
+                
                 setTimeout(() => {
                     motor.gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                     setTimeout(() => motor.noise.stop(), 100);
                     paper.classList.remove("printing-vibration");
+                    
+                    // Change to Green when done printing
+                    led.style.backgroundColor = "#00ff00";
+                    led.style.boxShadow = "0 0 12px #00ff00, inset 0 0 4px rgba(255,255,255,0.5)";
                 }, 5000);
             }, 600);
 
