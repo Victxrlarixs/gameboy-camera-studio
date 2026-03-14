@@ -93,7 +93,17 @@ export class CameraEngine {
         const sx      = (vWidth  - size) / 2;
         const sy      = (vHeight - size) / 2;
 
+        this.processingCtx.imageSmoothingEnabled = false;
         this.processingCtx.drawImage(this.video, sx, sy, size, size, 0, 0, 128, 112);
+
+        // --- Hardware Analog Processing Simulation ---
+        // Simulate the M64282FP's edge enhancement (Sharpening)
+        // We use a simple convolution approximation by drawing the image slightly offset
+        this.processingCtx.globalCompositeOperation = 'overlay';
+        this.processingCtx.globalAlpha = 0.2; // Suble edge boost
+        this.processingCtx.drawImage(this.processingCanvas, -1, -1, 128, 112);
+        this.processingCtx.globalCompositeOperation = 'source-over';
+        this.processingCtx.globalAlpha = 1.0;
 
         const imageData = this.processingCtx.getImageData(0, 0, 128, 112);
         const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
@@ -114,14 +124,13 @@ export class CameraEngine {
         }
 
         const compCtx = this.compositionCtx!;
-
         compCtx.imageSmoothingEnabled = false;
 
         // 1. Draw Background
         compCtx.fillStyle = `rgb(${palette[3].join(',')})`;
         compCtx.fillRect(0, 0, 160, 144);
 
-        // 2. Draw Camera Feed
+        // 2. Draw Camera Feed (No smoothing, pure pixel)
         compCtx.drawImage(this.processingCanvas, 0, 0, 160, 144);
 
         // 3. Draw Frame Decorations

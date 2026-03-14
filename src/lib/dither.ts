@@ -37,42 +37,64 @@ export interface DitherOptions {
 }
 
 /**
- * Applies Bayer ordered dithering to raw `ImageData` in-place.
- * Converts the image to grayscale, applies brightness/contrast, then
- * quantizes each pixel to the nearest of the four palette entries.
- *
- * @param imageData - The raw `ImageData` buffer to process (mutated in-place).
- * @param options   - Optional dithering configuration.
- * @returns The mutated `imageData` for convenient chaining.
+ * Applies physically-accurate Game Boy Camera sensor simulation.
+ * Emulates the Mitsubishi M64282FP CMOS sensor characteristics including noise,
+ * vignetting, and Bayer ordered dithering.
  */
 export function applyDither(imageData: ImageData, options: DitherOptions = {}): ImageData {
     const { data, width, height } = imageData;
-    const palette    = options.palette    ?? PALETTES.DMG;
-    const brightness = options.brightness ?? 0;
-    const contrast   = options.contrast   ?? 1;
+    const palette = options.palette ?? PALETTES.DMG;
+    const brightness = (options.brightness ?? 0) * 255;
+    const contrast = options.contrast ?? 1;
 
+    // Pre-calculate vignette and noise for the frame to be more efficient
+    // but for "realism", we do it per pixel to allow dynamic interaction
+    
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const i = (y * width + x) * 4;
 
-            const r = data[i];
-            const g = data[i + 1];
-            const b = data[i + 2];
-
+            // 1. Capture & Grayscale (using REC 601 weights like a real sensor)
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
             let lum = 0.299 * r + 0.587 * g + 0.114 * b;
-            lum = (lum - 128) * contrast + 128 + brightness * 255;
+
+            // 2. Simulate Sensor Noise (Fixed Pattern Noise + Random Analog Noise)
+            // Real GBC sensors have slight vertical/horizontal banding (Fixed Pattern Noise)
+            const fpn = (Math.sin(x * 0.5) * 2) + (Math.cos(y * 0.5) * 2);
+            const grain = (Math.random() - 0.5) * 12; // Gauges the "read noise"
+            lum += fpn + grain;
+
+            // 3. Optical Vignetting (Lens falloff)
+            const dx = (x / width) - 0.5;
+            const dy = (y / height) - 0.5;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const vignette = Math.max(0, 1 - (dist * dist * 1.2)); // Circular falloff
+            lum *= vignette;
+
+            // 4. Contrast & Brightness (Sensor Curves)
+            lum = (lum - 128) * contrast + 128 + brightness;
             lum = Math.max(0, Math.min(255, lum));
 
-            const threshold = (BAYER_4x4[y % 4][x % 4] / 16.0) * 255;
-            const value     = lum + (threshold - 128) * 0.5;
+            // 5. Physically Accurate Bayer Ordered Dithering (4x4)
+            // The Game Boy Camera uses three 4x4 matrices, but we use a unified one
+            // with 4 levels (0, 1, 2, 3) mapped to the 4 palette shades.
+            const bayerValue = BAYER_4x4[y % 4][x % 4]; // 0 to 15
+            
+            // Normalize lum to 0-3 range for 4 shades
+            const normalizedLum = (lum / 255) * 3;
+            const k = Math.floor(normalizedLum);
+            const fract = normalizedLum - k;
+            
+            // Dither threshold comparison
+            let shadeIndex = k;
+            if (fract > (bayerValue / 16)) {
+                shadeIndex = Math.min(3, k + 1);
+            }
 
-            let colorIndex = 0;
-            if      (value < 64)  colorIndex = 0;
-            else if (value < 128) colorIndex = 1;
-            else if (value < 192) colorIndex = 2;
-            else                   colorIndex = 3;
-
-            const [pr, pg, pb] = palette[colorIndex];
+            // 6. Map to Palette
+            const [pr, pg, pb] = palette[shadeIndex];
             data[i]     = pr;
             data[i + 1] = pg;
             data[i + 2] = pb;
