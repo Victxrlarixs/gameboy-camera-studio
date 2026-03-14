@@ -14,6 +14,7 @@ interface State {
     brightness: number;
     contrast: number;
     stampIndex: number;
+    facingMode: 'user' | 'environment';
 }
 
 export const STAMPS = Stamps.getNames();
@@ -26,6 +27,7 @@ export const AppStore = {
         brightness: 0,
         contrast: 1,
         stampIndex: 0,
+        facingMode: 'user' as 'user' | 'environment',
     } as State,
 
     handleInput(button: string): void {
@@ -48,6 +50,7 @@ export const AppStore = {
                     this.state.stampIndex = 0;
                     this.playSound('click');
                 }
+                if (button === 'camera') this.toggleCamera();
                 break;
 
             case 'VIEW':
@@ -90,5 +93,12 @@ export const AppStore = {
 
     playSound(type: SoundType): void {
         soundEngine.play(type);
+    },
+
+    toggleCamera(): void {
+        this.state.facingMode = this.state.facingMode === 'user' ? 'environment' : 'user';
+        window.dispatchEvent(new CustomEvent('gb-camera-toggle', { detail: { facingMode: this.state.facingMode } }));
+        window.dispatchEvent(new CustomEvent('gb-state-change'));
+        this.playSound('camera-swap');
     }
 };

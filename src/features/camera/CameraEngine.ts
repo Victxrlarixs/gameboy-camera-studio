@@ -36,10 +36,13 @@ export class CameraEngine {
      * Requests camera access and starts the render loop.
      * Uses the front-facing camera (`facingMode: 'user'`).
      */
-    async start(): Promise<void> {
+    async start(forceFacingMode?: 'user' | 'environment'): Promise<void> {
         try {
+            const facingMode = forceFacingMode || AppStore.state.facingMode;
+            this.stop(); // Stop existing stream if any
+            
             this.stream = await navigator.mediaDevices.getUserMedia({
-                video: { width: 640, height: 480, facingMode: 'user' },
+                video: { width: 640, height: 480, facingMode },
                 audio: false
             });
             this.video           = document.createElement('video');
@@ -47,6 +50,11 @@ export class CameraEngine {
             this.video.play();
             this.isFrozen = false;
             this.loop();
+
+            // Listen for camera toggle
+            window.addEventListener('gb-camera-toggle', (e: any) => {
+                this.start(e.detail.facingMode);
+            }, { once: true }); // Re-bind on each start
         } catch (err) {
             console.error('Camera access denied:', err);
         }

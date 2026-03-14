@@ -1,7 +1,7 @@
 /**
  * Union of all playable sound identifiers in the system.
  */
-export type SoundType = 'click' | 'shutter' | 'print' | 'save' | 'delete' | 'mode';
+export type SoundType = 'click' | 'shutter' | 'print' | 'save' | 'delete' | 'mode' | 'camera-swap' | 'boot';
 
 /**
  * Contract for audio playback services.
@@ -166,6 +166,19 @@ export class SoundEngine implements ISoundEngine {
             case 'mode':
                 n(440, 'square', 0,    0.06, 0.03);
                 n(660, 'square', 0.07, 0.08, 0.03);
+                break;
+
+            case 'camera-swap':
+                n(150,  'sawtooth', 0,    0.15, 0.04, 300);
+                n(400,  'square',   0,    0.05, 0.02);
+                n(300,  'square',   0.08, 0.08, 0.02, 100);
+                this.noise(ctx, dest, 0, 0.12, 0.02);
+                break;
+
+            case 'boot':
+                // Classic GB boot "pling"
+                n(1046, 'square', 0,    0.04, 0.04); // C6
+                n(2093, 'square', 0.04, 0.2,  0.03); // C7
                 break;
         }
     }

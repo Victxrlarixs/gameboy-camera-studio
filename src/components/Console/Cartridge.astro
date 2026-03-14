@@ -1,38 +1,51 @@
 ---
-
+import "../../styles/components/Cartridge.css";
 ---
 
 <div
     id="gb-cartridge"
-    class="relative w-[340px] sm:w-[360px] h-[320px] z-0 flex flex-col items-center mb-[-120px]"
+    class="relative w-[340px] sm:w-[360px] h-[320px] z-0 flex flex-col items-center mb-[-120px] transition-transform duration-500 ease-in-out"
 >
     <!-- Sphere (The Eye) -->
     <div class="h-[180px] w-full flex justify-center items-end relative z-30">
         
-        <div class="relative w-48 h-48 flex flex-col items-center justify-center">
+        <button 
+            id="camera-eye-toggle"
+            class="relative w-48 h-48 flex flex-col items-center justify-center cursor-pointer group active:scale-95 transition-transform duration-200 outline-none"
+            aria-label="Toggle Camera"
+        >
             <!-- Sphere Body -->
-            <div class="relative w-[182px] h-[182px] rounded-full bg-[#1e1f21] border-t border-white/10 shadow-[20px_40px_70px_rgba(0,0,0,0.8),inset_-12px_-18px_40px_rgba(0,0,0,0.7),inset_10px_12px_25px_rgba(255,255,255,0.12)] overflow-hidden flex items-center justify-center">
+            <div id="camera-sphere" class="relative w-[182px] h-[182px] rounded-full bg-[#1e1f21] border-t border-white/10 shadow-[20px_40px_70px_rgba(0,0,0,0.8),inset_-12px_-18px_40px_rgba(0,0,0,0.7),inset_10px_12px_25px_rgba(255,255,255,0.12)] flex items-center justify-center transition-transform duration-700 ease-in-out">
                 <div class="absolute inset-0 rounded-full pointer-events-none plastic-grain opacity-40 mix-blend-overlay"></div>
                 
-                <!-- Inner Rotating Ring (DMG Light Gray) -->
-                <div class="w-[120px] h-[120px] bg-[#d1d2d4] rounded-full border-[1.5px] border-black/30 shadow-[inset_6px_10px_20px_rgba(0,0,0,0.8),inset_-4px_-4px_10px_rgba(255,255,255,0.7),0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center relative overflow-hidden z-10">
-                    <div class="absolute inset-0 plastic-grain opacity-10 pointer-events-none"></div>
+                <!-- FRONT FACE: Lens -->
+                <div class="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full backface-hidden">
+                    <!-- Inner Rotating Ring (DMG Light Gray) -->
+                    <div class="w-[120px] h-[120px] bg-[#d1d2d4] rounded-full border-[1.5px] border-black/30 shadow-[inset_6px_10px_20px_rgba(0,0,0,0.8),inset_-4px_-4px_10px_rgba(255,255,255,0.7),0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center relative overflow-hidden z-10">
+                        <div class="absolute inset-0 plastic-grain opacity-10 pointer-events-none"></div>
 
-                    <!-- Lens Housing (The black part) -->
-                    <div class="relative w-[88px] h-[88px] bg-[#050505] rounded-full border-[2.5px] border-[#111] shadow-[inset_0_0_20px_black,0_1px_1.5px_rgba(255,255,255,0.5)] flex items-center justify-center bg-[radial-gradient(circle_at_40%_40%,#1a1a1a_0%,#000_100%)]">
-                        
-                        <!-- Lens Glass Effects -->
-                        <div class="absolute top-[15%] left-[15%] w-[45%] h-[35%] bg-gradient-to-br from-white/35 to-transparent rounded-[50%] blur-[1.5px] rotate-[-25deg] opacity-70"></div>
-                        <div class="absolute top-2.5 left-3.5 w-3.5 h-3.5 bg-white/45 rounded-full blur-[1px]"></div>
+                        <!-- Lens Housing (The black part) -->
+                        <div class="relative w-[88px] h-[88px] bg-[#050505] rounded-full border-[2.5px] border-[#111] shadow-[inset_0_0_20px_black,0_1px_1.5px_rgba(255,255,255,0.5)] flex items-center justify-center bg-[radial-gradient(circle_at_40%_40%,#1a1a1a_0%,#000_100%)]">
+                            
+                            <!-- Lens Glass Effects -->
+                            <div class="absolute top-[15%] left-[15%] w-[45%] h-[35%] bg-gradient-to-br from-white/35 to-transparent rounded-[50%] blur-[1.5px] rotate-[-25deg] opacity-70"></div>
+                            <div class="absolute top-2.5 left-3.5 w-3.5 h-3.5 bg-white/45 rounded-full blur-[1px]"></div>
 
-                        <!-- Inner Optic (Deep sensor look) -->
-                        <div class="w-[54px] h-[54px] bg-[#020202] rounded-full border border-zinc-800 shadow-[inset_0_0_12px_rgba(0,80,255,0.2),0_0_3px_rgba(255,255,255,0.2)] relative overflow-hidden">
-                            <div class="absolute top-2 left-2 w-4 h-4 bg-[#3366ff] rounded-full blur-[4px] opacity-10"></div>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-2.5 h-2.5 bg-black rounded-full border border-white/10 shadow-[0_0_5px_rgba(0,200,255,0.4)]"></div>
+                            <!-- Inner Optic (Deep sensor look) -->
+                            <div class="w-[54px] h-[54px] bg-[#020202] rounded-full border border-zinc-800 shadow-[inset_0_0_12px_rgba(0,80,255,0.2),0_0_3px_rgba(255,255,255,0.2)] relative overflow-hidden">
+                                <div class="absolute top-2 left-2 w-4 h-4 bg-[#3366ff] rounded-full blur-[4px] opacity-10"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-2.5 h-2.5 bg-black rounded-full border border-white/10 shadow-[0_0_5px_rgba(0,200,255,0.4)]"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- BACK FACE: Plastic Texture -->
+                <div class="absolute inset-0 flex items-center justify-center rounded-full bg-[#1e1f21] backface-hidden" style="transform: rotateY(180deg);">
+                    <div class="w-[120px] h-[120px] rounded-full shadow-[inset_-4px_-6px_20px_rgba(0,0,0,0.6)]"></div>
+                    <div class="absolute inset-0 rounded-full pointer-events-none plastic-grain opacity-40 mix-blend-overlay"></div>
                 </div>
 
                 <!-- Sphere Parting Seam -->
@@ -41,9 +54,14 @@
                 </div>
             </div>
 
+            <!-- Interaction Prompt -->
+            <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <span class="text-[8px] font-pixel text-white uppercase tracking-widest">Flip Camera</span>
+            </div>
+
             <!-- Sphere Socket Base (Deeper look) -->
             <div class="absolute bottom-[-20px] w-[210px] h-[95px] bg-[#141516] rounded-[50%] shadow-[inset_0_15px_35px_black] z-[-1] border-b border-black/70"></div>
-        </div>
+        </button>
     </div>
 
     <!-- MAIN CARTRIDGE BODY -->
@@ -97,10 +115,11 @@
     </div>
 </div>
 
-<style>
-    .sticker-grain {
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        background-repeat: repeat;
-        mix-blend-mode: overlay;
-    }
-</style>
+
+
+<script>
+    import { setupCartridgeLogic } from '../../lib/cartridge-logic';
+    setupCartridgeLogic();
+</script>
+
+
