@@ -39,7 +39,7 @@ export function setupLabBookLogic() {
         grid.innerHTML = photos.map(photo => `
             <div class="lab-photo-card p-3 flex flex-col items-center gap-3 cursor-pointer ${selectedPhotoId === photo.id ? 'selected' : ''}" data-id="${photo.id}">
                 <div class="w-full aspect-square relative bg-zinc-100 p-1 flex items-center justify-center overflow-hidden">
-                    <img src="${photo.dataUrl}" class="w-full h-full object-cover pixelated shadow-sm" />
+                    <img src="${photo.dataUrl}" alt="Gallery photo ${photo.id}" class="w-full h-full object-cover pixelated shadow-sm" />
                     <div class="absolute inset-0 serreado-edge opacity-5 pointer-events-none"></div>
                 </div>
                 <div class="w-full flex justify-between items-center opacity-60">

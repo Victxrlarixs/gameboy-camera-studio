@@ -26,6 +26,24 @@ export class SoundEngine implements ISoundEngine {
     private audioCtx: AudioContext | null = null;
     private masterGain: GainNode | null = null;
     private _volume: number = 0.5;
+    private audioUnlocked: boolean = false;
+
+    constructor() {
+        if (typeof window !== 'undefined') {
+            const unlock = () => {
+                this.audioUnlocked = true;
+                if (this.audioCtx && this.audioCtx.state === 'suspended') {
+                    this.audioCtx.resume().catch(() => {});
+                }
+                window.removeEventListener('mousedown', unlock);
+                window.removeEventListener('touchstart', unlock);
+                window.removeEventListener('keydown', unlock);
+            };
+            window.addEventListener('mousedown', unlock);
+            window.addEventListener('touchstart', unlock);
+            window.addEventListener('keydown', unlock);
+        }
+    }
 
     public setVolume(vol: number) {
         this._volume = Math.max(0, Math.min(1, vol));
@@ -35,6 +53,9 @@ export class SoundEngine implements ISoundEngine {
     }
 
     private getContextAndDest(): { ctx: AudioContext, dest: AudioNode } | null {
+        // Previene la creación del AudioContext y advertencias si no hay interacción
+        if (!this.audioUnlocked) return null;
+
         if (!this.audioCtx) {
             const AudioCtx = (window.AudioContext || (window as any).webkitAudioContext);
             if (AudioCtx) {
@@ -45,6 +66,9 @@ export class SoundEngine implements ISoundEngine {
             }
         }
         if (this.audioCtx && this.masterGain) {
+            if (this.audioCtx.state === 'suspended') {
+                this.audioCtx.resume().catch(() => {});
+            }
             return { ctx: this.audioCtx, dest: this.masterGain };
         }
         return null;

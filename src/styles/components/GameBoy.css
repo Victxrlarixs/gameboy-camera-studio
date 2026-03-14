@@ -1,4 +1,3 @@
-/* GameBoy Layout & Orchestration Styles */
 #studio-layout {
     display: flex;
     width: 100vw;
@@ -6,6 +5,7 @@
     overflow: hidden;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 #hardware-hub {
@@ -29,6 +29,11 @@
 @media (max-width: 1024px) {
     #studio-layout {
         justify-content: center !important;
+        align-items: center !important;
+    }
+    .studio-panel, .manual-panel {
+        display: none !important;
+        pointer-events: none;
     }
 }
 
@@ -54,5 +59,69 @@
 .plastic-grain {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
     background-repeat: repeat;
+}
+
+/* Transparent Skin Overrides */
+#gb-chassis[data-skin="TRANSPARENT"] {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    background-image: 
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E") !important;
+    backdrop-filter: blur(2px) brightness(1.2) saturate(1.5);
+    border-top-color: rgba(255, 255, 255, 0.6) !important;
+    border-left-color: rgba(255, 255, 255, 0.6) !important;
+    border-right-color: rgba(255, 255, 255, 0.1) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+        inset 0 0 140px rgba(255, 255, 255, 0.1),
+        inset -12px -15px 35px rgba(255, 255, 255, 0.1),
+        inset 6px 10px 25px rgba(255, 255, 255, 0.45),
+        25px 30px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Button Overrides for Transparent Edition (Charcoal/Black) */
+#gb-chassis[data-skin="TRANSPARENT"] #btn-a,
+#gb-chassis[data-skin="TRANSPARENT"] #btn-b {
+    background: #1a1a1a !important;
+    box-shadow: 
+        inset -4px -6px 10px rgba(0,0,0,0.6),
+        inset 4px 6px 10px rgba(255,255,255,0.2),
+        0 8px 0 #000 !important;
+}
+
+#gb-chassis[data-skin="TRANSPARENT"] .dpad div {
+    background: #111 !important;
+}
+
+/* Magenta Logo for Clear Edition */
+#gb-chassis[data-skin="TRANSPARENT"] .text-transparent.bg-clip-text {
+    background: linear-gradient(to bottom, #d11568, #a01050) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    opacity: 1 !important;
+    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.3));
+}
+
+#gb-chassis[data-skin="TRANSPARENT"] .electronics-layer {
+    opacity: 1;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0, 1);
+}
+
+#gb-chassis[data-skin="TRANSPARENT"] .plastic-grain {
+    opacity: 0.1;
+    mix-blend-mode: overlay;
+}
+
+#gb-chassis[data-skin="TRANSPARENT"] #lcd-container {
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 4px 6px 20px rgba(0,0,0,0.6);
+}
+
+#hardware-skin-toggle:hover {
+    filter: brightness(1.05);
+}
+
+#hardware-skin-toggle:active #skin-slider-knob {
+    filter: brightness(0.9);
 }
 

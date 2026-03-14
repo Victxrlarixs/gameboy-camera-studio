@@ -3,7 +3,8 @@ import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="manual-panel flex flex-col gap-6 p-8 overflow-y-auto relative">
 
-<div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
+<div class="flex justify-between items-start border-b-2 border-black/10 pb-4 shrink-0">
+    <div class="flex flex-col gap-1">
         <h2 class="text-[13px] font-pixel text-[#3a2a6b] italic uppercase tracking-tighter embossed-text">
             Service Console
         </h2>
@@ -13,6 +14,10 @@ import "../../styles/components/StudioSidePanel.css";
             <div class="w-1.5 h-1.5 rounded-full bg-emerald-600 shadow-md border border-black/20"></div>
         </div>
     </div>
+    <button id="close-service-panel" class="lg:hidden w-8 h-8 rounded-full bg-black/5 flex items-center justify-center border border-black/10 active:scale-90 transition-transform">
+        <span class="text-zinc-600 text-lg">×</span>
+    </button>
+</div>
 
 <div class="space-y-4 shrink-0 pt-2">
         <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Key Assignment</label>
@@ -106,8 +111,25 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
+    <!-- Housing Configuration -->
+    <div class="space-y-4 shrink-0 pt-4 border-t-2 border-black/10">
+        <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Housing Configuration</label>
+        <div class="grid grid-cols-2 gap-3">
+            <button id="skin-default-btn" class="flex flex-col items-center gap-2 p-3 bg-black/5 rounded-xl border border-black/10 hover:bg-white/5 transition-all group skin-state-btn active-skin">
+                <div class="w-12 h-10 bg-[#9c9e9d] rounded-sm shadow-md border-t-2 border-white/40"></div>
+                <span class="text-[6px] font-pixel text-[#3a2a6b]/80 uppercase">Classic DMG</span>
+            </button>
+            <button id="skin-transparent-btn" class="flex flex-col items-center gap-2 p-3 bg-black/5 rounded-xl border border-black/10 hover:bg-white/5 transition-all group skin-state-btn">
+                <div class="w-12 h-10 bg-[#9c9e9d]/20 backdrop-blur-[2px] rounded-sm shadow-md border-t-2 border-white/30 relative overflow-hidden">
+                    <div class="absolute inset-2 bg-[#1a4a1a]/40 rounded-[1px] border-[0.5px] border-[#ffd700]/20"></div>
+                </div>
+                <span class="text-[6px] font-pixel text-[#3a2a6b]/80 uppercase">Transparent</span>
+            </button>
+        </div>
+    </div>
 
-    <div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0 pb-8">
+    <!-- Lab Buffer -->
+    <div class="space-y-4 pt-8 border-t-2 border-black/10 shrink-0 pb-8">
         <div class="flex justify-between items-center px-1">
             <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest">Lab Buffer</label>
             <div class="w-6 h-1 bg-black/10 rounded-full"></div>
@@ -198,5 +220,41 @@ import "../../styles/components/StudioSidePanel.css";
                 setTimeout(() => el.classList.remove('scale-95', 'brightness-125'), 100);
             }
         });
+    });
+
+    // Bind Skin Buttons
+    const defaultBtn = document.getElementById('skin-default-btn');
+    const transparentBtn = document.getElementById('skin-transparent-btn');
+
+    function updateSkinButtons() {
+        const currentSkin = AppStore.state.skin;
+        if (currentSkin === 'DEFAULT') {
+            defaultBtn?.classList.add('active-skin');
+            transparentBtn?.classList.remove('active-skin');
+        } else {
+            transparentBtn?.classList.add('active-skin');
+            defaultBtn?.classList.remove('active-skin');
+        }
+    }
+
+    defaultBtn?.addEventListener('click', () => {
+        if (AppStore.state.skin === 'DEFAULT') return;
+        AppStore.toggleSkin();
+        updateSkinButtons();
+    });
+
+    transparentBtn?.addEventListener('click', () => {
+        if (AppStore.state.skin === 'TRANSPARENT') return;
+        AppStore.toggleSkin();
+        updateSkinButtons();
+    });
+
+    window.addEventListener('gb-state-change', updateSkinButtons);
+    updateSkinButtons();
+
+    // Mobile Close
+    document.getElementById('close-service-panel')?.addEventListener('click', () => {
+        document.querySelector('.manual-panel')?.classList.remove('mobile-active');
+        AppStore.playSound('click');
     });
 </script>

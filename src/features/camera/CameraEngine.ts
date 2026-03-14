@@ -44,8 +44,17 @@ export class CameraEngine {
             const facingMode = forceFacingMode || AppStore.state.facingMode;
             this.stop(); // Stop existing stream if any
             
+            const videoConstraints: MediaTrackConstraints = {
+                width: { ideal: 640 },
+                height: { ideal: 480 }
+            };
+            
+            if (facingMode) {
+                videoConstraints.facingMode = { ideal: facingMode };
+            }
+
             this.stream = await navigator.mediaDevices.getUserMedia({
-                video: { width: 640, height: 480, facingMode },
+                video: videoConstraints,
                 audio: false
             });
             this.video           = document.createElement('video');

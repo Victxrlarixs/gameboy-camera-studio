@@ -205,4 +205,30 @@ export function setupGameBoyLogic() {
     window.addEventListener('load', autoScale);
     window.addEventListener('DOMContentLoaded', autoScale);
     autoScale();
+
+    // Hardware Skin Synchronizer & Integrated Switch Logic
+    const chassis = document.getElementById('gb-chassis');
+    const skinToggle = document.getElementById('hardware-skin-toggle');
+    const sliderKnob = document.getElementById('skin-slider-knob');
+
+    const updateHardwareVisuals = () => {
+        if (!chassis || !sliderKnob) return;
+        const currentSkin = AppStore.state.skin;
+        chassis.setAttribute('data-skin', currentSkin);
+        
+        // Move mechanical knob based on skin
+        if (currentSkin === 'TRANSPARENT') {
+            sliderKnob.style.transform = 'translateX(-66px)'; // Move to CLR (ON equivalent)
+        } else {
+            sliderKnob.style.transform = 'translateX(0)'; // Move to DMG (OFF equivalent)
+        }
+    };
+
+    skinToggle?.addEventListener('click', () => {
+        AppStore.toggleSkin();
+        updateHardwareVisuals();
+    });
+
+    window.addEventListener('gb-state-change', updateHardwareVisuals);
+    updateHardwareVisuals();
 }

@@ -2,8 +2,8 @@
 import "../../styles/components/LabBook.css";
 ---
 
-<div id="lab-book-overlay" class="fixed inset-0 z-[300] flex items-center justify-center bg-black/95 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-700 scale-105 overflow-hidden">
-    <div class="lab-binder w-[95%] max-w-[1200px] h-[90vh] bg-zinc-800 rounded-[8px_48px_48px_8px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] flex relative overflow-hidden ring-1 ring-white/10">
+<div id="lab-book-overlay" class="fixed inset-0 z-[300] flex items-center justify-center bg-black/95 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-700 overflow-hidden">
+    <div class="lab-binder w-[98%] sm:w-[95%] max-w-[1200px] h-[95vh] sm:h-[90vh] bg-zinc-800 rounded-[8px_48px_48px_8px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] flex relative overflow-hidden ring-1 ring-white/10">
         
         <!-- Binder Rings (Visual purely) -->
         <div class="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-around py-12 z-50">
@@ -50,7 +50,7 @@ import "../../styles/components/LabBook.css";
                 <div id="photo-details-panel" class="w-full lg:w-[320px] stats-panel p-4 lg:p-6 flex flex-col gap-6 opacity-40 transition-opacity overflow-y-auto custom-scrollbar-v pr-2 border-t lg:border-t-0 lg:border-l border-black/5">
                     <div class="space-y-6 shrink-0">
                         <div class="aspect-square bg-white shadow-xl p-2 relative max-w-[200px] lg:max-w-none mx-auto lg:mx-0">
-                             <img id="detail-preview" class="w-full h-full pixelated opacity-20 grayscale" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                             <img id="detail-preview" alt="Selected photo preview" class="w-full h-full pixelated opacity-20 grayscale" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
                              <div id="detail-stamp" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ink-stamp text-[14px] stamp-blue hidden">PRINTED</div>
                         </div>
 

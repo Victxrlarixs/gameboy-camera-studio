@@ -3,15 +3,17 @@ import GameBoyScreen from "./Screen.astro";
 import GameBoyControls from "./Controls.astro";
 import Printer from "./Printer.astro";
 import Cartridge from "./Cartridge.astro";
+import Electronics from "./Electronics.astro";
 import StudioSidePanel from "../Interface/StudioSidePanel.astro";
 import ServiceManualPanel from "../Interface/ServiceManualPanel.astro";
 import LabBook from "../Interface/LabBook.astro";
 import "../../styles/components/GameBoy.css";
 ---
 
+<div id="studio-layout" class="relative w-full h-full flex items-center justify-center overflow-hidden">
     <StudioSidePanel />
 
-    <div id="perspective-container" class="flex-1 flex items-center justify-center perspective-[2000px]">
+    <div id="perspective-container" class="relative flex items-center justify-center perspective-[2000px] z-10">
         <div id="hardware-scaler" class="opacity-0 transition-opacity duration-300 ease-in-out">
             <div id="hardware-hub" class="relative transition-transform duration-300 ease-out preserve-3d">
                 
@@ -20,21 +22,52 @@ import "../../styles/components/GameBoy.css";
                         <Cartridge />
                     </div>
 
-<div
+                <div
                     id="gb-chassis"
-                    class="matte-plastic relative w-[480px] sm:w-[500px] p-6 sm:p-8 pt-10 sm:pt-12 pb-6 sm:pb-8 rounded-[14px_14px_220px_14px] shadow-[25px_30px_45px_rgba(0,0,0,0.8),inset_-6px_-10px_20px_rgba(0,0,0,0.4),inset_4px_6px_15px_rgba(255,255,255,0.7),inset_-15px_-25px_30px_rgba(0,0,0,0.15)] border-t-[2px] border-l-[2px] border-r-[20px] border-b-[28px] border-solid border-t-white/60 border-l-white/60 border-r-[#8b8d8c] border-b-[#8b8d8c] flex flex-col items-center z-20"
+                    data-skin="DEFAULT"
+                    class="group matte-plastic relative w-[480px] sm:w-[500px] p-6 sm:p-8 pt-10 sm:pt-12 pb-6 sm:pb-8 rounded-[14px_14px_220px_14px] shadow-[25px_30px_45px_rgba(0,0,0,0.8),inset_-6px_-10px_20px_rgba(0,0,0,0.4),inset_4px_6px_15px_rgba(255,255,255,0.7),inset_-15px_-25px_30px_rgba(0,0,0,0.15)] border-t-[2px] border-l-[2px] border-r-[20px] border-b-[28px] border-solid border-t-white/60 border-l-white/60 border-r-[#8b8d8c] border-b-[#8b8d8c] flex flex-col items-center z-20 transition-all duration-700"
                 >
+                    <Electronics />
+                    
+                    <!-- Internal Structural Architecture (Visible in Clear mode) -->
+                    <div class="absolute inset-0 opacity-0 group-data-[skin=TRANSPARENT]:opacity-50 transition-opacity duration-1000 pointer-events-none z-[2]">
+                        <!-- LCD Panel Boundary (Visible through shell) -->
+                        <div class="absolute top-[85px] left-1/2 -translate-x-1/2 w-[72%] h-[200px] border border-black/40 bg-black/10 rounded-sm"></div>
+
+                        <!-- Mechanical Screw Posts (The circular plastic columns) -->
+                        <div class="absolute top-10 left-10 w-6 h-6 rounded-full border border-white/30 shadow-inner bg-white/5 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-zinc-400"></div>
+                        </div>
+                        <div class="absolute top-10 right-10 w-6 h-6 rounded-full border border-white/30 shadow-inner bg-white/5 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-zinc-400"></div>
+                        </div>
+                        <div class="absolute bottom-40 left-12 w-6 h-6 rounded-full border border-white/30 shadow-inner bg-white/5 flex items-center justify-center">
+                           <div class="w-2 h-2 rounded-full bg-zinc-400"></div>
+                        </div>
+                        <div class="absolute bottom-40 right-12 w-6 h-6 rounded-full border border-white/30 shadow-inner bg-white/5 flex items-center justify-center">
+                           <div class="w-2 h-2 rounded-full bg-zinc-400"></div>
+                        </div>
+                        
+                        <!-- Internal Support Ribs & Partition Walls (Plastic structural lines) -->
+                        <div class="absolute top-0 bottom-0 left-[25px] w-1 bg-white/10 blur-[0.5px]"></div>
+                        <div class="absolute top-0 bottom-0 right-[25px] w-1 bg-white/10 blur-[0.5px]"></div>
+                        <div class="absolute top-[310px] left-0 right-0 h-1 bg-white/10 blur-[0.5px]"></div>
+                        <!-- Battery Compartment Side Walls (Inner) -->
+                        <div class="absolute bottom-[230px] left-[150px] w-1 h-[200px] bg-white/20"></div>
+                        <div class="absolute bottom-[230px] right-[150px] w-1 h-[200px] bg-white/20"></div>
+                    </div>
+
                     <!-- Texture Overlay extended to cover the 3D fake borders for side realism -->
-                    <div class="absolute -top-[2px] -left-[2px] -right-[20px] -bottom-[28px] rounded-[16px_16px_225px_16px] pointer-events-none plastic-grain opacity-[0.5] mix-blend-multiply z-[5]"></div>
+                    <div class="absolute -top-[2px] -left-[2px] -right-[20px] -bottom-[28px] rounded-[16px_16px_225px_16px] pointer-events-none plastic-grain opacity-[0.5] mix-blend-multiply group-data-[skin=TRANSPARENT]:opacity-[0.15] group-data-[skin=TRANSPARENT]:mix-blend-overlay z-[5]"></div>
                     <div class="absolute inset-0 rounded-[14px_14px_220px_14px] pointer-events-none plastic-grain opacity-[0.2] mix-blend-overlay z-[5]"></div>
 
-                    <!-- Top Power Switch -->
-                    <div class="absolute top-[32px] inset-x-0 h-[2px] bg-black/15 shadow-[0_1px_0_rgba(255,255,255,0.4)] pointer-events-none z-10">
-                        <div class="absolute left-[30px] top-[-6px] w-[100px] h-[14px] rounded-full shadow-[inset_1px_3px_5px_rgba(0,0,0,0.5),0_1px_1px_rgba(255,255,255,0.6)] flex items-center px-3 gap-2 overflow-hidden bg-[#9c9e9d] border-[1.5px] border-black/10">
+                    <!-- Top Power Switch (Integrated Skin Toggle) -->
+                    <div class="absolute top-[32px] inset-x-0 h-[2px] bg-black/15 shadow-[0_1px_0_rgba(255,255,255,0.4)] z-10">
+                        <div id="hardware-skin-toggle" class="absolute left-[30px] top-[-6px] w-[110px] h-[14px] rounded-full shadow-[inset_1px_3px_5px_rgba(0,0,0,0.5),0_1px_1px_rgba(255,255,255,0.6)] flex items-center px-3 gap-2 overflow-hidden bg-[#9c9e9d] border-[1.5px] border-black/10 cursor-pointer active:brightness-90 transition-all">
                             <!-- Engraved text -->
-                            <span class="text-[4px] text-black/50 font-bold uppercase tracking-widest font-pixel drop-shadow-[0_1px_0_rgba(255,255,255,0.4)] whitespace-nowrap">◀ OFF•ON ▶</span>
+                            <span class="text-[4px] text-black/50 font-bold uppercase tracking-widest font-pixel drop-shadow-[0_1px_0_rgba(255,255,255,0.4)] whitespace-nowrap">◀ DMG • CLR ▶</span>
                             <!-- Mechanical slider switch -->
-                            <div class="absolute right-[0px] top-0 bottom-0 w-[40px] bg-[#a8a9aa] shadow-[inset_2px_2px_4px_rgba(255,255,255,0.6),inset_-2px_-2px_4px_rgba(0,0,0,0.2),-2px_0_4px_rgba(0,0,0,0.4)] flex justify-evenly items-center px-1">
+                            <div id="skin-slider-knob" class="absolute right-[0px] top-0 bottom-0 w-[44px] bg-[#a8a9aa] shadow-[inset_2px_2px_4px_rgba(255,255,255,0.6),inset_-2px_-2px_4px_rgba(0,0,0,0.2),-2px_0_4px_rgba(0,0,0,0.4)] flex justify-evenly items-center px-1 transition-transform duration-300">
                                 {[...Array(3)].map(() => <div class="w-[3px] h-[8px] bg-black/10 rounded-full shadow-[inset_1px_0_2px_rgba(255,255,255,0.5),inset_-1px_0_2px_rgba(0,0,0,0.2)]"></div>)}
                             </div>
                         </div>
@@ -197,7 +230,7 @@ import "../../styles/components/GameBoy.css";
             </div>
         </div>
     </div>
-    </div>
+
 
     <script>
         import { setupGameBoyLogic } from "../../lib/gameboy-logic";

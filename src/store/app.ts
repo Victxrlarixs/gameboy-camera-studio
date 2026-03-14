@@ -5,11 +5,11 @@ import { Stamps } from '../features/stamps/stamp-registry';
 import { Frames } from '../features/frames/frame-registry';
 
 export type GBMode = 'SHOOT' | 'VIEW' | 'PRINT' | 'SPLASH';
-
-
+export type GBSkin = 'DEFAULT' | 'TRANSPARENT';
 
 interface State {
     mode: GBMode;
+    skin: GBSkin;
     menuIndex: number;
     paletteName: string;
     brightness: number;
@@ -26,6 +26,7 @@ export const FRAMES = Frames.getNames();
 export const AppStore = {
     state: {
         mode: 'SPLASH' as GBMode,
+        skin: 'DEFAULT' as GBSkin,
         menuIndex: 0,
         paletteName: 'DMG',
         brightness: 0,
@@ -131,5 +132,11 @@ export const AppStore = {
         window.dispatchEvent(new CustomEvent('gb-camera-toggle', { detail: { facingMode: this.state.facingMode } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
         this.playSound('camera-swap');
+    },
+
+    toggleSkin(): void {
+        this.state.skin = this.state.skin === 'DEFAULT' ? 'TRANSPARENT' : 'DEFAULT';
+        window.dispatchEvent(new CustomEvent('gb-state-change'));
+        this.playSound('mode');
     }
 };
