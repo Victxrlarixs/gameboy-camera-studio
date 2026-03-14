@@ -1,6 +1,6 @@
 import { soundEngine } from "./sound-engine";
 import { HardwareOrchestrator } from "./hardware-orchestrator";
-
+import { AppStore } from "../store/app";
 export function setupGameBoyLogic() {
     new HardwareOrchestrator();
 
@@ -21,8 +21,16 @@ export function setupGameBoyLogic() {
                 currentVolume = newVol;
                 soundEngine.setVolume(currentVolume);
                 
+                // Play tick every 8px of rotation
+                if (Math.abs(wheelRotation % 8) < Math.abs((wheelRotation + deltaY) % 8)) {
+                    soundEngine.play('tick');
+                }
+
                 wheelRotation += deltaY;
                 grooves.style.transform = `translateY(${wheelRotation % 12}px)`;
+
+                // Update OSD
+                AppStore.setOSD('VOLUME', currentVolume);
             }
         };
 
@@ -69,13 +77,26 @@ export function setupGameBoyLogic() {
             
             if (newC !== currentContrastState) {
                 currentContrastState = newC;
-                const brightness = 0.6 + (0.8 * (1 - currentContrastState)); 
-                const contrastFilter = 0.5 + (1.5 * currentContrastState); 
                 
-                lcdContainer.style.filter = `brightness(${brightness}) contrast(${contrastFilter})`;
+                // Sync internal system contrast
+                AppStore.state.contrast = 0.5 + (1.5 * currentContrastState); 
+                window.dispatchEvent(new CustomEvent('gb-state-change'));
+
+                // Play tick
+                if (Math.abs(wheelRotationC % 8) < Math.abs((wheelRotationC + deltaY) % 8)) {
+                    soundEngine.play('tick');
+                }
+
+                // Adjust LCD physical appearance
+                const brightnessAdjustment = 0.6 + (0.8 * (1 - currentContrastState)); 
+                const filterContrast = 0.5 + (1.5 * currentContrastState); 
+                lcdContainer.style.filter = `brightness(${brightnessAdjustment}) contrast(${filterContrast})`;
                 
                 wheelRotationC += deltaY;
                 contrastGrooves.style.transform = `translateY(${wheelRotationC % 12}px)`;
+
+                // Update OSD
+                AppStore.setOSD('CONTRAST', currentContrastState);
             }
         };
 
@@ -107,7 +128,6 @@ export function setupGameBoyLogic() {
     }
 
     const hub = document.getElementById('hardware-hub');
-    const scaler = document.getElementById('hardware-scaler');
     const glare = document.getElementById('lcd-glare');
     
     document.addEventListener('mousemove', (e) => {
@@ -116,15 +136,26 @@ export function setupGameBoyLogic() {
         const winW = window.innerWidth;
         const winH = window.innerHeight;
         
+        // Percentages (-0.5 to 0.5)
         const mouseX = (e.clientX / winW) - 0.5;
         const mouseY = (e.clientY / winH) - 0.5;
-        const tiltX = mouseY * 12; 
-        const tiltY = mouseX * -12;
         
+        // Tilt depth
+        const tiltX = mouseY * 15; 
+        const tiltY = mouseX * -15;
         hub.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-        const glareX = mouseX * 40;
-        const glareY = mouseY * 40;
+
+        // Specular Glare (Moving reflecting light on screen)
+        const glareX = mouseX * 60;
+        const glareY = mouseY * 60;
         glare.style.transform = `translate(${glareX}%, ${glareY}%) scale(1.8)`;
+        glare.style.opacity = (0.1 + Math.abs(mouseX) * 0.2 + Math.abs(mouseY) * 0.2).toString();
+
+        // Dynamic Lighting Variables for CSS
+        document.documentElement.style.setProperty('--light-x', `${mouseX * 100}%`);
+        document.documentElement.style.setProperty('--light-y', `${mouseY * 100}%`);
+        document.documentElement.style.setProperty('--shadow-x', `${-mouseX * 15}px`);
+        document.documentElement.style.setProperty('--shadow-y', `${-mouseY * 15}px`);
     });
 
     window.addEventListener('load', () => {

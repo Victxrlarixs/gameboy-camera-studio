@@ -40,8 +40,9 @@ body::before {
     position: absolute;
     inset: 0;
     background: 
-        radial-gradient(circle at 15% 15%, rgba(255,255,255,0.05) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(0,0,0,0.4) 0%, transparent 40%);
+        radial-gradient(circle at calc(50% + var(--light-x, 0px)) calc(50% + var(--light-y, 0px)), rgba(255,255,255,0.06) 0%, transparent 60%),
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,0.03) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(0,0,0,0.3) 0%, transparent 40%);
     pointer-events: none;
     z-index: 1;
 }

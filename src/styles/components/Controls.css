@@ -1,4 +1,3 @@
-/* GameBoy Controls Specific Styles */
 .controls-container button {
     outline: none;
     -webkit-tap-highlight-color: transparent;
@@ -11,4 +10,41 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
+    filter: drop-shadow(var(--shadow-x, 2px) var(--shadow-y, 5px) 6px rgba(0,0,0,0.8));
+    transition: filter 0.1s ease-out;
+}
+
+.dynamic-shadow-button {
+    box-shadow: 
+        inset -4px -6px 10px rgba(0,0,0,0.4),
+        inset 4px 6px 10px rgba(255,255,255,0.3),
+        var(--shadow-x, 0px) var(--shadow-y, 6px) 10px rgba(0,0,0,0.8),
+        0 8px 0 var(--gb-button-magenta-dark);
+    transition: transform 0.05s, box-shadow 0.1s ease-out !important;
+}
+
+.dynamic-shadow-button:active {
+    transform: translateY(8px);
+    box-shadow: 
+        inset -2px -4px 6px rgba(0,0,0,0.5),
+        inset 2px 4px 6px rgba(255,255,255,0.3),
+        0 2px 6px rgba(0,0,0,0.8),
+        0 2px 0 var(--gb-button-magenta-dark) !important;
+}
+
+.dynamic-shadow-pill {
+    box-shadow: 
+        inset -2px -3px 5px rgba(0,0,0,0.5),
+        inset 2px 3px 5px rgba(255,255,255,0.3),
+        var(--shadow-x, 0px) var(--shadow-y, 5px) 8px rgba(0,0,0,0.8),
+        0 5px 0 #444;
+}
+
+.dynamic-shadow-pill:active {
+    transform: translateY(4px) rotate(-30deg) !important;
+    box-shadow: 
+        inset -1px -2px 3px rgba(0,0,0,0.5),
+        inset 1px 2px 3px rgba(255,255,255,0.3),
+        0 2px 4px rgba(0,0,0,0.8),
+        0 2px 0 #444 !important;
 }

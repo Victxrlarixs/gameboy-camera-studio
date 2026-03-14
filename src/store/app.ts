@@ -15,6 +15,7 @@ interface State {
     contrast: number;
     stampIndex: number;
     facingMode: 'user' | 'environment';
+    osd: { label: string, value: number, timeout: number } | null;
 }
 
 export const STAMPS = Stamps.getNames();
@@ -28,8 +29,18 @@ export const AppStore = {
         contrast: 1,
         stampIndex: 0,
         facingMode: 'user' as 'user' | 'environment',
+        osd: null,
     } as State,
 
+    setOSD(label: string, value: number) {
+        if (this.state.osd?.timeout) clearTimeout(this.state.osd.timeout);
+        const timeout = window.setTimeout(() => {
+            this.state.osd = null;
+            window.dispatchEvent(new CustomEvent('gb-state-change'));
+        }, 2000);
+        this.state.osd = { label, value, timeout };
+        window.dispatchEvent(new CustomEvent('gb-state-change'));
+    },
     handleInput(button: string): void {
         switch (this.state.mode) {
             case 'SPLASH':

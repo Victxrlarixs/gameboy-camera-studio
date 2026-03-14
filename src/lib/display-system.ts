@@ -47,7 +47,19 @@ export class DisplaySystem {
         window.addEventListener("gb-state-change", () => this.handleStateChange());
         window.addEventListener("gb-mode-change", (e: any) => this.handleModeChange(e.detail.mode));
         window.addEventListener("gb-input", (e: any) => this.handleInput(e.detail.button));
+        window.addEventListener("gb-osd", (e: any) => this.handleOSD(e.detail));
     }
+
+    private handleOSD(detail: { label: string, value: number }): void {
+        this.lastOSD = detail;
+        if (this.osdTimeout) clearTimeout(this.osdTimeout);
+        this.osdTimeout = window.setTimeout(() => {
+            this.lastOSD = null;
+        }, 2000);
+    }
+
+    private lastOSD: { label: string, value: number } | null = null;
+    private osdTimeout: number | null = null;
 
     /**
      * Responds to generic state changes.

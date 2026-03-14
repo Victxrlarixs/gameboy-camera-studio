@@ -1,7 +1,7 @@
 /**
  * Union of all playable sound identifiers in the system.
  */
-export type SoundType = 'click' | 'shutter' | 'print' | 'save' | 'delete' | 'mode' | 'camera-swap' | 'boot';
+export type SoundType = 'click' | 'shutter' | 'print' | 'save' | 'delete' | 'mode' | 'camera-swap' | 'boot' | 'tick';
 
 /**
  * Contract for audio playback services.
@@ -179,6 +179,10 @@ export class SoundEngine implements ISoundEngine {
                 // Classic GB boot "pling"
                 n(1046, 'square', 0,    0.04, 0.04); // C6
                 n(2093, 'square', 0.04, 0.2,  0.03); // C7
+                break;
+            case 'tick':
+                // High frequency metallic tick for hardware wheels
+                n(2200, 'square', 0, 0.01, 0.02, 3000);
                 break;
         }
     }

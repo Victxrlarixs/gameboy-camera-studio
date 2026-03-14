@@ -18,6 +18,8 @@ export class CameraEngine {
     private processingCtx: CanvasRenderingContext2D;
     private isFrozen = false;
     private animFrame: number | null = null;
+    private compositionCanvas: HTMLCanvasElement | null = null;
+    private compositionCtx: CanvasRenderingContext2D | null = null;
 
     /**
      * @param targetCanvas - The visible LCD canvas element to render into.
@@ -104,13 +106,73 @@ export class CameraEngine {
 
         this.processingCtx.putImageData(imageData, 0, 0);
 
-        this.ctx.imageSmoothingEnabled = false;
-        this.ctx.fillStyle = `rgb(${palette[3].join(',')})`;
-        this.ctx.fillRect(0, 0, 160, 144);
-        this.ctx.drawImage(this.processingCanvas, 0, 0, 160, 144);
+        if (!this.compositionCanvas) {
+            this.compositionCanvas = document.createElement('canvas');
+            this.compositionCanvas.width = 160;
+            this.compositionCanvas.height = 144;
+            this.compositionCtx = this.compositionCanvas.getContext('2d')!;
+        }
 
-        this.drawFrame();
-        this.drawStamps();
+        const compCtx = this.compositionCtx!;
+
+        compCtx.imageSmoothingEnabled = false;
+
+        // 1. Draw Background
+        compCtx.fillStyle = `rgb(${palette[3].join(',')})`;
+        compCtx.fillRect(0, 0, 160, 144);
+
+        // 2. Draw Camera Feed
+        compCtx.drawImage(this.processingCanvas, 0, 0, 160, 144);
+
+        // 3. Draw Frame Decorations
+        this.drawFrameTo(compCtx);
+
+        // 4. Draw Stamps
+        this.drawStampsTo(compCtx);
+
+        // 5. Final Composition to Main Canvas with GHOSTING
+        this.ctx.globalAlpha = 0.65;
+        this.ctx.drawImage(this.compositionCanvas, 0, 0);
+        this.ctx.globalAlpha = 1.0;
+
+        // 6. Draw OSD Overlays (Native to LCD)
+        this.drawOSD(this.ctx);
+    }
+
+    private drawOSD(ctx: CanvasRenderingContext2D): void {
+        const osd = AppStore.state.osd;
+        if (!osd) return;
+
+        const palette = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
+        const x = 20;
+        const y = 60;
+        const w = 120;
+        const h = 24;
+
+        // OSD Box
+        ctx.fillStyle = `rgb(${palette[0].join(',')})`;
+        ctx.fillRect(x, y, w, h);
+        ctx.strokeStyle = `rgb(${palette[2].join(',')})`;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+
+        // Label
+        ctx.fillStyle = `rgb(${palette[3].join(',')})`;
+        ctx.font = '6px "Press Start 2P"';
+        ctx.textAlign = 'center';
+        ctx.fillText(osd.label, 80, y + 8);
+
+        // Bar (using dots)
+        const barX = x + 10;
+        const barY = y + 14;
+        const barW = w - 20;
+        const dots = 10;
+        const activeDots = Math.round(osd.value * dots);
+
+        for (let i = 0; i < dots; i++) {
+            ctx.fillStyle = i < activeDots ? `rgb(${palette[3].join(',')})` : `rgb(${palette[1].join(',')})`;
+            ctx.fillRect(barX + (i * (barW/dots)), barY, (barW/dots) - 2, 4);
+        }
     }
 
     /**
@@ -127,32 +189,26 @@ export class CameraEngine {
         return photo;
     }
 
-    /**
-     * Draws the palette-tinted border frame with decorative vent-style tick marks.
-     */
-    private drawFrame(): void {
+    private drawFrameTo(targetCtx: CanvasRenderingContext2D): void {
         const palette    = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
         const thickness  = 12;
 
-        this.ctx.fillStyle = `rgb(${palette[0].join(',')})`;
-        this.ctx.fillRect(0, 0,               160, thickness);
-        this.ctx.fillRect(0, 144 - thickness, 160, thickness);
-        this.ctx.fillRect(0, 0,               thickness, 144);
-        this.ctx.fillRect(160 - thickness, 0, thickness, 144);
+        targetCtx.fillStyle = `rgb(${palette[0].join(',')})`;
+        targetCtx.fillRect(0, 0,               160, thickness);
+        targetCtx.fillRect(0, 144 - thickness, 160, thickness);
+        targetCtx.fillRect(0, 0,               thickness, 144);
+        targetCtx.fillRect(160 - thickness, 0, thickness, 144);
 
-        this.ctx.fillStyle = `rgb(${palette[1].join(',')})`;
+        targetCtx.fillStyle = `rgb(${palette[1].join(',')})`;
         for (let i = 20; i < 140; i += 10) {
-            this.ctx.fillRect(i, 2,   2, 8);
-            this.ctx.fillRect(i, 134, 2, 8);
+            targetCtx.fillRect(i, 2,   2, 8);
+            targetCtx.fillRect(i, 134, 2, 8);
         }
     }
 
-    /**
-     * Delegates rendering of the active overlay stamp to the {@link Stamps} registry.
-     */
-    private drawStamps(): void {
+    private drawStampsTo(targetCtx: CanvasRenderingContext2D): void {
         const stampName = STAMPS[AppStore.state.stampIndex];
         const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
-        Stamps.render(stampName, this.ctx, palette);
+        Stamps.render(stampName, targetCtx, palette);
     }
 }
