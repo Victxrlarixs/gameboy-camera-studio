@@ -159,26 +159,14 @@ export function setupGameBoyLogic() {
     });
 
     window.addEventListener('load', () => {
+        // High-fidelity entry: Cartridge landing impact + Boot sound
         setTimeout(() => {
-            const AudioCtx = (window.AudioContext || (window as any).webkitAudioContext);
-            if (AudioCtx) {
-                const audioCtx = new AudioCtx();
-                const playSnap = () => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.1);
-                };
-                playSnap();
-            }
-        }, 1800);
+            soundEngine.play('cartridge-in');
+        }, 1100); // Sync with CSS landAnim (delay 0.4s + duration 0.7s)
+
+        setTimeout(() => {
+            soundEngine.play('boot');
+        }, 2200); 
     });
 
     function autoScale() {

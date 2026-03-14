@@ -74,7 +74,17 @@ export const AppStore = {
 
         window.dispatchEvent(new CustomEvent('gb-input', { detail: { button } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
-        this.playSound('click');
+        
+        // --- Specific Mechanical Sounds ---
+        if (button === 'a') {
+            this.playSound('button-a');
+        } else if (button === 'b') {
+            this.playSound('button-b');
+        } else if (['up', 'down', 'left', 'right'].includes(button)) {
+            this.playSound('dpad');
+        } else {
+            this.playSound('click');
+        }
 
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
             navigator.vibrate(10);

@@ -1,7 +1,9 @@
 /**
  * Union of all playable sound identifiers in the system.
  */
-export type SoundType = 'click' | 'shutter' | 'print' | 'save' | 'delete' | 'mode' | 'camera-swap' | 'boot' | 'tick';
+export type SoundType = 
+    'click' | 'shutter' | 'print' | 'save' | 'delete' | 'mode' | 'camera-swap' | 'boot' | 'tick' |
+    'button-a' | 'button-b' | 'dpad' | 'cartridge-in' | 'motor-loop' | 'tear';
 
 /**
  * Contract for audio playback services.
@@ -168,11 +170,57 @@ export class SoundEngine implements ISoundEngine {
                 n(660, 'square', 0.07, 0.08, 0.03);
                 break;
 
+            case 'tear':
+                // Sharp paper tear sound
+                this.noise(ctx, dest, 0, 0.1, 0.08);
+                n(2500, 'square', 0, 0.05, 0.04, 1800);
+                setTimeout(() => {
+                    this.noise(ctx, dest, 0, 0.12, 0.06);
+                    n(2200, 'square', 0, 0.06, 0.03, 1500);
+                }, 50);
+                break;
+
+            case 'button-a':
+                // Deep plastic "thud"
+                n(180, 'square', 0, 0.05, 0.04, 100);
+                this.noise(ctx, dest, 0, 0.03, 0.02);
+                break;
+
+            case 'button-b':
+                // Slightly higher plastic click
+                n(220, 'square', 0, 0.04, 0.04, 120);
+                this.noise(ctx, dest, 0, 0.02, 0.02);
+                break;
+
+            case 'dpad':
+                // Crisper, metallic digital click
+                n(1400, 'square', 0, 0.02, 0.03, 800);
+                n(700, 'square', 0.01, 0.02, 0.01);
+                break;
+
+            case 'cartridge-in':
+                // Heavy plastic clack with low-end impact
+                n(80, 'sawtooth', 0, 0.15, 0.1, 40);
+                n(1200, 'square', 0, 0.04, 0.06, 200);
+                this.noise(ctx, dest, 0, 0.1, 0.05);
+                break;
+
+            case 'motor-loop':
+                // Thermal printer motor buzz (high-freq vibration + low hum)
+                n(45, 'sawtooth', 0, 0.2, 0.04);
+                n(3200, 'square', 0, 0.1, 0.01, 3000);
+                // Pulsing noise
+                for(let i=0; i<4; i++) {
+                    this.noise(ctx, dest, i * 0.05, 0.02, 0.03);
+                }
+                break;
+
             case 'camera-swap':
-                n(150,  'sawtooth', 0,    0.15, 0.04, 300);
-                n(400,  'square',   0,    0.05, 0.02);
-                n(300,  'square',   0.08, 0.08, 0.02, 100);
-                this.noise(ctx, dest, 0, 0.12, 0.02);
+                // Heavy mechanical rotation and slide
+                n(150,  'sawtooth', 0,    0.2, 0.08, 300);
+                n(300,  'square',   0.05, 0.1, 0.04, 100);
+                this.noise(ctx, dest, 0,    0.2, 0.03);
+                this.noise(ctx, dest, 0.1,  0.15, 0.02);
                 break;
 
             case 'boot':

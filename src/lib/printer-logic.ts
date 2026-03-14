@@ -1,3 +1,5 @@
+import { soundEngine } from "./sound-engine";
+
 export function setupPrinterLogic() {
     window.addEventListener("gb-print-start", (e: any) => {
         const { dataUrl } = e.detail;
@@ -21,33 +23,14 @@ export function setupPrinterLogic() {
             if (dateLabel) dateLabel.innerText = dateStr;
             if (previewDateLabel) previewDateLabel.innerText = dateStr;
 
-            const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
-            if (!AudioContextClass) return;
-            const audioCtx = new AudioContextClass();
-
-            const playSound = (freq: number, type: OscillatorType, duration: number, volume: number) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration);
+            let motorInterval: any = null;
+            const startMotor = () => {
+                motorInterval = setInterval(() => {
+                    soundEngine.play('motor-loop');
+                }, 200);
             };
-
-            const playMotor = () => {
-                const noise = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                noise.type = "sawtooth";
-                noise.frequency.setValueAtTime(40, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                noise.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start();
-                return { noise, gain };
+            const stopMotor = () => {
+                if (motorInterval) clearInterval(motorInterval);
             };
 
             paper.style.transition = "none";
@@ -69,12 +52,39 @@ export function setupPrinterLogic() {
             void paper.offsetHeight;
             paper.style.transition = "height 5000ms cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease-out";
 
-            const handleCut = (e: MouseEvent) => {
-                e.stopPropagation();
-                if (paper.classList.contains("animate-tear")) return; // Prevent double cut
+            let isDragging = false;
+            let startX = 0;
+            let currentDeltaX = 0;
+            const TEAR_THRESHOLD = 80;
 
-                playSound(800, "square", 0.1, 0.1);
-                playSound(400, "sawtooth", 0.15, 0.05);
+            const handlePointerDown = (e: PointerEvent) => {
+                if (paper.classList.contains("animate-tear")) return;
+                isDragging = true;
+                startX = e.clientX;
+                paper.setPointerCapture(e.pointerId);
+                paper.style.transition = "none";
+            };
+
+            const handlePointerMove = (e: PointerEvent) => {
+                if (!isDragging) return;
+                currentDeltaX = e.clientX - startX;
+                
+                // Visual feedback: tilt and shift paper
+                const rotation = (currentDeltaX / TEAR_THRESHOLD) * 15;
+                paper.style.transform = `translateX(${currentDeltaX * 0.2}px) rotate(${rotation}deg)`;
+                
+                if (Math.abs(currentDeltaX) > TEAR_THRESHOLD) {
+                    executeTear();
+                }
+            };
+
+            const executeTear = () => {
+                if (paper.classList.contains("animate-tear")) return;
+                isDragging = false;
+                
+                soundEngine.play('tear');
+                soundEngine.play('tick');
+                
                 paper.classList.add("animate-tear");
                 paper.classList.remove("printing-vibration");
                 paper.style.cursor = "default";
@@ -93,9 +103,24 @@ export function setupPrinterLogic() {
                 }, 400);
             };
 
-            if (btnCut) btnCut.onclick = handleCut;
-            paper.onclick = handleCut;
-            paper.style.cursor = "pointer";
+            const handlePointerUp = (e: PointerEvent) => {
+                if (!isDragging) return;
+                isDragging = false;
+                paper.releasePointerCapture(e.pointerId);
+                
+                // Spring back if not torn
+                paper.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                paper.style.transform = "";
+            };
+
+            if (btnCut) btnCut.onclick = () => executeTear();
+            
+            paper.addEventListener('pointerdown', handlePointerDown);
+            paper.addEventListener('pointermove', handlePointerMove);
+            paper.addEventListener('pointerup', handlePointerUp);
+            paper.addEventListener('pointercancel', handlePointerUp);
+            
+            paper.style.cursor = "grab";
 
             const hideOverlay = () => {
                 const ticketDrop = document.getElementById("ticket-drop");
@@ -133,7 +158,7 @@ export function setupPrinterLogic() {
 
             if (cancelBtn) {
                 cancelBtn.onclick = () => {
-                    playSound(600, "square", 0.1, 0.05);
+                    soundEngine.play('click');
                     hideOverlay();
                     window.dispatchEvent(new CustomEvent("gb-print-end"));
                 };
@@ -147,7 +172,7 @@ export function setupPrinterLogic() {
             led.style.boxShadow = "0 0 12px #ff0000, inset 0 0 4px rgba(255,255,255,0.5)";
             
             setTimeout(() => {
-                const motor = playMotor();
+                startMotor();
                 paper.style.height = "210px";
                 paper.classList.add("printing-vibration");
                 
@@ -161,10 +186,10 @@ export function setupPrinterLogic() {
                 }
 
                 setTimeout(() => {
-                    motor.gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                    setTimeout(() => motor.noise.stop(), 100);
+                    stopMotor();
                     paper.classList.remove("printing-vibration");
                     if (burnLine) burnLine.classList.remove("active");
+                    paper.style.cursor = "grab";
                     
                     // Change to Green when done printing
                     led.style.backgroundColor = "#00ff00";
