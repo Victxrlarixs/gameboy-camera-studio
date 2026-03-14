@@ -1,4 +1,5 @@
 ---
+import "../../styles/components/Electronics.css";
 ---
 <div class="electronics-layer absolute inset-[12px] sm:inset-[16px] rounded-[12px_12px_210px_12px] overflow-hidden pointer-events-none z-0 opacity-0 transition-opacity duration-1000">
     <!-- Main PCB Board (High-Fidelity FR-4 Substrate) -->
@@ -56,7 +57,7 @@
             <div class="absolute top-[170px] left-1/2 -translate-x-1/2 w-[65%] h-[110px] bg-zinc-400 shadow-[inset_0_2px_10px_rgba(255,255,255,0.6),0_15px_30px_rgba(0,0,0,0.7)] rounded-[2px] border-t border-white/50 z-20 overflow-hidden perspective-1000">
                 <div class="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20"></div>
                 <!-- Shield Texture -->
-                <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Crect width=\"100\" height=\"100\" fill=\"black\"/%3E%3C/svg%3E')]"></div>
+                <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 100 100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22black%22/%3E%3C/svg%3E')]"></div>
                 <!-- Rivets -->
                 <div class="absolute top-3 left-4 w-3 h-3 rounded-full bg-zinc-500 border border-black/30 shadow-inner"></div>
                 <div class="absolute top-3 right-4 w-3 h-3 rounded-full bg-zinc-500 border border-black/30 shadow-inner"></div>
@@ -143,70 +144,4 @@
     </div>
 </div>
 
-<style>
-    .pcb-pattern {
-        background-image: 
-            radial-gradient(circle at 1px 1px, rgba(255,255,255,.15) 1px, transparent 0);
-        background-size: 11px 11px;
-    }
-    
-    .pcb-grid {
-        background-image: 
-            linear-gradient(rgba(163, 196, 106, 0.2) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(163, 196, 106, 0.2) 1px, transparent 1px);
-        background-size: 40px 40px;
-    }
 
-    .black-cap {
-        background: linear-gradient(90deg, #050505 0%, #333 45%, #666 50%, #333 55%, #050505 100%);
-    }
-
-    .blue-cap {
-        background: linear-gradient(90deg, #0a1840 0%, #1a3890 45%, #6a98f0 50%, #1a3890 55%, #102060 100%);
-    }
-
-    .capacitor-cyl {
-        border-radius: 4px;
-        box-shadow: 8px 15px 35px rgba(0,0,0,0.8);
-        position: relative;
-        overflow: hidden;
-        border-bottom: 4px solid rgba(0,0,0,0.6);
-    }
-
-    .capacitor-cyl::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #333, #ddd, #333);
-        border-radius: 4px 4px 0 0;
-        border-bottom: 3px solid rgba(0,0,0,0.5);
-    }
-
-    .cap-label {
-        position: absolute;
-        bottom: 2px;
-        width: 100%;
-        text-align: center;
-        color: rgba(255,255,255,0.4);
-        font-family: sans-serif;
-        font-weight: bold;
-        transform: scaleX(0.7);
-    }
-
-    .electronics-layer {
-        box-shadow: 
-            inset 140px 0 220px -70px rgba(0,0,0,0.9),
-            inset -140px 0 220px -70px rgba(0,0,0,0.9);
-    }
-
-    @keyframes pulse-slow {
-        0%, 100% { opacity: 0.85; filter: brightness(1); }
-        50% { opacity: 1; filter: brightness(1.1); }
-    }
-    .animate-pulse-slow {
-        animation: pulse-slow 4s ease-in-out infinite;
-    }
-</style>
