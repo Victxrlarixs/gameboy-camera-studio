@@ -2,6 +2,7 @@ import { PALETTES } from '../lib/dither';
 import { soundEngine } from '../lib/sound-engine';
 import type { SoundType } from '../lib/sound-engine';
 import { Stamps } from '../features/stamps/stamp-registry';
+import { Frames } from '../features/frames/frame-registry';
 
 export type GBMode = 'SHOOT' | 'VIEW' | 'PRINT' | 'SPLASH';
 
@@ -14,11 +15,13 @@ interface State {
     brightness: number;
     contrast: number;
     stampIndex: number;
+    frameIndex: number;
     facingMode: 'user' | 'environment';
     osd: { label: string, value: number, timeout: number } | null;
 }
 
 export const STAMPS = Stamps.getNames();
+export const FRAMES = Frames.getNames();
 
 export const AppStore = {
     state: {
@@ -28,6 +31,7 @@ export const AppStore = {
         brightness: 0,
         contrast: 1,
         stampIndex: 0,
+        frameIndex: 0,
         facingMode: 'user' as 'user' | 'environment',
         osd: null,
     } as State,
@@ -53,14 +57,9 @@ export const AppStore = {
                 if (button === 'start')  this.setMode('VIEW');
                 if (button === 'up')     this.adjustBrightness(0.1);
                 if (button === 'down')   this.adjustBrightness(-0.1);
-                if (button === 'left')   this.cycleStamp(-1);
-                if (button === 'right')  this.cycleStamp(1);
-                if (button === 'b') {
-                    // Reset to defaults
-                    this.state.brightness = 0;
-                    this.state.stampIndex = 0;
-                    this.playSound('click');
-                }
+                if (button === 'left')   this.adjustContrast(-0.1);
+                if (button === 'right')  this.adjustContrast(0.1);
+                if (button === 'b')      this.cycleFrame();
                 if (button === 'camera') this.toggleCamera();
                 break;
 
@@ -100,6 +99,17 @@ export const AppStore = {
 
     adjustBrightness(delta: number): void {
         this.state.brightness = Math.max(-1, Math.min(1, this.state.brightness + delta));
+        this.setOSD('BRIGHT', (this.state.brightness + 1) / 2);
+    },
+
+    adjustContrast(delta: number): void {
+        this.state.contrast = Math.max(0, Math.min(2, this.state.contrast + delta));
+        this.setOSD('CONTRAST', this.state.contrast / 2);
+    },
+
+    cycleFrame(): void {
+        this.state.frameIndex = (this.state.frameIndex + 1) % FRAMES.length;
+        this.setOSD('FRAME', this.state.frameIndex / (FRAMES.length - 1));
     },
 
     playSound(type: SoundType): void {

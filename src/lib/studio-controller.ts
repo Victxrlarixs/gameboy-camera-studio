@@ -12,12 +12,14 @@ export class StudioController {
     private contrastInput: HTMLInputElement | null = null;
     private contrastVal: HTMLElement | null = null;
     private paletteGrid: HTMLElement | null = null;
+    private frameGrid: HTMLElement | null = null;
     private recentPhotos: HTMLElement | null = null;
 
     constructor() {
         this.initElements();
         this.setupBindings();
         this.populatePalettes();
+        this.populateFrames();
         this.registerGlobalEvents();
     }
 
@@ -29,6 +31,7 @@ export class StudioController {
         this.contrastInput = document.getElementById('input-contrast') as HTMLInputElement;
         this.contrastVal = document.getElementById('val-contrast');
         this.paletteGrid = document.getElementById('palette-grid');
+        this.frameGrid = document.getElementById('frame-grid');
         this.recentPhotos = document.getElementById('recent-photos');
     }
 
@@ -97,6 +100,60 @@ export class StudioController {
         };
 
         return btn;
+    }
+
+    private populateFrames(): void {
+        if (!this.frameGrid) return;
+        import('../store/app').then(({ FRAMES }) => {
+            this.frameGrid!.innerHTML = '';
+            FRAMES.forEach((name: string, index: number) => {
+                const btn = this.createFrameButton(name, index);
+                this.frameGrid?.appendChild(btn);
+            });
+        });
+    }
+
+    private createFrameButton(name: string, index: number): HTMLButtonElement {
+        const btn = document.createElement('button');
+        btn.className = `min-w-[70px] h-[60px] p-2 bg-[#d1d0cd] border-2 border-black/20 rounded-md shadow-sm flex flex-col items-center justify-between group transition-all shrink-0 ${AppStore.state.frameIndex === index ? 'border-[#302080] shadow-inner bg-[#c4c3c0]' : ''}`;
+        
+        const preview = document.createElement('div');
+        preview.className = 'w-full grow border border-black/20 rounded-xs mb-1 bg-white/50 flex items-center justify-center';
+        preview.innerHTML = `<span class="text-[5px] font-pixel opacity-40">${name}</span>`;
+
+        const label = document.createElement('span');
+        label.className = 'text-[6px] font-pixel text-[#302080]/60 uppercase';
+        label.innerText = name.substring(0, 10);
+
+        btn.appendChild(preview);
+        btn.appendChild(label);
+
+        btn.onclick = () => {
+            AppStore.state.frameIndex = index;
+            AppStore.playSound('click');
+            
+            import('../store/app').then(({ FRAMES }) => {
+                AppStore.setOSD('FRAME', index / (FRAMES.length - 1));
+            });
+            
+            this.updateFrameSelection();
+            this.dispatchStateChange();
+        };
+
+        return btn;
+    }
+
+    private updateFrameSelection(): void {
+        const buttons = this.frameGrid?.querySelectorAll('button');
+        buttons?.forEach((btn, idx) => {
+            if (AppStore.state.frameIndex === idx) {
+                btn.classList.add('border-[#302080]', 'bg-[#c4c3c0]', 'shadow-inner');
+                btn.classList.remove('border-black/20');
+            } else {
+                btn.classList.remove('border-[#302080]', 'bg-[#c4c3c0]', 'shadow-inner');
+                btn.classList.add('border-black/20');
+            }
+        });
     }
 
     /**
@@ -170,6 +227,23 @@ export class StudioController {
         if (this.contrastInput) this.contrastInput.value = AppStore.state.contrast.toString();
         if (this.contrastVal) this.contrastVal.innerText = AppStore.state.contrast.toFixed(1);
         this.updatePaletteSelection();
+        this.updateFrameSelection();
+        this.updateBrightnessDots();
+    }
+
+    private updateBrightnessDots(): void {
+        const container = document.getElementById('brightness-dots');
+        if (!container) return;
+        const val = (AppStore.state.brightness + 1) / 2; // 0 to 1
+        const dotsCount = 5;
+        const activeDots = Math.round(val * dotsCount);
+        
+        container.innerHTML = '';
+        for (let i = 0; i < dotsCount; i++) {
+            const dot = document.createElement('div');
+            dot.className = `w-1.5 h-1.5 rounded-full ${i < activeDots ? 'bg-[#a01050]' : 'bg-black/10'}`;
+            container.appendChild(dot);
+        }
     }
 
     /**

@@ -1,7 +1,8 @@
 import { applyDither, PALETTES } from '../../lib/dither';
 import { PhotoStore } from '../../store/photos';
-import { AppStore, STAMPS } from '../../store/app';
+import { AppStore, STAMPS, FRAMES } from '../../store/app';
 import { Stamps } from '../stamps/stamp-registry';
+import { Frames } from '../frames/frame-registry';
 
 /**
  * Drives the live camera feed, applying Bayer dithering and palette mapping
@@ -199,20 +200,9 @@ export class CameraEngine {
     }
 
     private drawFrameTo(targetCtx: CanvasRenderingContext2D): void {
-        const palette    = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
-        const thickness  = 12;
-
-        targetCtx.fillStyle = `rgb(${palette[0].join(',')})`;
-        targetCtx.fillRect(0, 0,               160, thickness);
-        targetCtx.fillRect(0, 144 - thickness, 160, thickness);
-        targetCtx.fillRect(0, 0,               thickness, 144);
-        targetCtx.fillRect(160 - thickness, 0, thickness, 144);
-
-        targetCtx.fillStyle = `rgb(${palette[1].join(',')})`;
-        for (let i = 20; i < 140; i += 10) {
-            targetCtx.fillRect(i, 2,   2, 8);
-            targetCtx.fillRect(i, 134, 2, 8);
-        }
+        const frameName = FRAMES[AppStore.state.frameIndex];
+        const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
+        Frames.render(frameName, targetCtx, palette);
     }
 
     private drawStampsTo(targetCtx: CanvasRenderingContext2D): void {

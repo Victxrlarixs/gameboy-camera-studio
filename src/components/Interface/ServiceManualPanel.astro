@@ -3,10 +3,7 @@ import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="manual-panel hidden xl:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_12px_80px] h-[calc(100vh-40px)] overflow-y-auto relative">
 
-<div class="absolute top-8 left-6 flex flex-col items-start opacity-40 select-none pointer-events-none">
-        <span class="text-[8px] font-pixel text-zinc-800 tracking-tighter leading-none mb-1">DMG-01-SERVICE</span>
-        <div class="w-16 h-1 bg-zinc-800/10 rounded-full"></div>
-    </div>
+
 
 <div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
         <h2 class="text-[13px] font-pixel text-[#3a2a6b] italic uppercase tracking-tighter embossed-text">
@@ -67,12 +64,15 @@ import "../../styles/components/StudioSidePanel.css";
             <!-- Arrows Section -->
              <div class="col-span-2 grid grid-cols-4 gap-2 mt-2">
                 {['up', 'down', 'left', 'right'].map((dir) => (
-                    <div data-action={dir} class="flex flex-col items-center justify-center gap-2 group bg-black/5 p-2 rounded-lg border border-black/5 hover:bg-zinc-800/10 transition-all cursor-pointer">
+                    <div data-action={dir} class="flex flex-col items-center justify-center gap-1.5 group bg-black/5 p-2 rounded-lg border border-black/5 hover:bg-zinc-800/10 transition-all cursor-pointer">
                         <div class="w-8 h-8 bg-zinc-800 rounded-sm flex items-center justify-center border-t border-white/10 border-r-2 border-b-2 border-black/60 shadow-md group-active:translate-y-px group-active:border-b">
                             <span class="text-[10px] text-white/80">
                                 {dir === 'up' ? '↑' : dir === 'down' ? '↓' : dir === 'left' ? '←' : '→'}
                             </span>
                         </div>
+                        <span class="text-[5px] font-pixel text-[#3a2a6b]/50 uppercase">
+                            {dir === 'up' || dir === 'down' ? 'BRIGHT' : 'CONTRAST'}
+                        </span>
                     </div>
                 ))}
              </div>
@@ -108,15 +108,18 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-<div class="mt-auto p-4 bg-black/10 border-t border-l border-white/10 border-r-4 border-b-4 border-black/40 rounded-lg shadow-lg">
-        <div class="flex flex-col gap-1.5 opacity-60 italic">
-            <p class="text-[6px] font-pixel text-[#302080] uppercase tracking-tighter font-bold">Nintendo Co., Ltd.</p>
-            <div class="w-full h-[1px] bg-black/20"></div>
-            <p class="text-[5px] font-pixel leading-tight text-zinc-700 uppercase tracking-tighter">
-                Model: DMG-CAMERA-LAB-01<br>
-                Service ID: victx-001-2026<br>
-                Engineering Status: OK
-            </p>
+
+    <div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0">
+        <div class="flex justify-between items-center px-1">
+            <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest">Lab Buffer</label>
+            <div class="w-6 h-1 bg-black/10 rounded-full"></div>
+        </div>
+        <div class="relative p-1 debossed-panel rounded-lg shadow-2xl border-t border-black/50">
+             <div id="recent-photos" class="flex gap-2 overflow-x-auto overflow-y-hidden p-2 min-h-[90px] border border-white/5 rounded-sm custom-scrollbar-h">
+                <div class="w-16 h-16 shrink-0 bg-black/40 border-2 border-[#1a1b1c] rounded-xs flex items-center justify-center relative shadow-lg">
+                     <span class="text-[5px] font-pixel text-zinc-700 uppercase">Empty</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

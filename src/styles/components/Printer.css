@@ -51,3 +51,31 @@
 .print-noise {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
 }
+
+.thermal-reveal {
+    clip-path: inset(0 0 100% 0);
+    filter: brightness(2) contrast(0.5) blur(1px);
+    transition: clip-path 5000ms linear, filter 5000ms ease-out;
+}
+
+.thermal-reveal.active {
+    clip-path: inset(0 0 0% 0);
+    filter: brightness(1) contrast(1) blur(0px);
+}
+
+.burn-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #222;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 30;
+    transition: top 5000ms linear, opacity 0.3s;
+}
+
+.burn-line.active {
+    opacity: 0.6;
+}

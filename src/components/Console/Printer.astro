@@ -73,16 +73,18 @@ import "../../styles/components/Printer.css";
                     <div class="absolute inset-0 opacity-100 pointer-events-none paper-grain"></div>
                     <div class="absolute inset-0 opacity-100 pointer-events-none paper-curve-effect"></div>
 
-                    <div class="relative w-[88%] shadow-[0_12px_25px_rgba(0,0,0,0.15)] my-2">
+                    <div id="thermal-reveal-container" class="relative w-[88%] shadow-[0_12px_25px_rgba(0,0,0,0.15)] my-2 overflow-hidden">
+                        <div id="printer-burn-line" class="burn-line"></div>
                         <img
-                            id="printer-image"
+                            id="printer-photo"
                             src=""
-                            alt="Printed"
-                            class="w-full pixelated contrast-[1.1] brightness-[1.05]"
+                            class="w-full h-auto pixelated block thermal-reveal"
+                            alt="Printed photo"
                         />
-                        <div class="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-multiply bg-[length:100%_4px] bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.05)_50%)]"></div>
-                        <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"></div>
                     </div>
+                    <div class="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-multiply bg-[length:100%_4px] bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.05)_50%)]"></div>
+                    <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay print-noise"></div>
+                    
 
                     <div
                         class="absolute bottom-0 left-0 right-0 h-5 z-30"

@@ -183,9 +183,9 @@ export class DisplaySystem {
         };
 
         if (elements.tl) elements.tl.innerText = `BRIGHT:${(AppStore.state.brightness * 10).toFixed(0)}`;
-        if (elements.tr) elements.tr.innerText = `${AppStore.state.paletteName} (SEL)`;
-        if (elements.bl) elements.bl.innerText = "SEL: PALETTE";
-        if (elements.br) elements.br.innerText = "START: LAB ▶";
+        if (elements.tr) elements.tr.innerText = `CONTRAST:${(AppStore.state.contrast * 5).toFixed(0)}`;
+        if (elements.bl) elements.bl.innerText = "SELECT: PALETTE";
+        if (elements.br) elements.br.innerText = "B: FRAME | START: LAB";
 
 
         this.uiOverlay?.classList.remove("hidden");

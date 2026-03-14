@@ -1,12 +1,9 @@
-﻿---
+---
 import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="studio-panel hidden lg:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_80px_12px] h-[calc(100vh-40px)] overflow-y-auto overflow-x-hidden relative">
 
-<div class="absolute top-8 right-6 flex flex-col items-end opacity-40 select-none pointer-events-none">
-        <span class="text-[8px] font-pixel text-zinc-800 tracking-tighter leading-none mb-1">DMG-01-STUDIO</span>
-        <div class="w-16 h-1 bg-zinc-800/10 rounded-full"></div>
-    </div>
+
 
 <div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
         <h2 class="text-[13px] font-pixel text-[#302080] italic uppercase tracking-tighter embossed-text">
@@ -35,12 +32,19 @@ import "../../styles/components/StudioSidePanel.css";
 <div class="space-y-3">
             <div class="flex justify-between items-end px-1">
                 <label class="text-[8px] font-pixel text-[#3a2a6b] font-bold uppercase tracking-widest opacity-60">Contrast</label>
-                <span id="val-contrast" class="text-[8px] font-pixel text-magenta-600 font-bold">1.0</span>
+                <span id="val-contrast" class="text-[8px] font-pixel text-[#a01050] font-bold">1.0</span>
             </div>
             <div class="relative h-10 debossed-panel flex items-center px-4 rounded-lg overflow-hidden border-t border-black/40">
                 <input type="range" id="input-contrast" min="0" max="2" step="0.1" value="1" class="dmg-slider relative z-20">
                 <div class="absolute inset-x-4 h-1.5 bg-black/40 rounded-full shadow-inner z-10"></div>
             </div>
+        </div>
+    </div>
+
+    <div class="space-y-4 shrink-0 pt-4">
+        <label class="text-[8px] font-pixel text-[#302080]/50 uppercase tracking-[0.2em] mb-2 block">Photo Frames</label>
+        <div id="frame-grid" class="flex gap-4 p-3 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner overflow-x-auto custom-scrollbar-h">
+            <!-- Frames will be populated here -->
         </div>
     </div>
 
@@ -51,22 +55,8 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-<div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0">
-        <div class="flex justify-between items-center px-1">
-            <label class="text-[8px] font-pixel text-[#302080]/60 uppercase tracking-widest">Lab Buffer</label>
-            <div class="w-6 h-1 bg-black/10 rounded-full"></div>
-        </div>
-        <div class="relative p-1 debossed-panel rounded-lg shadow-2xl border-t border-black/60">
-             <div id="recent-photos" class="flex gap-3 overflow-x-auto overflow-y-hidden p-3 min-h-[100px] border border-white/5 rounded-sm custom-scrollbar-h">
-                
-                <div class="w-20 h-20 shrink-0 bg-black/40 border-2 border-[#1a1b1c] rounded-xs flex items-center justify-center relative shadow-lg">
-                     <span class="text-[5px] font-pixel text-zinc-700 uppercase">Empty</span>
-                     <div class="absolute inset-0 bg-white/5 pointer-events-none"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+
 
 <script>
     import { StudioController } from "../../lib/studio-controller";

@@ -3,7 +3,8 @@ export function setupPrinterLogic() {
         const { dataUrl } = e.detail;
         const printer = document.getElementById("gb-printer");
         const paper = document.getElementById("printer-paper-roll");
-        const img = document.getElementById("printer-image") as HTMLImageElement;
+        const img = document.getElementById("printer-photo") as HTMLImageElement;
+        const burnLine = document.getElementById("printer-burn-line");
         const led = document.getElementById("printer-led");
         const btnCut = document.getElementById("btn-cut");
         const returnBtn = document.getElementById("btn-feed");
@@ -53,6 +54,12 @@ export function setupPrinterLogic() {
             paper.style.height = "0px";
             paper.classList.remove("animate-tear", "printing-vibration");
             img.src = dataUrl;
+            img.classList.remove("active");
+            if (burnLine) {
+                burnLine.classList.remove("active");
+                burnLine.style.transition = "none";
+                burnLine.style.top = "0%";
+            }
 
             if (overlay) {
                 overlay.classList.add("opacity-0", "pointer-events-none", "scale-95");
@@ -144,10 +151,20 @@ export function setupPrinterLogic() {
                 paper.style.height = "210px";
                 paper.classList.add("printing-vibration");
                 
+                // Start thermal reveal
+                img.classList.add("active");
+                if (burnLine) {
+                    void burnLine.offsetHeight;
+                    burnLine.style.transition = "top 5000ms linear, opacity 0.3s";
+                    burnLine.classList.add("active");
+                    burnLine.style.top = "100%";
+                }
+
                 setTimeout(() => {
                     motor.gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                     setTimeout(() => motor.noise.stop(), 100);
                     paper.classList.remove("printing-vibration");
+                    if (burnLine) burnLine.classList.remove("active");
                     
                     // Change to Green when done printing
                     led.style.backgroundColor = "#00ff00";
