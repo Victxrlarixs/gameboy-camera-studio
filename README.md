@@ -12,7 +12,7 @@ capture, develop, and print — inside a tactile, mechanical-inspired interface.
 
 ---
 
-![Studio](https://github.com/user-attachments/assets/e7bba0b0-f234-4896-b325-ae0d07a3e278)
+![Studio](public/screenshots/Desktop.png)
 
 Game Boy Camera Studio recreates the **tactile photography workflow** of the original hardware.
 
@@ -53,7 +53,7 @@ The Game Boy slides away and the **thermal printer takes over**.
 
 ### Printer Capture
 
-<img width="320" alt="printer" src="https://github.com/user-attachments/assets/e19e7001-7820-4df3-86c8-555a3ed42b73" />
+<img width="320" alt="printer" src="public/screenshots/Printer.png" />
 
 You hear the motor, feel the vibration, and watch the image **appear line by line**, just like a real receipt printer.
 
@@ -75,7 +75,7 @@ The image is exported as a **pixel-perfect 8× upscale (1280 × 1152)** while pr
 
 The experience adapts seamlessly to **pocket-sized interaction** while preserving the illusion of a physical object.
 
-<img width="260" src="https://github.com/user-attachments/assets/957ff450-6790-4fa6-9cb9-c6f43bdd9e74" />
+<img width="260" src="public/screenshots/Mobile.png" />
 
 ---
 
