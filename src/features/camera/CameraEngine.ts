@@ -108,8 +108,7 @@ export class CameraEngine {
         this.processingCtx.imageSmoothingEnabled = false;
         this.processingCtx.drawImage(this.video, sx, sy, size, size, 0, 0, 128, 112);
 
-        // --- Hardware Analog Processing Simulation ---
-        // Simulate the M64282FP's edge enhancement (Sharpening)
+        // Simulate the M64282FP's edge enhancement (Sharpening) efficiently
         this.processingCtx.globalCompositeOperation = 'overlay';
         this.processingCtx.globalAlpha = 0.2; 
         this.processingCtx.drawImage(this.processingCanvas, -1, -1, 128, 112);
@@ -118,8 +117,16 @@ export class CameraEngine {
 
         const imageData = this.processingCtx.getImageData(0, 0, 128, 112);
         
-        // Store raw grayscale data for Lab Book re-processing
-        this.lastRawData = Array.from(imageData.data).filter((_, i) => i % 4 === 0);
+        // Optimize: Pre-allocate or extract raw data efficiently without frequent array allocations
+        if (!this.lastRawData || this.lastRawData.length !== (128 * 112)) {
+            this.lastRawData = new Array(128 * 112);
+        }
+        
+        // Fast path for raw data capture (extract red channel as proxy for luminance before dithering)
+        const rawPixels = imageData.data;
+        for (let i = 0, j = 0; i < rawPixels.length; i += 4, j++) {
+            this.lastRawData[j] = rawPixels[i];
+        }
 
         const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
 
