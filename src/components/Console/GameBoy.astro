@@ -9,11 +9,7 @@ import LabBook from "../Interface/LabBook.astro";
 import "../../styles/components/GameBoy.css";
 ---
 
-<div id="studio-layout" class="flex w-full h-full gap-8 overflow-hidden">
-    
-    <div class="hidden xl:flex h-full items-center">
-        <StudioSidePanel />
-    </div>
+    <StudioSidePanel />
 
     <div id="perspective-container" class="flex-1 flex items-center justify-center perspective-[2000px]">
         <div id="hardware-scaler" class="opacity-0 transition-opacity duration-300 ease-in-out">
@@ -208,9 +204,7 @@ import "../../styles/components/GameBoy.css";
         setupGameBoyLogic();
     </script>
 
-    <div class="hidden xl:flex h-full items-center">
-        <ServiceManualPanel />
-    </div>
+    <ServiceManualPanel />
 
     <LabBook />
 </div>

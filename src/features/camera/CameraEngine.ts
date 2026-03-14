@@ -81,6 +81,8 @@ export class CameraEngine {
         this.animFrame = requestAnimationFrame(() => this.loop());
     }
 
+    private lastRawData: number[] | null = null;
+
     /**
      * Captures a single video frame, applies dithering, draws it to the
      * display canvas, then overlays the decorative border and active stamp.
@@ -99,14 +101,17 @@ export class CameraEngine {
 
         // --- Hardware Analog Processing Simulation ---
         // Simulate the M64282FP's edge enhancement (Sharpening)
-        // We use a simple convolution approximation by drawing the image slightly offset
         this.processingCtx.globalCompositeOperation = 'overlay';
-        this.processingCtx.globalAlpha = 0.2; // Suble edge boost
+        this.processingCtx.globalAlpha = 0.2; 
         this.processingCtx.drawImage(this.processingCanvas, -1, -1, 128, 112);
         this.processingCtx.globalCompositeOperation = 'source-over';
         this.processingCtx.globalAlpha = 1.0;
 
         const imageData = this.processingCtx.getImageData(0, 0, 128, 112);
+        
+        // Store raw grayscale data for Lab Book re-processing
+        this.lastRawData = Array.from(imageData.data).filter((_, i) => i % 4 === 0);
+
         const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
 
         applyDither(imageData, {
@@ -194,7 +199,7 @@ export class CameraEngine {
     takePhoto() {
         this.isFrozen = true;
         const dataUrl = this.canvas.toDataURL('image/png');
-        const photo   = PhotoStore.savePhoto(dataUrl);
+        const photo   = PhotoStore.savePhoto(dataUrl, this.lastRawData || undefined);
         setTimeout(() => { this.isFrozen = false; }, 1000);
         return photo;
     }

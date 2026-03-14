@@ -2,39 +2,93 @@
 import "../../styles/components/LabBook.css";
 ---
 
-<div id="lab-book-overlay" class="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500 scale-95 overflow-hidden">
-    <div class="matte-plastic w-[90%] max-w-[1000px] h-[85vh] p-8 sm:p-12 rounded-[24px_24px_120px_24px] border-t-2 border-l-2 border-white/40 border-r-[12px] border-b-[12px] border-black/40 shadow-2xl flex flex-col relative">
-
-<div class="absolute left-[-15px] top-[10%] bottom-[15%] w-8 flex flex-col justify-around pointer-events-none">
+<div id="lab-book-overlay" class="fixed inset-0 z-[300] flex items-center justify-center bg-black/95 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-700 scale-105 overflow-hidden">
+    <div class="lab-binder w-[95%] max-w-[1200px] h-[90vh] bg-zinc-800 rounded-[8px_48px_48px_8px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] flex relative overflow-hidden ring-1 ring-white/10">
+        
+        <!-- Binder Rings (Visual purely) -->
+        <div class="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-around py-12 z-50">
             {[...Array(6)].map((_, i) => (
-                <div class="w-12 h-6 bg-gradient-to-r from-zinc-400 to-zinc-600 rounded-full shadow-lg border border-black/20 translate-x-1/2"></div>
+                <div class="lab-ring w-10 h-6 -translate-x-1/2 rounded-full"></div>
             ))}
         </div>
 
-<div class="flex justify-between items-center border-b-2 border-black/10 pb-6 mb-8">
-            <div class="flex flex-col">
-                <span class="text-[14px] font-pixel text-[#302080] italic uppercase tracking-tighter embossed-text">Lab Asset Inventory</span>
-                <span class="text-[8px] font-pixel text-zinc-500 uppercase mt-1">Classification: Confidential / Internal Use Only</span>
-            </div>
-            <div class="flex gap-4">
-                 <div class="text-[10px] font-pixel text-[#302080] opacity-60">STORAGE: <span id="lab-storage-stats">0/30</span></div>
-                 <button id="close-lab-book" class="w-10 h-10 bg-zinc-600 rounded-full shadow-md active:translate-y-1 transition-all flex items-center justify-center border-t border-white/20">
-                    <span class="text-white text-[12px]">×</span>
-                 </button>
-            </div>
-        </div>
-
-<div id="lab-grid" class="flex-1 overflow-y-auto pr-4 custom-scrollbar-v grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 content-start p-2">
+        <!-- Main Workspace (The Paper Page) -->
+        <div class="lab-page flex-1 flex flex-col m-1 ml-8 sm:ml-10 p-4 sm:p-10 relative overflow-hidden">
             
-        </div>
+            <header class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 sm:mb-10 border-b-2 border-black/5 pb-6">
+                <div class="flex flex-col gap-2">
+                    <h2 class="text-[14px] sm:text-[20px] font-pixel text-[#302080] uppercase tracking-tighter embossed-text flex items-center gap-3">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V5A2.5 2.5 0 0 1 6.5 2.5H20v14.5H6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                        Photo Laboratory
+                    </h2>
+                    <div class="flex gap-2 sm:gap-4">
+                        <span class="text-[6px] sm:text-[8px] font-pixel text-zinc-500 uppercase tracking-widest bg-zinc-100 px-2 py-0.5 rounded-sm">Local Lab</span>
+                        <span class="hidden sm:inline text-[8px] font-pixel text-[#a01050] uppercase tracking-widest bg-[#a01050]/5 px-2 py-0.5 rounded-sm">Collection: DMG-CAM-2026</span>
+                    </div>
+                </div>
 
-<div class="mt-8 pt-6 border-t-2 border-black/10 flex justify-between items-center">
-            <span class="text-[8px] font-pixel text-zinc-400 uppercase italic">DMG-CAM-LAB-BINDER-V1</span>
-            <div class="flex gap-4">
-                 <span class="text-[8px] font-pixel text-[#3a2a6b] animate-pulse">SYSTEM READY</span>
+                <div class="flex flex-row sm:flex-col items-center sm:items-end w-full sm:w-auto justify-between sm:justify-start gap-3">
+                    <div class="hidden md:flex gap-1.5" id="lab-storage-dots">
+                        {[...Array(30)].map((_, i) => <div class="w-2 h-2 rounded-full bg-black/5 border border-black/5"></div>)}
+                    </div>
+                    <button id="close-lab-book" class="group flex items-center gap-2 bg-[#a01050]/10 sm:bg-black/5 hover:bg-[#a01050]/20 sm:hover:bg-black/10 px-4 py-2 rounded-full transition-all border border-[#a01050]/30 sm:border-black/5 ml-auto sm:ml-0">
+                        <span class="text-[8px] font-pixel text-[#a01050] sm:text-zinc-600 uppercase group-hover:text-black">Close Lab</span>
+                        <div class="w-4 h-4 bg-zinc-800 text-white rounded-full flex items-center justify-center text-[10px]">×</div>
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex flex-1 flex-col lg:flex-row gap-6 lg:gap-10 overflow-hidden">
+                <!-- PHOTO GRID -->
+                <div class="flex-1 flex flex-col min-h-[200px]">
+                    <div id="lab-grid" class="flex-1 overflow-y-auto pr-2 lg:pr-6 custom-scrollbar-v grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 align-start content-start py-4">
+                        <!-- Photos injected here -->
+                    </div>
+                </div>
+
+                <!-- METADATA & CONTROL PANEL (Right Side) -->
+                <div id="photo-details-panel" class="w-full lg:w-[320px] stats-panel p-4 lg:p-6 flex flex-col gap-6 opacity-40 transition-opacity overflow-y-auto custom-scrollbar-v pr-2 border-t lg:border-t-0 lg:border-l border-black/5">
+                    <div class="space-y-6 shrink-0">
+                        <div class="aspect-square bg-white shadow-xl p-2 relative max-w-[200px] lg:max-w-none mx-auto lg:mx-0">
+                             <img id="detail-preview" class="w-full h-full pixelated opacity-20 grayscale" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                             <div id="detail-stamp" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ink-stamp text-[14px] stamp-blue hidden">PRINTED</div>
+                        </div>
+
+                        <div class="tech-info space-y-4 pt-4">
+                            <h3 class="text-[10px] font-bold border-b border-black/10 pb-1 mb-3">ASSET ATTRIBUTES</h3>
+                            <div class="grid grid-cols-2 gap-y-2">
+                                <span class="text-zinc-400">INDEX ID:</span> <span id="meta-id" class="text-black">-</span>
+                                <span class="text-zinc-400">TIMESTAMP:</span> <span id="meta-time" class="text-black">-</span>
+                                <span class="text-zinc-400">EXPOSURE:</span> <span id="meta-bright" class="text-black">-</span>
+                                <span class="text-zinc-400">CONTRAST:</span> <span id="meta-contrast" class="text-black">-</span>
+                                <span class="text-zinc-400">FILM STOCK:</span> <span id="meta-palette" class="text-black">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3 shrink-0 pb-6">
+                        <button id="btn-lab-print" class="w-full py-5 bg-[#302080] text-white font-pixel text-[11px] uppercase shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-px transition-all rounded-xl flex items-center justify-center">
+                            Release to Printer
+                        </button>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="btn-lab-redevelop" class="py-4 bg-zinc-800 text-white font-pixel text-[8px] uppercase shadow-lg border border-white/10 hover:bg-black transition-all rounded-xl flex items-center justify-center">
+                                Redev
+                            </button>
+                            <button id="btn-lab-delete" class="py-4 text-[#a01050] border-2 border-[#a01050]/20 font-pixel text-[8px] uppercase hover:bg-[#a01050]/5 transition-all rounded-xl">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <footer class="mt-8 pt-4 border-t border-black/5 flex justify-between items-center opacity-40">
+                <span class="text-[7px] font-pixel uppercase">DMG-STUDIO-LAB-OS v1.02.26</span>
+                <span class="text-[7px] font-pixel uppercase tracking-[0.3em]">Processing Lab Memory...</span>
+            </footer>
         </div>
     </div>
+</div>
     <script>
         import { setupLabBookLogic } from "../../lib/labbook-logic";
         setupLabBookLogic();

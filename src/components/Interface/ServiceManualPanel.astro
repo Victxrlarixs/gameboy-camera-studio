@@ -1,9 +1,7 @@
 ---
 import "../../styles/components/StudioSidePanel.css";
 ---
-<div class="manual-panel hidden xl:flex flex-col gap-6 w-[340px] p-8 m-4 rounded-[12px_12px_12px_80px] h-[calc(100vh-40px)] overflow-y-auto relative">
-
-
+<div class="manual-panel flex flex-col gap-6 p-8 overflow-y-auto relative">
 
 <div class="flex flex-col gap-1 border-b-2 border-black/10 pb-4 shrink-0">
         <h2 class="text-[13px] font-pixel text-[#3a2a6b] italic uppercase tracking-tighter embossed-text">
@@ -16,10 +14,10 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-<div class="space-y-6 pt-2">
-        <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest pl-1">Key Assignment</label>
+<div class="space-y-4 shrink-0 pt-2">
+        <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Key Assignment</label>
         
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-3 p-3 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner">
             
             <!-- A Button -->
             <div data-action="a" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-[#a01050]/10 hover:border-[#a01050]/30 transition-all cursor-pointer">
@@ -79,10 +77,10 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-<div class="space-y-4 pt-8 border-t-2 border-black/10">
-        <label class="text-[8px] font-pixel text-[#302080]/60 uppercase block text-center tracking-widest">Real-Time Diag</label>
+<div class="space-y-4 shrink-0 pt-4 border-t-2 border-black/10">
+        <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Real-Time Diag</label>
         
-        <div class="p-5 debossed-panel space-y-5 rounded-xl border-t border-black/50 shadow-2xl">
+        <div class="p-4 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner space-y-5">
              
              <div class="space-y-2.5">
                 <div class="flex justify-between items-end border-b border-white/5 pb-1">
@@ -109,7 +107,7 @@ import "../../styles/components/StudioSidePanel.css";
     </div>
 
 
-    <div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0">
+    <div class="mt-auto space-y-4 pt-8 border-t-2 border-black/10 shrink-0 pb-8">
         <div class="flex justify-between items-center px-1">
             <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest">Lab Buffer</label>
             <div class="w-6 h-1 bg-black/10 rounded-full"></div>

@@ -211,10 +211,11 @@ export class StudioController {
         }
 
         this.recentPhotos.innerHTML = photos.map(photo => `
-            <div class="w-24 h-24 shrink-0 bg-black p-1 border border-white/10 relative flex flex-col items-center justify-center group cursor-pointer hover:border-[#a01050] transition-all overflow-hidden shadow-xl">
-                <div class="absolute top-1 inset-x-0 flex justify-around opacity-20"><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div></div>
-                <img src="${photo.dataUrl}" class="w-[85%] h-[85%] object-cover pixelated grayscale contrast-[1.4] shadow-2xl">
-                <div class="absolute bottom-1 inset-x-0 flex justify-around opacity-20"><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div><div class="w-1 h-3 bg-white"></div></div>
+            <div class="w-16 h-16 shrink-0 bg-white p-1 border-y-4 border-[#1a1b1c] relative flex flex-col items-center justify-center group cursor-pointer hover:scale-105 transition-all shadow-xl">
+                <div class="absolute inset-y-0 left-0.5 w-1 flex flex-col justify-between py-1 opacity-20"><div class="w-1 h-1 bg-black rounded-full"></div><div class="w-1 h-1 bg-black rounded-full"></div><div class="w-1 h-1 bg-black rounded-full"></div></div>
+                <img src="${photo.dataUrl}" class="w-full h-full object-cover pixelated shadow-sm">
+                <div class="absolute inset-y-0 right-0.5 w-1 flex flex-col justify-between py-1 opacity-20"><div class="w-1 h-1 bg-black rounded-full"></div><div class="w-1 h-1 bg-black rounded-full"></div><div class="w-1 h-1 bg-black rounded-full"></div></div>
+                <div class="absolute bottom-0 inset-x-0 bg-black/60 text-[4px] font-pixel text-white text-center py-0.5 opacity-0 group-hover:opacity-100 transition-opacity">#${photo.id.substring(0,4)}</div>
             </div>
         `).join('');
     }
