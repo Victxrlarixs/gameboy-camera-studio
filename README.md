@@ -1,8 +1,5 @@
-<h1 align="center">Game Boy Camera Studio</h1>
-
-<p align="center">
-  <img src="public/favicon.png" width="190">
-</p>
+<h1>Game Boy Camera Studio</h1>
+<img src="public/favicon.png" width="190">
 
 Turn your webcam into a **Game Boy Camera.**
 
@@ -11,12 +8,14 @@ capture, develop, and print — inside a tactile, mechanical-inspired interface.
 
 [![Enter the Studio](https://img.shields.io/badge/LIVE_EXPERIENCE-Enter_Studio-A01050?style=for-the-badge&logo=gameboy&logoColor=white)](https://victxrlarixs.github.io/gameboy-camera-studio)
 
-> 🎮 **Live Demo**  
+<p>
+  <img src="public/demo/Mobile.gif" width="200">
+</p>
+
+> **Live Demo**  
 > victxrlarixs.github.io/gameboy-camera-studio
 
 ---
-
-![Studio](public/screenshots/Desktop.png)
 
 Game Boy Camera Studio recreates the **tactile photography workflow** of the original hardware.
 
@@ -24,11 +23,14 @@ Instead of being just a filter, the project simulates the **entire photographic 
 
 **capture → develop → print**
 
+<p align="center">
+  <img src="public/screenshots/Desktop.png" width="900">
+</p>
 ---
 
 # Workflow
 
-## 📸 Capture
+## Capture
 
 A minimal **LCD-style interface** simulates the original Game Boy camera sensor.
 
@@ -36,7 +38,7 @@ Every frame becomes a **2-bit dithered image**, recreating the visual limitation
 
 ---
 
-## 🎛 Develop
+## Develop
 
 Enter the **Studio Panel** to refine the shot.
 
@@ -51,25 +53,24 @@ This stage mimics the feeling of **developing film inside a digital darkroom**.
 
 ---
 
-## 🖨 Print
+## Print
 
 The Game Boy slides away and the **thermal printer takes over**.
 
 ### Printer Capture
 
-<img width="320" alt="printer" src="public/screenshots/Printer.png" />
-
 You hear the motor, feel the vibration, and watch the image **appear line by line**, just like a real receipt printer.
 
 ---
 
-## ✂ Final Print
+## Final Print
 
 Press **CUT** to tear the paper and reveal the final artifact.
 
 ### Final Photo Result
-
-<img width="420" alt="Result" src="https://github.com/user-attachments/assets/826d2a84-2ada-4245-8a7a-3107d1717cb1" />
+<p align="center">
+<img width="200" alt="Result" src="https://github.com/user-attachments/assets/826d2a84-2ada-4245-8a7a-3107d1717cb1" />
+</p>
 
 The image is exported as a **pixel-perfect 8× upscale (1280 × 1152)** while preserving the authentic Game Boy aesthetic.
 
@@ -78,16 +79,3 @@ The image is exported as a **pixel-perfect 8× upscale (1280 × 1152)** while pr
 # Mobile Ready
 
 The experience adapts seamlessly to **pocket-sized interaction** while preserving the illusion of a physical object.
-
-<div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
-  <img src="public/screenshots/Mobile.png" width="320">
-  <img src="public/screenshots/Mobile-2.png" width="320">
-</div>
-
----
-
-# Try it
-
-🎮 **Launch the Studio**
-
-https://victxrlarixs.github.io/gameboy-camera-studio
