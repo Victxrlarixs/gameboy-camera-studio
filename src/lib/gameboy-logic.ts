@@ -1,12 +1,13 @@
 import { soundEngine } from "./sound-engine";
 import { HardwareOrchestrator } from "./hardware-orchestrator";
 import { AppStore } from "../store/app";
+
 export function setupGameBoyLogic() {
     new HardwareOrchestrator();
 
     const volumeWheel = document.getElementById("volume-wheel");
     const grooves = document.getElementById("volume-grooves");
-    
+
     if (volumeWheel && grooves) {
         let isDragging = false;
         let startY = 0;
@@ -14,24 +15,20 @@ export function setupGameBoyLogic() {
         let wheelRotation = 0;
 
         const updateVolume = (deltaY: number) => {
-            let newVol = currentVolume - (deltaY * 0.01);
-            newVol = Math.max(0, Math.min(1, newVol));
-            
-            if (newVol !== currentVolume) {
-                currentVolume = newVol;
-                soundEngine.setVolume(currentVolume);
-                
-                // Play tick every 8px of rotation
-                if (Math.abs(wheelRotation % 8) < Math.abs((wheelRotation + deltaY) % 8)) {
-                    soundEngine.play('tick');
-                }
+            let newVol = Math.max(0, Math.min(1, currentVolume - deltaY * 0.01));
+            if (newVol === currentVolume) return;
 
-                wheelRotation += deltaY;
-                grooves.style.transform = `translateY(${wheelRotation % 12}px)`;
+            currentVolume = newVol;
+            soundEngine.setVolume(currentVolume);
 
-                // Update OSD
-                AppStore.setOSD('VOLUME', currentVolume);
+            // tick every ~8px of wheel travel
+            if (Math.abs(wheelRotation % 8) < Math.abs((wheelRotation + deltaY) % 8)) {
+                soundEngine.play('tick');
             }
+
+            wheelRotation += deltaY;
+            grooves.style.transform = `translateY(${wheelRotation % 12}px)`;
+            AppStore.setOSD('VOLUME', currentVolume);
         };
 
         volumeWheel.addEventListener("pointerdown", (e) => {
@@ -54,11 +51,7 @@ export function setupGameBoyLogic() {
 
         volumeWheel.addEventListener("pointerup", stopDrag);
         volumeWheel.addEventListener("pointercancel", stopDrag);
-        
-        volumeWheel.addEventListener("wheel", (e) => {
-            e.preventDefault();
-            updateVolume(e.deltaY * 0.1);
-        });
+        volumeWheel.addEventListener("wheel", (e) => { e.preventDefault(); updateVolume(e.deltaY * 0.1); });
     }
 
     const contrastWheel = document.getElementById("contrast-wheel");
@@ -66,92 +59,67 @@ export function setupGameBoyLogic() {
     const lcdContainer = document.getElementById("lcd-container");
 
     if (contrastWheel && contrastGrooves && lcdContainer) {
-        let isDraggingC = false;
-        let startYC = 0;
-        let currentContrastState = 0.5; 
-        let wheelRotationC = 0;
+        let isDragging = false;
+        let startY = 0;
+        let contrastState = 0.5;
+        let wheelRotation = 0;
 
         const updateContrast = (deltaY: number) => {
-            let newC = currentContrastState - (deltaY * 0.01);
-            newC = Math.max(0, Math.min(1, newC));
-            
-            if (newC !== currentContrastState) {
-                currentContrastState = newC;
-                
-                // Sync internal system contrast
-                AppStore.state.contrast = 0.5 + (1.5 * currentContrastState); 
-                window.dispatchEvent(new CustomEvent('gb-state-change'));
+            let newC = Math.max(0, Math.min(1, contrastState - deltaY * 0.01));
+            if (newC === contrastState) return;
 
-                // Play tick
-                if (Math.abs(wheelRotationC % 8) < Math.abs((wheelRotationC + deltaY) % 8)) {
-                    soundEngine.play('tick');
-                }
+            contrastState = newC;
+            AppStore.state.contrast = 0.5 + 1.5 * contrastState;
+            window.dispatchEvent(new CustomEvent('gb-state-change'));
 
-                // Adjust LCD physical appearance
-                const brightnessAdjustment = 0.6 + (0.8 * (1 - currentContrastState)); 
-                const filterContrast = 0.5 + (1.5 * currentContrastState); 
-                lcdContainer.style.filter = `brightness(${brightnessAdjustment}) contrast(${filterContrast})`;
-                
-                wheelRotationC += deltaY;
-                contrastGrooves.style.transform = `translateY(${wheelRotationC % 12}px)`;
-
-                // Update OSD
-                AppStore.setOSD('CONTRAST', currentContrastState);
+            if (Math.abs(wheelRotation % 8) < Math.abs((wheelRotation + deltaY) % 8)) {
+                soundEngine.play('tick');
             }
+
+            const brightness = 0.6 + 0.8 * (1 - contrastState);
+            const contrast = 0.5 + 1.5 * contrastState;
+            lcdContainer.style.filter = `brightness(${brightness}) contrast(${contrast})`;
+
+            wheelRotation += deltaY;
+            contrastGrooves.style.transform = `translateY(${wheelRotation % 12}px)`;
+            AppStore.setOSD('CONTRAST', contrastState);
         };
 
         contrastWheel.addEventListener("pointerdown", (e) => {
-            isDraggingC = true;
-            startYC = e.clientY;
+            isDragging = true;
+            startY = e.clientY;
             contrastWheel.setPointerCapture(e.pointerId);
         });
 
         contrastWheel.addEventListener("pointermove", (e) => {
-            if (!isDraggingC) return;
-            const deltaY = e.clientY - startYC;
-            startYC = e.clientY;
+            if (!isDragging) return;
+            const deltaY = e.clientY - startY;
+            startY = e.clientY;
             updateContrast(deltaY);
         });
 
-        const stopDragC = (e: PointerEvent) => {
-            isDraggingC = false;
+        const stopDrag = (e: PointerEvent) => {
+            isDragging = false;
             contrastWheel.releasePointerCapture(e.pointerId);
         };
 
-        contrastWheel.addEventListener("pointerup", stopDragC);
-        contrastWheel.addEventListener("pointercancel", stopDragC);
-        
-        contrastWheel.addEventListener("wheel", (e) => {
-            e.preventDefault();
-            updateContrast(e.deltaY * 0.1);
-        });
+        contrastWheel.addEventListener("pointerup", stopDrag);
+        contrastWheel.addEventListener("pointercancel", stopDrag);
+        contrastWheel.addEventListener("wheel", (e) => { e.preventDefault(); updateContrast(e.deltaY * 0.1); });
     }
 
     const hub = document.getElementById('hardware-hub');
     const glare = document.getElementById('lcd-glare');
-    
+
     document.addEventListener('mousemove', (e) => {
         if (!hub || !glare) return;
-        
-        const winW = window.innerWidth;
-        const winH = window.innerHeight;
-        
-        // Percentages (-0.5 to 0.5)
-        const mouseX = (e.clientX / winW) - 0.5;
-        const mouseY = (e.clientY / winH) - 0.5;
-        
-        // Tilt depth
-        const tiltX = mouseY * 15; 
-        const tiltY = mouseX * -15;
-        hub.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        const mouseX = (e.clientX / window.innerWidth) - 0.5;
+        const mouseY = (e.clientY / window.innerHeight) - 0.5;
 
-        // Specular Glare (Moving reflecting light on screen)
-        const glareX = mouseX * 60;
-        const glareY = mouseY * 60;
-        glare.style.transform = `translate(${glareX}%, ${glareY}%) scale(1.8)`;
+        hub.style.transform = `rotateX(${mouseY * 15}deg) rotateY(${mouseX * -15}deg)`;
+        glare.style.transform = `translate(${mouseX * 60}%, ${mouseY * 60}%) scale(1.8)`;
         glare.style.opacity = (0.1 + Math.abs(mouseX) * 0.2 + Math.abs(mouseY) * 0.2).toString();
 
-        // Dynamic Lighting Variables for CSS
         document.documentElement.style.setProperty('--light-x', `${mouseX * 100}%`);
         document.documentElement.style.setProperty('--light-y', `${mouseY * 100}%`);
         document.documentElement.style.setProperty('--shadow-x', `${-mouseX * 15}px`);
@@ -159,44 +127,27 @@ export function setupGameBoyLogic() {
     });
 
     window.addEventListener('load', () => {
-        // High-fidelity entry: Cartridge landing impact + Boot sound
-        setTimeout(() => {
-            soundEngine.play('cartridge-in');
-        }, 1100); // Sync with CSS landAnim (delay 0.4s + duration 0.7s)
-
-        setTimeout(() => {
-            soundEngine.play('boot');
-        }, 2200); 
+        setTimeout(() => soundEngine.play('cartridge-in'), 1100); // synced with landAnim CSS
+        setTimeout(() => soundEngine.play('boot'), 2200);
     });
 
     function autoScale() {
         const scalerEl = document.getElementById('hardware-scaler');
-        if (!scalerEl) return;
         const container = document.getElementById('perspective-container');
-        if (!container) return;
-        
-        const rect = container.getBoundingClientRect();
-        const availableW = rect.width;
-        const availableH = rect.height;
-        
+        if (!scalerEl || !container) return;
+
+        const { width: availW, height: availH } = container.getBoundingClientRect();
         const isMobile = window.innerWidth < 1024;
-        const targetW = 600; 
-        const targetH = 1800; 
         const vPadding = isMobile ? 120 : 200;
-        const hPadding = 40;
 
-        const scaleW = (availableW - hPadding) / targetW;
-        const scaleH = (availableH - vPadding) / targetH;
-
-        let finalScale = Math.min(scaleW, scaleH);
-        if (finalScale > 1.0) finalScale = 1.0;
-        if (finalScale < 0.2) finalScale = 0.2;
+        let scale = Math.min((availW - 40) / 600, (availH - vPadding) / 1800);
+        scale = Math.max(0.2, Math.min(1.0, scale));
 
         scalerEl.style.transition = 'none';
-        scalerEl.style.transform = `scale(${finalScale})`;
+        scalerEl.style.transform = `scale(${scale})`;
         scalerEl.style.transformOrigin = 'center center';
         scalerEl.classList.remove('opacity-0');
-        
+
         void scalerEl.offsetWidth;
         scalerEl.style.transition = 'transform 0.5s ease-out, opacity 0.3s ease-in-out';
     }
@@ -206,29 +157,22 @@ export function setupGameBoyLogic() {
     window.addEventListener('DOMContentLoaded', autoScale);
     autoScale();
 
-    // Hardware Skin Synchronizer & Integrated Switch Logic
     const chassis = document.getElementById('gb-chassis');
     const skinToggle = document.getElementById('hardware-skin-toggle');
     const sliderKnob = document.getElementById('skin-slider-knob');
 
-    const updateHardwareVisuals = () => {
+    const syncSkin = () => {
         if (!chassis || !sliderKnob) return;
-        const currentSkin = AppStore.state.skin;
-        chassis.setAttribute('data-skin', currentSkin);
-        
-        // Move mechanical knob based on skin
-        if (currentSkin === 'TRANSPARENT') {
-            sliderKnob.style.transform = 'translateX(-66px)'; // Move to CLR (ON equivalent)
-        } else {
-            sliderKnob.style.transform = 'translateX(0)'; // Move to DMG (OFF equivalent)
-        }
+        const skin = AppStore.state.skin;
+        chassis.setAttribute('data-skin', skin);
+        sliderKnob.style.transform = skin === 'TRANSPARENT' ? 'translateX(-66px)' : 'translateX(0)';
     };
 
     skinToggle?.addEventListener('click', () => {
         AppStore.toggleSkin();
-        updateHardwareVisuals();
+        syncSkin();
     });
 
-    window.addEventListener('gb-state-change', updateHardwareVisuals);
-    updateHardwareVisuals();
+    window.addEventListener('gb-state-change', syncSkin);
+    syncSkin();
 }

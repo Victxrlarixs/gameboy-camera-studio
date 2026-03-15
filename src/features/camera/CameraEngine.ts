@@ -4,12 +4,6 @@ import { AppStore, STAMPS, FRAMES } from '../../store/app';
 import { Stamps } from '../stamps/stamp-registry';
 import { Frames } from '../frames/frame-registry';
 
-/**
- * Drives the live camera feed, applying Bayer dithering and palette mapping
- * to produce a 160×144 Game Boy Camera-style display on an HTML canvas.
- * Manages the `getUserMedia` stream lifecycle and delegates stamp rendering
- * to the {@link Stamps} registry.
- */
 export class CameraEngine {
     private video: HTMLVideoElement | null = null;
     private stream: MediaStream | null = null;
@@ -17,77 +11,54 @@ export class CameraEngine {
     private ctx: CanvasRenderingContext2D;
     private processingCanvas: HTMLCanvasElement;
     private processingCtx: CanvasRenderingContext2D;
-    private isFrozen = false;
-    private animFrame: number | null = null;
     private compositionCanvas: HTMLCanvasElement;
     private compositionCtx: CanvasRenderingContext2D;
+    private isFrozen = false;
+    private animFrame: number | null = null;
     private boundToggleListener: ((e: any) => void) | null = null;
+    private lastRawData: Uint8Array | null = null;
 
-    /**
-     * @param targetCanvas - The visible LCD canvas element to render into.
-     */
     constructor(targetCanvas: HTMLCanvasElement) {
         this.canvas = targetCanvas;
-        this.ctx    = targetCanvas.getContext('2d')!;
+        this.ctx = targetCanvas.getContext('2d')!;
 
         this.processingCanvas = document.createElement('canvas');
-        this.processingCanvas.width  = 128;
+        this.processingCanvas.width = 128;
         this.processingCanvas.height = 112;
         this.processingCtx = this.processingCanvas.getContext('2d', { willReadFrequently: true })!;
-        
+
         this.compositionCanvas = document.createElement('canvas');
         this.compositionCanvas.width = 160;
         this.compositionCanvas.height = 144;
         this.compositionCtx = this.compositionCanvas.getContext('2d')!;
     }
 
-    /**
-     * Requests camera access and starts the render loop.
-     * Uses the front-facing camera (`facingMode: 'user'`).
-     */
-    async start(forceFacingMode?: 'user' | 'environment'): Promise<void> {
+    async start(forceFacingMode?: 'user' | 'environment') {
         try {
             const facingMode = forceFacingMode || AppStore.state.facingMode;
-            this.stop(); // Stop existing stream if any
-            
-            const videoConstraints: MediaTrackConstraints = {
-                width: { ideal: 640 },
-                height: { ideal: 480 }
-            };
-            
-            if (facingMode) {
-                videoConstraints.facingMode = { ideal: facingMode };
-            }
+            this.stop();
 
-            this.stream = await navigator.mediaDevices.getUserMedia({
-                video: videoConstraints,
-                audio: false
-            });
-            this.video           = document.createElement('video');
+            const constraints: MediaTrackConstraints = { width: { ideal: 640 }, height: { ideal: 480 } };
+            if (facingMode) constraints.facingMode = { ideal: facingMode };
+
+            this.stream = await navigator.mediaDevices.getUserMedia({ video: constraints, audio: false });
+            this.video = document.createElement('video');
             this.video.srcObject = this.stream;
             this.video.play();
             this.isFrozen = false;
             this.loop();
 
-            // Listen for camera toggle
-            if (this.boundToggleListener) {
-                window.removeEventListener('gb-camera-toggle', this.boundToggleListener);
-            }
-            this.boundToggleListener = (e: any) => {
-                this.start(e.detail.facingMode);
-            };
+            if (this.boundToggleListener) window.removeEventListener('gb-camera-toggle', this.boundToggleListener);
+            this.boundToggleListener = (e: any) => this.start(e.detail.facingMode);
             window.addEventListener('gb-camera-toggle', this.boundToggleListener, { once: true });
-        } catch (err) {
-            console.error('Camera access denied:', err);
+        } catch {
+            // camera access denied
         }
     }
 
-    /**
-     * Stops the render loop and releases all `MediaStreamTrack` resources.
-     */
-    stop(): void {
+    stop() {
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
-        if (this.stream)    this.stream.getTracks().forEach(track => track.stop());
+        this.stream?.getTracks().forEach(t => t.stop());
         if (this.boundToggleListener) {
             window.removeEventListener('gb-camera-toggle', this.boundToggleListener);
             this.boundToggleListener = null;
@@ -95,151 +66,92 @@ export class CameraEngine {
         this.video = null;
     }
 
-    /**
-     * Schedules the next render frame while in `SHOOT` mode.
-     */
-    private loop(): void {
+    private loop() {
         if (AppStore.state.mode !== 'SHOOT') return;
         this.render();
         this.animFrame = requestAnimationFrame(() => this.loop());
     }
 
-    private lastRawData: Uint8Array | null = null;
-
-    /**
-     * Captures a single video frame, applies dithering, draws it to the
-     * display canvas, then overlays the decorative border and active stamp.
-     */
-    private render(): void {
+    private render() {
         if (this.isFrozen || !this.video || this.video.videoWidth === 0) return;
 
-        const vWidth  = this.video.videoWidth;
-        const vHeight = this.video.videoHeight;
-        const size    = Math.min(vWidth, vHeight);
-        const sx      = (vWidth  - size) / 2;
-        const sy      = (vHeight - size) / 2;
+        const { videoWidth: vW, videoHeight: vH } = this.video;
+        const size = Math.min(vW, vH);
+        const sx = (vW - size) / 2;
+        const sy = (vH - size) / 2;
 
         this.processingCtx.imageSmoothingEnabled = false;
         this.processingCtx.drawImage(this.video, sx, sy, size, size, 0, 0, 128, 112);
 
-        // Simulate the M64282FP's edge enhancement (Sharpening) efficiently
+        // M64282FP-style edge enhancement via overlay composite
         this.processingCtx.globalCompositeOperation = 'overlay';
-        this.processingCtx.globalAlpha = 0.2; 
+        this.processingCtx.globalAlpha = 0.2;
         this.processingCtx.drawImage(this.processingCanvas, -1, -1, 128, 112);
         this.processingCtx.globalCompositeOperation = 'source-over';
         this.processingCtx.globalAlpha = 1.0;
 
         const imageData = this.processingCtx.getImageData(0, 0, 128, 112);
-        
-        // Optimize: Pre-allocate or extract raw data efficiently without frequent array allocations
-        if (!this.lastRawData || this.lastRawData.length !== (128 * 112)) {
+
+        // Capture red channel as luminance proxy before dithering
+        if (!this.lastRawData || this.lastRawData.length !== 128 * 112) {
             this.lastRawData = new Uint8Array(128 * 112);
         }
-        
-        // Fast path for raw data capture (extract red channel as proxy for luminance before dithering)
-        const rawPixels = imageData.data;
-        const out = this.lastRawData;
-        for (let i = 0, j = 0; i < rawPixels.length; i += 4, j++) {
-            out[j] = rawPixels[i];
-        }
+        const raw = imageData.data;
+        for (let i = 0, j = 0; i < raw.length; i += 4, j++) this.lastRawData[j] = raw[i];
 
-        const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
-
-        applyDither(imageData, {
-            palette,
-            brightness: AppStore.state.brightness,
-            contrast:   AppStore.state.contrast
-        });
-
+        const palette = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
+        applyDither(imageData, { palette, brightness: AppStore.state.brightness, contrast: AppStore.state.contrast });
         this.processingCtx.putImageData(imageData, 0, 0);
 
-        const compCtx = this.compositionCtx;
-        compCtx.imageSmoothingEnabled = false;
+        const cCtx = this.compositionCtx;
+        cCtx.imageSmoothingEnabled = false;
+        cCtx.fillStyle = `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`;
+        cCtx.fillRect(0, 0, 160, 144);
+        cCtx.drawImage(this.processingCanvas, 0, 0, 160, 144);
 
-        // 1. Draw Background
-        compCtx.fillStyle = `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`;
-        compCtx.fillRect(0, 0, 160, 144);
+        Frames.render(FRAMES[AppStore.state.frameIndex], cCtx, palette);
+        Stamps.render(STAMPS[AppStore.state.stampIndex], cCtx, palette);
 
-        // 2. Draw Camera Feed (No smoothing, pure pixel)
-        compCtx.drawImage(this.processingCanvas, 0, 0, 160, 144);
-
-        // 3. Draw Frame Decorations
-        this.drawFrameTo(compCtx);
-
-        // 4. Draw Stamps
-        this.drawStampsTo(compCtx);
-
-        // 5. Final Composition to Main Canvas with GHOSTING
+        // Ghost trail effect
         this.ctx.globalAlpha = 0.65;
         this.ctx.drawImage(this.compositionCanvas, 0, 0);
         this.ctx.globalAlpha = 1.0;
 
-        // 6. Draw OSD Overlays (Native to LCD)
         this.drawOSD(this.ctx);
     }
 
-    private drawOSD(ctx: CanvasRenderingContext2D): void {
+    private drawOSD(ctx: CanvasRenderingContext2D) {
         const osd = AppStore.state.osd;
         if (!osd) return;
 
         const palette = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
-        const x = 20;
-        const y = 60;
-        const w = 120;
-        const h = 24;
+        const x = 20, y = 60, w = 120, h = 24;
 
-        // OSD Box
-        ctx.fillStyle = `rgb(${palette[0][0]},${palette[0][1]},${palette[0][2]})`;
+        ctx.fillStyle = `rgb(${palette[0].join(',')})`;
         ctx.fillRect(x, y, w, h);
-        ctx.strokeStyle = `rgb(${palette[2][0]},${palette[2][1]},${palette[2][2]})`;
+        ctx.strokeStyle = `rgb(${palette[2].join(',')})`;
         ctx.lineWidth = 1;
         ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
 
-        // Label
-        ctx.fillStyle = `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`;
+        ctx.fillStyle = `rgb(${palette[3].join(',')})`;
         ctx.font = '6px "Press Start 2P"';
         ctx.textAlign = 'center';
         ctx.fillText(osd.label, 80, y + 8);
 
-        // Bar (using dots)
-        const barX = x + 10;
-        const barY = y + 14;
-        const barW = w - 20;
-        const dots = 10;
-        const activeDots = Math.round(osd.value * dots);
-
+        const barX = x + 10, barW = w - 20, dots = 10;
+        const active = Math.round(osd.value * dots);
         for (let i = 0; i < dots; i++) {
-            ctx.fillStyle = i < activeDots 
-                ? `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`
-                : `rgb(${palette[1][0]},${palette[1][1]},${palette[1][2]})`;
-            ctx.fillRect(barX + (i * (barW/dots)), barY, (barW/dots) - 2, 4);
+            ctx.fillStyle = i < active ? `rgb(${palette[3].join(',')})` : `rgb(${palette[1].join(',')})`;
+            ctx.fillRect(barX + i * (barW / dots), y + 14, barW / dots - 2, 4);
         }
     }
 
-    /**
-     * Freezes the display, persists the current frame to {@link PhotoStore},
-     * and returns the saved {@link Photo} object.
-     *
-     * @returns The newly saved photo.
-     */
     takePhoto() {
         this.isFrozen = true;
         const dataUrl = this.canvas.toDataURL('image/png');
         const rawArray = this.lastRawData ? Array.from(this.lastRawData) : undefined;
-        const photo   = PhotoStore.savePhoto(dataUrl, rawArray);
+        const photo = PhotoStore.savePhoto(dataUrl, rawArray);
         setTimeout(() => { this.isFrozen = false; }, 1000);
         return photo;
-    }
-
-    private drawFrameTo(targetCtx: CanvasRenderingContext2D): void {
-        const frameName = FRAMES[AppStore.state.frameIndex];
-        const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
-        Frames.render(frameName, targetCtx, palette);
-    }
-
-    private drawStampsTo(targetCtx: CanvasRenderingContext2D): void {
-        const stampName = STAMPS[AppStore.state.stampIndex];
-        const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
-        Stamps.render(stampName, targetCtx, palette);
     }
 }

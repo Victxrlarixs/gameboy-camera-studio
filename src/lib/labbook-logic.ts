@@ -8,21 +8,17 @@ export function setupLabBookLogic() {
     const closeBtn = document.getElementById('close-lab-book');
     const detailsPanel = document.getElementById('photo-details-panel');
     const storageDots = document.getElementById('lab-storage-dots');
-    
-    let selectedPhotoId: string | null = null;
+
+    let selectedId: string | null = null;
 
     function renderGallery() {
         if (!grid || !storageDots) return;
         const photos = PhotoStore.getPhotos();
-        
-        // Update storage dots
-        const dots = storageDots.querySelectorAll('div');
-        dots.forEach((dot, i) => {
-            if (i < photos.length) {
-                dot.className = "w-2 h-2 rounded-full bg-[#302080] shadow-[0_0_5px_rgba(48,32,128,0.4)]";
-            } else {
-                dot.className = "w-2 h-2 rounded-full bg-black/5 border border-black/5";
-            }
+
+        storageDots.querySelectorAll('div').forEach((dot, i) => {
+            dot.className = i < photos.length
+                ? "w-2 h-2 rounded-full bg-[#302080] shadow-[0_0_5px_rgba(48,32,128,0.4)]"
+                : "w-2 h-2 rounded-full bg-black/5 border border-black/5";
         });
 
         if (photos.length === 0) {
@@ -37,7 +33,7 @@ export function setupLabBookLogic() {
         }
 
         grid.innerHTML = photos.map(photo => `
-            <div class="lab-photo-card p-3 flex flex-col items-center gap-3 cursor-pointer ${selectedPhotoId === photo.id ? 'selected' : ''}" data-id="${photo.id}">
+            <div class="lab-photo-card p-3 flex flex-col items-center gap-3 cursor-pointer ${selectedId === photo.id ? 'selected' : ''}" data-id="${photo.id}">
                 <div class="w-full aspect-square relative bg-zinc-100 p-1 flex items-center justify-center overflow-hidden">
                     <img src="${photo.dataUrl}" alt="Gallery photo ${photo.id}" class="w-full h-full object-cover pixelated shadow-sm" />
                     <div class="absolute inset-0 serreado-edge opacity-5 pointer-events-none"></div>
@@ -50,17 +46,14 @@ export function setupLabBookLogic() {
         `).join('');
 
         grid.querySelectorAll('.lab-photo-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const id = card.getAttribute('data-id');
-                selectPhoto(id);
-            });
+            card.addEventListener('click', () => selectPhoto(card.getAttribute('data-id')));
         });
     }
 
     function selectPhoto(id: string | null) {
-        selectedPhotoId = id;
+        selectedId = id;
         const photo = PhotoStore.getPhotos().find(p => p.id === id);
-        
+
         if (!photo || !detailsPanel) {
             resetDetails();
             return;
@@ -68,29 +61,25 @@ export function setupLabBookLogic() {
 
         AppStore.playSound('click');
         detailsPanel.classList.remove('opacity-40');
-        renderGallery(); // Update selection visuals
+        renderGallery();
 
         const preview = document.getElementById('detail-preview') as HTMLImageElement;
-        const metaId = document.getElementById('meta-id');
-        const metaTime = document.getElementById('meta-time');
-        const metaBright = document.getElementById('meta-bright');
-        const metaContrast = document.getElementById('meta-contrast');
-        const metaPalette = document.getElementById('meta-palette');
-
         if (preview) {
             preview.src = photo.dataUrl;
             preview.classList.remove('opacity-20', 'grayscale');
         }
 
         const stamp = document.getElementById('detail-stamp');
-        if (stamp) {
-            stamp.classList.remove('hidden');
-            stamp.innerText = "SAVED";
-        }
-        
+        if (stamp) { stamp.classList.remove('hidden'); stamp.innerText = "SAVED"; }
+
+        const metaId = document.getElementById('meta-id');
+        const metaTime = document.getElementById('meta-time');
+        const metaBright = document.getElementById('meta-bright');
+        const metaContrast = document.getElementById('meta-contrast');
+        const metaPalette = document.getElementById('meta-palette');
+
         if (metaId) metaId.innerText = photo.id.toUpperCase();
         if (metaTime) metaTime.innerText = new Date(photo.timestamp).toLocaleString();
-        
         if (photo.metadata) {
             if (metaBright) metaBright.innerText = (photo.metadata.brightness * 10).toFixed(0);
             if (metaContrast) metaContrast.innerText = (photo.metadata.contrast * 5).toFixed(0);
@@ -108,10 +97,9 @@ export function setupLabBookLogic() {
         }
     }
 
-    // Side panel buttons
     document.getElementById('btn-lab-print')?.addEventListener('click', () => {
-        if (!selectedPhotoId) return;
-        const photo = PhotoStore.getPhotos().find(p => p.id === selectedPhotoId);
+        if (!selectedId) return;
+        const photo = PhotoStore.getPhotos().find(p => p.id === selectedId);
         if (photo) {
             window.dispatchEvent(new CustomEvent('gb-print-start', { detail: { dataUrl: photo.dataUrl } }));
             AppStore.setMode('SHOOT');
@@ -119,66 +107,51 @@ export function setupLabBookLogic() {
     });
 
     document.getElementById('btn-lab-redevelop')?.addEventListener('click', async () => {
-        if (!selectedPhotoId) return;
-        const photo = PhotoStore.getPhotos().find(p => p.id === selectedPhotoId);
-        if (!photo || !photo.rawData) {
+        if (!selectedId) return;
+        const photo = PhotoStore.getPhotos().find(p => p.id === selectedId);
+        if (!photo?.rawData) {
             alert("This photo lacks raw data for re-development. Only new captures support this feature.");
             return;
         }
 
         AppStore.playSound('click');
-        
-        // --- Re-processing Logic ---
+
         const canvas = document.createElement('canvas');
         canvas.width = 160;
         canvas.height = 144;
         const ctx = canvas.getContext('2d')!;
         ctx.imageSmoothingEnabled = false;
 
-        // 1. Re-render the center part (128x112)
         const imgData = ctx.createImageData(128, 112);
-        const { rawData } = photo;
-        
-        // Re-inject raw channel into RGB
-        for (let i = 0; i < rawData.length; i++) {
-            const val = rawData[i];
+        photo.rawData.forEach((val, i) => {
             const idx = i * 4;
-            imgData.data[idx] = val;
-            imgData.data[idx+1] = val;
-            imgData.data[idx+2] = val;
-            imgData.data[idx+3] = 255;
-        }
+            imgData.data[idx] = imgData.data[idx + 1] = imgData.data[idx + 2] = val;
+            imgData.data[idx + 3] = 255;
+        });
 
         const { applyDither, PALETTES } = await import("./dither");
         const { FRAMES } = await import("../store/app");
 
-        // Apply new studio settings
         applyDither(imgData, {
             palette: PALETTES[AppStore.state.paletteName],
             brightness: AppStore.state.brightness,
             contrast: AppStore.state.contrast
         });
 
-        // Create temporary canvas to hold the dithered part
         const ditherCanvas = document.createElement('canvas');
         ditherCanvas.width = 128;
         ditherCanvas.height = 112;
         ditherCanvas.getContext('2d')!.putImageData(imgData, 0, 0);
 
-        // Draw background (palette dependent)
         const palette = PALETTES[AppStore.state.paletteName];
         ctx.fillStyle = `rgb(${palette[3].join(',')})`;
         ctx.fillRect(0, 0, 160, 144);
-
-        // Draw center
         ctx.drawImage(ditherCanvas, 16, 16);
 
-        // Draw current Frame
         const { Frames } = await import("../features/frames/frame-registry");
         Frames.render(FRAMES[AppStore.state.frameIndex], ctx, palette);
 
-        // Update photo in store
-        PhotoStore.updatePhoto(selectedPhotoId, {
+        PhotoStore.updatePhoto(selectedId, {
             dataUrl: canvas.toDataURL('image/png'),
             metadata: {
                 brightness: AppStore.state.brightness,
@@ -188,16 +161,15 @@ export function setupLabBookLogic() {
             }
         });
 
-        // Notification / Feedback
         AppStore.playSound('mode');
-        selectPhoto(selectedPhotoId);
+        selectPhoto(selectedId);
     });
 
     document.getElementById('btn-lab-delete')?.addEventListener('click', () => {
-        if (!selectedPhotoId) return;
+        if (!selectedId) return;
         AppStore.playSound('delete');
-        PhotoStore.deletePhoto(selectedPhotoId);
-        selectedPhotoId = null;
+        PhotoStore.deletePhoto(selectedId);
+        selectedId = null;
         renderGallery();
         resetDetails();
     });
@@ -217,7 +189,7 @@ export function setupLabBookLogic() {
     window.addEventListener('gb-photo-saved', () => {
         if (AppStore.state.mode === 'VIEW') renderGallery();
     });
-    
+
     window.addEventListener('gb-photo-deleted', renderGallery);
 
     closeBtn?.addEventListener('click', () => {

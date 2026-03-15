@@ -46,7 +46,8 @@ export const AppStore = {
         this.state.osd = { label, value, timeout };
         window.dispatchEvent(new CustomEvent('gb-state-change'));
     },
-    handleInput(button: string): void {
+
+    handleInput(button: string) {
         switch (this.state.mode) {
             case 'SPLASH':
                 this.setMode('SHOOT');
@@ -66,75 +67,63 @@ export const AppStore = {
 
             case 'VIEW':
                 if (button === 'b' || button === 'start') this.setMode('SHOOT');
-                if (button === 'a') {
-                    // Possible future action: Print current photo in gallery
-                    window.dispatchEvent(new CustomEvent('gb-input', { detail: { button: 'a' } }));
-                }
+                if (button === 'a') window.dispatchEvent(new CustomEvent('gb-input', { detail: { button: 'a' } }));
                 break;
         }
 
         window.dispatchEvent(new CustomEvent('gb-input', { detail: { button } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
-        
-        // --- Specific Mechanical Sounds ---
-        if (button === 'a') {
-            this.playSound('button-a');
-        } else if (button === 'b') {
-            this.playSound('button-b');
-        } else if (['up', 'down', 'left', 'right'].includes(button)) {
-            this.playSound('dpad');
-        } else {
-            this.playSound('click');
-        }
 
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            navigator.vibrate(10);
-        }
+        if (button === 'a') this.playSound('button-a');
+        else if (button === 'b') this.playSound('button-b');
+        else if (['up', 'down', 'left', 'right'].includes(button)) this.playSound('dpad');
+        else this.playSound('click');
+
+        navigator.vibrate?.(10);
     },
 
-    setMode(mode: GBMode): void {
+    setMode(mode: GBMode) {
         this.state.mode = mode;
         window.dispatchEvent(new CustomEvent('gb-mode-change', { detail: { mode } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
     },
 
-    cyclePalette(): void {
+    cyclePalette() {
         const names = Object.keys(PALETTES);
-        const currentIndex = names.indexOf(this.state.paletteName);
-        this.state.paletteName = names[(currentIndex + 1) % names.length];
+        this.state.paletteName = names[(names.indexOf(this.state.paletteName) + 1) % names.length];
     },
 
-    cycleStamp(dir: number): void {
+    cycleStamp(dir: number) {
         this.state.stampIndex = (this.state.stampIndex + dir + STAMPS.length) % STAMPS.length;
     },
 
-    adjustBrightness(delta: number): void {
+    adjustBrightness(delta: number) {
         this.state.brightness = Math.max(-1, Math.min(1, this.state.brightness + delta));
         this.setOSD('BRIGHT', (this.state.brightness + 1) / 2);
     },
 
-    adjustContrast(delta: number): void {
+    adjustContrast(delta: number) {
         this.state.contrast = Math.max(0, Math.min(2, this.state.contrast + delta));
         this.setOSD('CONTRAST', this.state.contrast / 2);
     },
 
-    cycleFrame(): void {
+    cycleFrame() {
         this.state.frameIndex = (this.state.frameIndex + 1) % FRAMES.length;
         this.setOSD('FRAME', this.state.frameIndex / (FRAMES.length - 1));
     },
 
-    playSound(type: SoundType): void {
+    playSound(type: SoundType) {
         soundEngine.play(type);
     },
 
-    toggleCamera(): void {
+    toggleCamera() {
         this.state.facingMode = this.state.facingMode === 'user' ? 'environment' : 'user';
         window.dispatchEvent(new CustomEvent('gb-camera-toggle', { detail: { facingMode: this.state.facingMode } }));
         window.dispatchEvent(new CustomEvent('gb-state-change'));
         this.playSound('camera-swap');
     },
 
-    toggleSkin(): void {
+    toggleSkin() {
         this.state.skin = this.state.skin === 'DEFAULT' ? 'TRANSPARENT' : 'DEFAULT';
         window.dispatchEvent(new CustomEvent('gb-state-change'));
         this.playSound('mode');

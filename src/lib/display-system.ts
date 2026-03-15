@@ -1,11 +1,6 @@
 import { AppStore } from "../store/app";
 import { CameraEngine } from "../features/camera/CameraEngine";
 
-/**
- * DisplaySystem
- * Manages the LCD screen lifecycle, including rendering loops, camera integration, 
- * and operational UI overlays. Acts as a bridge between the raw canvas and the system state.
- */
 export class DisplaySystem {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -15,99 +10,52 @@ export class DisplaySystem {
     private splashStep = 0;
     private hasPlayedBootSound = false;
     private splashCanvas: HTMLCanvasElement | null = null;
+    private mainLoopId: number | null = null;
+    private lastOSD: { label: string, value: number } | null = null;
+    private osdTimeout: number | null = null;
 
-    /**
-     * @param canvasId The ID of the HTML canvas element for LCD rendering
-     * @param uiOverlayId The ID of the HTML element containing UI labels
-     */
     constructor(canvasId: string, uiOverlayId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext("2d", { alpha: false })!;
         this.uiOverlay = document.getElementById(uiOverlayId);
-        
         this.init();
     }
 
-    /**
-     * Initializes the rendering context and starts core system processes.
-     */
-    private init(): void {
+    private init() {
         if (!this.ctx) return;
         this.ctx.imageSmoothingEnabled = false;
-        
-        this.registerEvents();
-        this.startMainLoop();
-        
-        setTimeout(() => this.checkCameraPermission(), 4000);
-    }
 
-    /**
-     * Subscribes to global system events.
-     */
-    private registerEvents(): void {
         window.addEventListener("gb-state-change", () => this.handleStateChange());
         window.addEventListener("gb-mode-change", (e: any) => this.handleModeChange(e.detail.mode));
         window.addEventListener("gb-input", (e: any) => this.handleInput(e.detail.button));
-        window.addEventListener("gb-osd", (e: any) => this.handleOSD(e.detail));
+        window.addEventListener("gb-osd", (e: any) => {
+            this.lastOSD = e.detail;
+            if (this.osdTimeout) clearTimeout(this.osdTimeout);
+            this.osdTimeout = window.setTimeout(() => { this.lastOSD = null; }, 2000);
+        });
+
+        this.startMainLoop();
+        setTimeout(() => this.checkCameraPermission(), 4000);
     }
 
-    private handleOSD(detail: { label: string, value: number }): void {
-        this.lastOSD = detail;
-        if (this.osdTimeout) clearTimeout(this.osdTimeout);
-        this.osdTimeout = window.setTimeout(() => {
-            this.lastOSD = null;
-        }, 2000);
+    private handleStateChange() {
+        if (AppStore.state.mode === "SHOOT") this.updateShootUI();
     }
 
-    private lastOSD: { label: string, value: number } | null = null;
-    private osdTimeout: number | null = null;
+    private handleModeChange(mode: string) {
+        mode === "SHOOT" ? this.startCamera() : this.stopCamera();
+    }
 
-    /**
-     * Responds to generic state changes.
-     */
-    private handleStateChange(): void {
-        if (AppStore.state.mode === "SHOOT") {
-            this.updateShootUI();
+    private handleInput(button: string) {
+        if (AppStore.state.mode === "SHOOT" && this.camera && button === "a") {
+            this.takePhoto();
         }
     }
 
-    /**
-     * Switches between active modes (e.g., Splash to Camera).
-     * @param mode The new operational mode
-     */
-    private handleModeChange(mode: string): void {
-        if (mode === "SHOOT") {
-            this.startCamera();
-        } else {
-            this.stopCamera();
-        }
-    }
-
-    /**
-     * Internal input handler for screen-specific actions.
-     * @param button The identifier of the action button
-     */
-    private handleInput(button: string): void {
-        if (AppStore.state.mode === "SHOOT" && this.camera) {
-            if (button === "a") {
-                this.takePhoto();
-            }
-        }
-    }
-
-    private mainLoopId: number | null = null;
-
-    /**
-     * Initiates the high-frequency rendering loop for the LCD.
-     */
-    private startMainLoop(): void {
-        if (this.mainLoopId) {
-            cancelAnimationFrame(this.mainLoopId);
-        }
+    private startMainLoop() {
+        if (this.mainLoopId) cancelAnimationFrame(this.mainLoopId);
         const loop = () => {
-            if (AppStore.state.mode === "SPLASH") {
-                this.renderSplash();
-            }
+            if (AppStore.state.mode === "SPLASH") this.renderSplash();
             if (AppStore.state.mode !== "SHOOT") {
                 this.mainLoopId = requestAnimationFrame(loop);
             } else {
@@ -117,60 +65,43 @@ export class DisplaySystem {
         this.mainLoopId = requestAnimationFrame(loop);
     }
 
-    /**
-     * Renders the authentic boot sequence.
-     */
-    private renderSplash(): void {
+    private renderSplash() {
         if (!this.splashCanvas) {
             this.splashCanvas = document.createElement('canvas');
             this.splashCanvas.width = 160;
             this.splashCanvas.height = 144;
             const sCtx = this.splashCanvas.getContext("2d", { alpha: false })!;
-            
-            const bgColor = "#9bbc0f";
-            const logoColor = "#0f380f";
 
-            sCtx.fillStyle = bgColor;
+            sCtx.fillStyle = "#9bbc0f";
             sCtx.fillRect(0, 0, 160, 144);
 
-            // 1. Draw "GAME BOY" static logo
-            sCtx.fillStyle = logoColor;
+            sCtx.fillStyle = "#0f380f";
             sCtx.textAlign = "center";
             sCtx.font = 'bold 16px "Press Start 2P"';
             sCtx.fillText("GAME BOY", 80, 70);
 
-            // 2. Draw "Nintendo®" FIXED at the bottom
-            const fixedY = 110;
             sCtx.font = '7px "Press Start 2P"';
-            
             const text = "Nintendo®";
-            const textWidth = sCtx.measureText(text).width;
-            const boxW = textWidth + 10;
-            const boxH = 14;
-            
-            sCtx.strokeStyle = logoColor;
+            const boxW = sCtx.measureText(text).width + 10;
+            sCtx.strokeStyle = "#0f380f";
             sCtx.lineWidth = 1;
-            this.roundRect(sCtx, 80 - (boxW / 2), fixedY - 10, boxW, boxH, 4);
+            this.roundRect(sCtx, 80 - boxW / 2, 100, boxW, 14, 4);
             sCtx.stroke();
-            
-            sCtx.fillText(text, 80, fixedY);
+            sCtx.fillText(text, 80, 110);
         }
 
         this.ctx.drawImage(this.splashCanvas, 0, 0);
 
-        // 3. Play sound after a short thematic delay (60 steps)
         if (this.splashStep === 60 && !this.hasPlayedBootSound) {
             AppStore.playSound('boot');
             this.hasPlayedBootSound = true;
         }
 
         this.splashStep++;
-        
-        // Wait a bit after the pling before switching to camera
         if (this.splashStep > 180 && AppStore.state.mode === "SPLASH") {
             AppStore.setMode("SHOOT");
         }
-        
+
         this.uiOverlay?.classList.add("hidden");
     }
 
@@ -186,80 +117,51 @@ export class DisplaySystem {
         ctx.closePath();
     }
 
-    /**
-     * Synchronizes the LCD overlay labels with the current AppStore state.
-     */
-    private updateShootUI(): void {
-        const elements = {
-            tl: document.getElementById("ui-top-left"),
-            tr: document.getElementById("ui-top-right"),
-            bl: document.getElementById("ui-bottom-left"),
-            br: document.getElementById("ui-bottom-right")
-        };
+    private updateShootUI() {
+        const tl = document.getElementById("ui-top-left");
+        const tr = document.getElementById("ui-top-right");
+        const bl = document.getElementById("ui-bottom-left");
+        const br = document.getElementById("ui-bottom-right");
 
-        if (elements.tl) elements.tl.innerText = `BRIGHT:${(AppStore.state.brightness * 10).toFixed(0)}`;
-        if (elements.tr) elements.tr.innerText = `CONTRAST:${(AppStore.state.contrast * 5).toFixed(0)}`;
-        if (elements.bl) elements.bl.innerText = "SELECT: PALETTE";
-        if (elements.br) elements.br.innerText = "B: FRAME | START: LAB";
-
+        if (tl) tl.innerText = `BRIGHT:${(AppStore.state.brightness * 10).toFixed(0)}`;
+        if (tr) tr.innerText = `CONTRAST:${(AppStore.state.contrast * 5).toFixed(0)}`;
+        if (bl) bl.innerText = "SELECT: PALETTE";
+        if (br) br.innerText = "B: FRAME | START: LAB";
 
         this.uiOverlay?.classList.remove("hidden");
     }
 
-    /**
-     * Requests media stream access from the user.
-     */
-    private async checkCameraPermission(): Promise<void> {
+    private async checkCameraPermission() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            stream.getTracks().forEach((t) => t.stop());
-            
-            // Only switch to SHOOT if we aren't currently playing the splash screen
-            if (AppStore.state.mode !== "SPLASH") {
-                AppStore.setMode("SHOOT");
-            }
-        } catch (e) {
-            console.warn("Waiting for camera permission...");
+            stream.getTracks().forEach(t => t.stop());
+            if (AppStore.state.mode !== "SPLASH") AppStore.setMode("SHOOT");
+        } catch {
+            // user hasn't granted permission yet
         }
     }
 
-    /**
-     * Activates the camera engine.
-     */
-    private startCamera(): void {
+    private startCamera() {
         if (!this.camera) this.camera = new CameraEngine(this.canvas);
         this.camera.start();
     }
 
-    /**
-     * Deactivates the camera engine and returns control to the loop.
-     */
-    private stopCamera(): void {
+    private stopCamera() {
         this.camera?.stop();
         this.camera = null;
         this.startMainLoop();
     }
 
-    /**
-     * Captures a frame from the camera and triggers the development sequence.
-     */
-    private takePhoto(): void {
+    private takePhoto() {
         if (!this.camera) return;
         this.lastSavedPhoto = this.camera.takePhoto();
         AppStore.playSound("shutter");
         this.flashEffect();
-
-        window.dispatchEvent(new CustomEvent("gb-print-start", {
-            detail: { dataUrl: this.lastSavedPhoto.dataUrl },
-        }));
-
+        window.dispatchEvent(new CustomEvent("gb-print-start", { detail: { dataUrl: this.lastSavedPhoto.dataUrl } }));
         this.updateShootUI();
     }
 
-    /**
-     * Simulates a hardware flash effect using an overlay.
-     */
-    private flashEffect(): void {
+    private flashEffect() {
         const overlay = document.createElement("div");
         overlay.className = "absolute inset-0 bg-white z-[100] transition-opacity duration-200";
         this.canvas.parentElement?.appendChild(overlay);
