@@ -22,10 +22,14 @@ import "../../styles/components/GameBoy.css";
                         <Cartridge />
                     </div>
 
+                    <!-- Majestic Floor Ambient Drop Shadow -->
+                    <div class="absolute top-[20%] bottom-[-20px] left-[10%] right-[10%] bg-black/70 blur-[50px] rounded-full pointer-events-none z-[5] scale-y-110 translate-y-10"></div>
+                    <div class="absolute top-[50%] bottom-[-40px] left-[-30px] right-[-30px] bg-black/40 blur-[80px] rounded-full pointer-events-none z-[4] scale-y-75 translate-y-10"></div>
+
                 <div
                     id="gb-chassis"
                     data-skin="DEFAULT"
-                    class="group matte-plastic relative w-[480px] sm:w-[500px] p-6 sm:p-8 pt-10 sm:pt-12 pb-6 sm:pb-8 rounded-[14px_14px_220px_14px] shadow-[25px_30px_45px_rgba(0,0,0,0.8),inset_-6px_-10px_20px_rgba(0,0,0,0.4),inset_4px_6px_15px_rgba(255,255,255,0.7),inset_-15px_-25px_30px_rgba(0,0,0,0.15)] border-t-[2px] border-l-[2px] border-r-[20px] border-b-[28px] border-solid border-t-white/60 border-l-white/60 border-r-[#8b8d8c] border-b-[#8b8d8c] flex flex-col items-center z-20 transition-all duration-700"
+                    class="group matte-plastic relative w-[480px] sm:w-[500px] p-6 sm:p-8 pt-10 sm:pt-12 pb-6 sm:pb-8 rounded-[14px_14px_220px_14px] shadow-[35px_40px_80px_rgba(0,0,0,0.7),0_20px_40px_rgba(0,0,0,0.6),inset_-6px_-10px_20px_rgba(0,0,0,0.5),inset_4px_6px_15px_rgba(255,255,255,0.8),inset_1px_1px_3px_rgba(255,255,255,0.9),inset_-15px_-25px_30px_rgba(0,0,0,0.25)] border-t-[2.5px] border-l-[2.5px] border-r-[20px] border-b-[28px] border-solid border-t-white/80 border-l-white/80 border-r-[#8b8d8c] border-b-[#8b8d8c] flex flex-col items-center z-20 transition-all duration-700"
                 >
                     <Electronics />
                     
@@ -161,12 +165,12 @@ import "../../styles/components/GameBoy.css";
                         </div>
 
 
-                        <div id="lcd-container" class="relative w-full max-w-[340px] sm:max-w-[350px] aspect-square bg-[#9bbc0f] border-x-[16px] border-b-[24px] border-t-[14px] sm:border-x-[20px] sm:border-b-[28px] sm:border-t-[16px] border-[#0e0e0e] rounded-[10px] shadow-[inset_0_0_80px_rgba(0,0,0,0.9),inset_4px_6px_20px_black,0_2px_1px_rgba(255,255,255,0.2)] overflow-hidden transition-all duration-500 z-20 mt-1" style="filter: brightness(1) contrast(1);">
+                        <div id="lcd-container" class="relative w-full max-w-[340px] sm:max-w-[350px] aspect-square bg-[#9bbc0f] border-x-[16px] border-b-[24px] border-t-[14px] sm:border-x-[20px] sm:border-b-[28px] sm:border-t-[16px] border-[#0e0e0e] rounded-[10px] shadow-[inset_0_0_90px_rgba(0,0,0,0.9),inset_4px_6px_25px_black,0_2px_1px_rgba(255,255,255,0.25),0_0_0_1px_black] overflow-hidden transition-all duration-500 z-20 mt-1" style="filter: brightness(1) contrast(1);">
 
                                 <div class="absolute inset-0 pixel-grid z-20"></div>
                                 
-                                <div id="lcd-glare" class="absolute inset-0 z-30 opacity-40 pointer-events-none transition-transform duration-100 ease-out mix-blend-screen" style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 50%, transparent 70%);"></div>
-                                <div class="absolute inset-0 z-[35] opacity-20 pointer-events-none" style="background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.6) 100%);"></div>
+                                <div id="lcd-glare" class="absolute inset-0 z-30 opacity-[0.55] pointer-events-none transition-opacity duration-100 ease-out mix-blend-screen" style="background: linear-gradient(110deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 30%, transparent 35%, transparent 100%);"></div>
+                                <div class="absolute inset-0 z-[35] opacity-40 pointer-events-none" style="background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 15%, transparent 80%, rgba(0,0,0,0.9) 100%);"></div>
 
                                 <GameBoyScreen />
                             </div>

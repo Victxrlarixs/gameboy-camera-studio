@@ -14,6 +14,7 @@ export function setupPrinterLogic() {
         const previewImg = document.getElementById("preview-image") as HTMLImageElement;
         const confirmBtn = document.getElementById("confirm-download-btn");
         const cancelBtn = document.getElementById("cancel-preview-btn");
+        const shareBtn = document.getElementById("share-photo-btn");
 
         if (printer && paper && img && led) {
             const now = new Date();
@@ -31,6 +32,16 @@ export function setupPrinterLogic() {
             };
             const stopMotor = () => {
                 if (motorInterval) clearInterval(motorInterval);
+            };
+
+            let currentFileName: string | null = null;
+            const getFilename = () => {
+                if (!currentFileName) {
+                    let count = parseInt(localStorage.getItem('gb_camera_counter') || '1', 10);
+                    localStorage.setItem('gb_camera_counter', (count + 1).toString());
+                    currentFileName = `gb_camera_${count.toString().padStart(3, '0')}.png`;
+                }
+                return currentFileName;
             };
 
             paper.style.transition = "none";
@@ -134,25 +145,105 @@ export function setupPrinterLogic() {
                 }
             };
 
-            if (confirmBtn) {
-                confirmBtn.onclick = () => {
-                    const upscaleFactor = 8;
+            const generateShareableImage = (): Promise<HTMLCanvasElement> => {
+                return new Promise((resolve) => {
+                    const upscaleFactor = 6;
+                    const padding = 120;
+                    const bottomPadding = 300;
+                    
                     const tempCanvas = document.createElement("canvas");
                     const tempCtx = tempCanvas.getContext("2d")!;
                     const sourceImg = new Image();
                     sourceImg.onload = () => {
-                        tempCanvas.width = sourceImg.width * upscaleFactor;
-                        tempCanvas.height = sourceImg.height * upscaleFactor;
+                        const imgW = sourceImg.width * upscaleFactor;
+                        const imgH = sourceImg.height * upscaleFactor;
+                        
+                        // Frame dimensions
+                        tempCanvas.width = imgW + (padding * 2);
+                        tempCanvas.height = imgH + padding + bottomPadding;
+                        
+                        // Draw Thermal Paper Background
+                        tempCtx.fillStyle = "#f4f4ec";
+                        tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                        
+                        // Inner Drop Shadow / Bevel
+                        tempCtx.shadowColor = "rgba(0,0,0,0.15)";
+                        tempCtx.shadowBlur = 20;
+                        tempCtx.shadowOffsetY = 10;
+                        
+                        // Draw Image Base (White/Black)
+                        tempCtx.fillStyle = "#ffffff";
+                        tempCtx.fillRect(padding, padding, imgW, imgH);
+                        
+                        // Draw the Game Boy Camera Pixel Art
                         tempCtx.imageSmoothingEnabled = false;
-                        tempCtx.drawImage(sourceImg, 0, 0, tempCanvas.width, tempCanvas.height);
-                        const link = document.createElement("a");
-                        link.download = `gb-cam-studio-${Date.now()}.png`;
-                        link.href = tempCanvas.toDataURL("image/png");
-                        link.click();
-                        hideOverlay();
-                        setTimeout(() => window.dispatchEvent(new CustomEvent("gb-print-end")), 300);
+                        tempCtx.drawImage(sourceImg, padding, padding, imgW, imgH);
+                        
+                        // Reset shadow
+                        tempCtx.shadowColor = "transparent";
+                        
+                        // Add Branding Text
+                        tempCtx.fillStyle = "#a8a8a0";
+                        tempCtx.font = "bold 24px monospace";
+                        tempCtx.textAlign = "center";
+                        tempCtx.letterSpacing = "4px";
+                        tempCtx.fillText("GAME BOY CAMERA STUDIO", tempCanvas.width / 2, tempCanvas.height - 120);
+                        
+                        // Simulated Date format
+                        const dateText = new Date().toLocaleDateString().replace(/\//g, '.');
+                        tempCtx.fillStyle = "#b8b8b0";
+                        tempCtx.font = "18px monospace";
+                        tempCtx.fillText(dateText, tempCanvas.width / 2, tempCanvas.height - 80);
+
+                        resolve(tempCanvas);
                     };
                     sourceImg.src = dataUrl;
+                });
+            };
+
+            if (confirmBtn) {
+                confirmBtn.onclick = async () => {
+                    const canvas = await generateShareableImage();
+                    const link = document.createElement("a");
+                    link.download = getFilename();
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                    hideOverlay();
+                    setTimeout(() => window.dispatchEvent(new CustomEvent("gb-print-end")), 300);
+                };
+            }
+
+            if (shareBtn) {
+                // If Web Share API is not available, maybe fallback to copy, but for now just hide/disable or trust the device
+                if (!navigator.share) {
+                    shareBtn.style.opacity = "0.5";
+                }
+                
+                shareBtn.onclick = async () => {
+                    try {
+                        soundEngine.play('click');
+                        const canvas = await generateShareableImage();
+                        canvas.toBlob(async (blob) => {
+                            if (!blob) return;
+                            const file = new File([blob], getFilename(), { type: "image/png" });
+                            
+                            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                                await navigator.share({
+                                    title: "Game Boy Camera Photo",
+                                    text: "Captured with Game Boy Camera Studio \ud83d\udcf7",
+                                    files: [file]
+                                });
+                            } else {
+                                // Fallback: Copy to clipboard if Share API not fully supported
+                                await navigator.clipboard.write([
+                                    new ClipboardItem({ "image/png": blob })
+                                ]);
+                                alert("Photo copied to clipboard!");
+                            }
+                        }, "image/png");
+                    } catch (err) {
+                        console.error("Error sharing sequence:", err);
+                    }
                 };
             }
 
