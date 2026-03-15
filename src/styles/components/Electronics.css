@@ -52,8 +52,19 @@
 
 .electronics-layer {
     box-shadow: 
-        inset 140px 0 220px -70px rgba(0,0,0,0.9),
-        inset -140px 0 220px -70px rgba(0,0,0,0.9);
+        inset 150px 0 200px -80px rgba(0,0,0,0.95),
+        inset -150px 0 200px -80px rgba(0,0,0,0.95),
+        inset 0 30px 60px -20px rgba(0,0,0,0.95),
+        inset 0 -30px 60px -20px rgba(0,0,0,0.95);
+    background-color: rgba(10, 20, 10, 0.4);
+    backdrop-filter: blur(2px) saturate(120%);
+    -webkit-backdrop-filter: blur(2px) saturate(120%);
+}
+
+.pcb-board {
+    box-shadow: 
+        inset 0 0 100px rgba(0,0,0,0.85),
+        0 20px 40px rgba(0,0,0,0.9); /* deep shadow against the back of the shell */
 }
 
 @keyframes pulse-slow {

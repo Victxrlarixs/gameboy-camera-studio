@@ -3,7 +3,7 @@ import "../../styles/components/StudioSidePanel.css";
 ---
 <div class="manual-panel flex flex-col gap-6 p-8 overflow-y-auto relative">
 
-<div class="flex justify-between items-start border-b-2 border-black/10 pb-4 shrink-0">
+<div class="flex justify-between items-start border-b border-black/10 shadow-[0_1px_0_rgba(255,255,255,0.7)] pb-4 shrink-0">
     <div class="flex flex-col gap-1">
         <h2 class="text-[13px] font-pixel text-[#3a2a6b] italic uppercase tracking-tighter embossed-text">
             Service Console
@@ -20,14 +20,14 @@ import "../../styles/components/StudioSidePanel.css";
 </div>
 
 <div class="space-y-4 shrink-0 pt-2">
-        <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Key Assignment</label>
+        <label class="text-[8px] font-pixel text-[#3a2a6b]/70 uppercase tracking-[0.2em] mb-2 block">Key Assignment</label>
         
-        <div class="grid grid-cols-2 gap-3 p-3 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner">
+        <div class="grid grid-cols-2 gap-3 p-3 bg-black/5 rounded-xl border border-black/10 shadow-inner">
             
             <!-- A Button -->
             <div data-action="a" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-[#a01050]/10 hover:border-[#a01050]/30 transition-all cursor-pointer">
-                <div class="w-12 h-8 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg group-active:translate-y-px group-active:border-b-2">
-                    <span class="text-[10px] font-pixel text-white drop-shadow-md">Z</span>
+                <div class="w-12 h-8 bg-[#a01050] rounded-xs flex items-center justify-center border-t border-white/40 border-r-2 border-b-2 border-black/40 shadow-md group-active:translate-y-px group-active:border-b group-active:shadow-sm">
+                    <span class="text-[10px] font-pixel text-white drop-shadow-[0_1px_0_rgba(0,0,0,0.5)]">Z</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">A / SHOOT</span>
@@ -36,8 +36,8 @@ import "../../styles/components/StudioSidePanel.css";
 
             <!-- B Button -->
             <div data-action="b" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-[#a01050]/10 hover:border-[#a01050]/30 transition-all cursor-pointer">
-                <div class="w-12 h-8 bg-[#a01050] rounded-xs flex items-center justify-center border-t-2 border-white/20 border-r-4 border-b-4 border-black/40 shadow-lg group-active:translate-y-px group-active:border-b-2">
-                    <span class="text-[10px] font-pixel text-white drop-shadow-md">X</span>
+                <div class="w-12 h-8 bg-[#a01050] rounded-xs flex items-center justify-center border-t border-white/40 border-r-2 border-b-2 border-black/40 shadow-md group-active:translate-y-px group-active:border-b group-active:shadow-sm">
+                    <span class="text-[10px] font-pixel text-white drop-shadow-[0_1px_0_rgba(0,0,0,0.5)]">X</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">B / BACK</span>
@@ -46,8 +46,8 @@ import "../../styles/components/StudioSidePanel.css";
 
             <!-- START Button -->
             <div data-action="start" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-zinc-700/10 hover:border-zinc-700/30 transition-all cursor-pointer">
-                <div class="w-12 h-8 bg-zinc-700 rounded-md flex items-center justify-center border-t-2 border-white/10 border-r-4 border-b-4 border-black/60 shadow-lg group-active:translate-y-px group-active:border-b-2 px-2">
-                    <span class="text-[6px] font-pixel text-white uppercase opacity-80">ENTER</span>
+                <div class="w-12 h-8 bg-zinc-700 rounded-md flex items-center justify-center border-t border-white/30 border-r-2 border-b-2 border-black/60 shadow-md group-active:translate-y-px group-active:border-b group-active:shadow-sm px-2">
+                    <span class="text-[6px] font-pixel text-white uppercase drop-shadow-[0_1px_0_rgba(0,0,0,0.5)] opacity-90">ENTER</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">START</span>
@@ -56,8 +56,8 @@ import "../../styles/components/StudioSidePanel.css";
 
              <!-- SELECT Button -->
             <div data-action="select" class="flex flex-col items-center gap-2 group bg-black/5 p-3 rounded-xl border border-black/5 hover:bg-zinc-700/10 hover:border-zinc-700/30 transition-all cursor-pointer">
-                <div class="w-12 h-8 bg-zinc-700 rounded-md flex items-center justify-center border-t-2 border-white/10 border-r-4 border-b-4 border-black/60 shadow-lg group-active:translate-y-px group-active:border-b-2 px-2">
-                    <span class="text-[5px] font-pixel text-white uppercase opacity-80">SHIFT</span>
+                <div class="w-12 h-8 bg-zinc-700 rounded-md flex items-center justify-center border-t border-white/30 border-r-2 border-b-2 border-black/60 shadow-md group-active:translate-y-px group-active:border-b group-active:shadow-sm px-2">
+                    <span class="text-[5px] font-pixel text-white uppercase drop-shadow-[0_1px_0_rgba(0,0,0,0.5)] opacity-90">SHIFT</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-[7px] font-pixel text-[#302080]/80 uppercase">SELECT</span>
@@ -82,18 +82,18 @@ import "../../styles/components/StudioSidePanel.css";
         </div>
     </div>
 
-<div class="space-y-4 shrink-0 pt-4 border-t-2 border-black/10">
-        <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Real-Time Diag</label>
+<div class="space-y-4 shrink-0 pt-4 border-t border-black/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] mt-4">
+        <label class="text-[8px] font-pixel text-[#3a2a6b]/70 uppercase tracking-[0.2em] mb-2 block">Real-Time Diag</label>
         
-        <div class="p-4 bg-black/5 rounded-xl border-2 border-black/5 shadow-inner space-y-5">
+        <div class="p-4 bg-black/5 rounded-xl border border-black/10 shadow-inner space-y-5">
              
              <div class="space-y-2.5">
                 <div class="flex justify-between items-end border-b border-white/5 pb-1">
                     <span class="text-[6px] font-pixel text-zinc-500 uppercase">SRAM Photo Storage</span>
                     <span id="diag-photo-count" class="text-[8px] font-pixel text-white opacity-80">0/30</span>
                 </div>
-                <div class="w-full h-2.5 bg-black/50 rounded-full overflow-hidden border-b border-white/10 shadow-inner">
-                    <div id="diag-photo-bar" class="h-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full h-2.5 bg-black/60 rounded-full overflow-hidden border border-white/5 shadow-inner">
+                    <div id="diag-photo-bar" class="h-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8),inset_0_1px_0_rgba(255,255,255,0.5)] transition-all duration-500" style="width: 0%"></div>
                 </div>
              </div>
 
@@ -112,8 +112,8 @@ import "../../styles/components/StudioSidePanel.css";
     </div>
 
     <!-- Housing Configuration -->
-    <div class="space-y-4 shrink-0 pt-4 border-t-2 border-black/10">
-        <label class="text-[8px] font-pixel text-[#3a2a6b]/50 uppercase tracking-[0.2em] mb-2 block">Housing Configuration</label>
+    <div class="space-y-4 shrink-0 pt-4 border-t border-black/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] mt-4">
+        <label class="text-[8px] font-pixel text-[#3a2a6b]/70 uppercase tracking-[0.2em] mb-2 block">Housing Configuration</label>
         <div class="grid grid-cols-2 gap-3">
             <button id="skin-default-btn" class="flex flex-col items-center gap-2 p-3 bg-black/5 rounded-xl border border-black/10 hover:bg-white/5 transition-all group skin-state-btn active-skin">
                 <div class="w-12 h-10 bg-[#9c9e9d] rounded-sm shadow-md border-t-2 border-white/40"></div>
@@ -129,14 +129,14 @@ import "../../styles/components/StudioSidePanel.css";
     </div>
 
     <!-- Lab Buffer -->
-    <div class="space-y-4 pt-8 border-t-2 border-black/10 shrink-0 pb-8">
+    <div class="space-y-4 shrink-0 pt-8 pb-8 border-t border-black/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] mt-4">
         <div class="flex justify-between items-center px-1">
-            <label class="text-[8px] font-pixel text-[#3a2a6b]/60 uppercase tracking-widest">Lab Buffer</label>
+            <label class="text-[8px] font-pixel text-[#3a2a6b]/70 uppercase tracking-widest">Lab Buffer</label>
             <div class="w-6 h-1 bg-black/10 rounded-full"></div>
         </div>
-        <div class="relative p-1 debossed-panel rounded-lg shadow-2xl border-t border-black/50">
-             <div id="recent-photos" class="flex gap-2 overflow-x-auto overflow-y-hidden p-2 min-h-[90px] border border-white/5 rounded-sm custom-scrollbar-h">
-                <div class="w-16 h-16 shrink-0 bg-black/40 border-2 border-[#1a1b1c] rounded-xs flex items-center justify-center relative shadow-lg">
+        <div class="relative p-1 debossed-panel rounded-lg shadow-[inset_0_2px_10px_rgba(0,0,0,0.1)] border-t border-black/20">
+             <div id="recent-photos" class="flex gap-2 overflow-x-auto overflow-y-hidden p-2 min-h-[90px] rounded-sm custom-scrollbar-h">
+                <div class="w-16 h-16 shrink-0 bg-black/20 border border-black/30 rounded-sm flex items-center justify-center relative shadow-inner">
                      <span class="text-[5px] font-pixel text-zinc-700 uppercase">Empty</span>
                 </div>
             </div>

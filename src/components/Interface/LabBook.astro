@@ -15,7 +15,7 @@ import "../../styles/components/LabBook.css";
         <!-- Main Workspace (The Paper Page) -->
         <div class="lab-page flex-1 flex flex-col m-1 ml-8 sm:ml-10 p-4 sm:p-10 relative overflow-hidden">
             
-            <header class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 sm:mb-10 border-b-2 border-black/5 pb-6">
+            <header class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 sm:mb-10 border-b border-black/10 shadow-[0_1px_0_rgba(255,255,255,0.8)] pb-6">
                 <div class="flex flex-col gap-2">
                     <h2 class="text-[14px] sm:text-[20px] font-pixel text-[#302080] uppercase tracking-tighter embossed-text flex items-center gap-3">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V5A2.5 2.5 0 0 1 6.5 2.5H20v14.5H6.5a2.5 2.5 0 0 1 0 5z"/></svg>
@@ -23,7 +23,7 @@ import "../../styles/components/LabBook.css";
                     </h2>
                     <div class="flex gap-2 sm:gap-4">
                         <span class="text-[6px] sm:text-[8px] font-pixel text-zinc-500 uppercase tracking-widest bg-zinc-100 px-2 py-0.5 rounded-sm">Local Lab</span>
-                        <span class="hidden sm:inline text-[8px] font-pixel text-[#a01050] uppercase tracking-widest bg-[#a01050]/5 px-2 py-0.5 rounded-sm">Collection: DMG-CAM-2026</span>
+                        <span class="hidden sm:inline text-[8px] font-pixel text-[#3a2a6b] uppercase tracking-[0.2em] bg-[#3a2a6b]/5 px-2 py-0.5 rounded-sm">Collection: DMG-CAM-2026</span>
                     </div>
                 </div>
 
@@ -31,9 +31,9 @@ import "../../styles/components/LabBook.css";
                     <div class="hidden md:flex gap-1.5" id="lab-storage-dots">
                         {[...Array(30)].map((_, i) => <div class="w-2 h-2 rounded-full bg-black/5 border border-black/5"></div>)}
                     </div>
-                    <button id="close-lab-book" class="group flex items-center gap-2 bg-[#a01050]/10 sm:bg-black/5 hover:bg-[#a01050]/20 sm:hover:bg-black/10 px-4 py-2 rounded-full transition-all border border-[#a01050]/30 sm:border-black/5 ml-auto sm:ml-0">
-                        <span class="text-[8px] font-pixel text-[#a01050] sm:text-zinc-600 uppercase group-hover:text-black">Close Lab</span>
-                        <div class="w-4 h-4 bg-zinc-800 text-white rounded-full flex items-center justify-center text-[10px]">×</div>
+                    <button id="close-lab-book" class="group flex items-center gap-2 bg-[#3a2a6b]/10 sm:bg-black/5 hover:bg-[#3a2a6b]/20 sm:hover:bg-black/10 px-4 py-2 rounded-full transition-all border border-[#3a2a6b]/30 sm:border-black/10 ml-auto sm:ml-0 shadow-sm active:translate-y-px">
+                        <span class="text-[8px] font-pixel text-[#3a2a6b] sm:text-zinc-600 uppercase group-hover:text-black">Close Lab</span>
+                        <div class="w-4 h-4 bg-zinc-800 text-white rounded-full flex items-center justify-center text-[10px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">×</div>
                     </button>
                 </div>
             </header>
@@ -67,14 +67,14 @@ import "../../styles/components/LabBook.css";
                     </div>
 
                     <div class="flex flex-col gap-3 shrink-0 pb-6">
-                        <button id="btn-lab-print" class="w-full py-5 bg-[#302080] text-white font-pixel text-[11px] uppercase shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-px transition-all rounded-xl flex items-center justify-center">
+                        <button id="btn-lab-print" class="w-full py-5 bg-gradient-to-b from-[#403090] to-[#302080] text-white font-pixel text-[11px] uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_10px_rgba(48,32,128,0.4)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_6px_15px_rgba(48,32,128,0.6)] hover:translate-y-[-1px] active:translate-y-px active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)] transition-all rounded-xl flex items-center justify-center border border-[#1a1155]">
                             Release to Printer
                         </button>
                         <div class="grid grid-cols-2 gap-3">
-                            <button id="btn-lab-redevelop" class="py-4 bg-zinc-800 text-white font-pixel text-[8px] uppercase shadow-lg border border-white/10 hover:bg-black transition-all rounded-xl flex items-center justify-center">
+                            <button id="btn-lab-redevelop" class="py-4 bg-gradient-to-b from-zinc-700 to-zinc-800 text-white font-pixel text-[8px] uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_4px_rgba(0,0,0,0.3)] border border-black hover:brightness-110 active:shadow-inner active:translate-y-px transition-all rounded-xl flex items-center justify-center">
                                 Redev
                             </button>
-                            <button id="btn-lab-delete" class="py-4 text-[#a01050] border-2 border-[#a01050]/20 font-pixel text-[8px] uppercase hover:bg-[#a01050]/5 transition-all rounded-xl">
+                            <button id="btn-lab-delete" class="py-4 text-[#a01050] border border-[#a01050]/30 bg-white shadow-sm hover:bg-[#a01050]/5 font-pixel text-[8px] uppercase active:translate-y-px transition-all rounded-xl">
                                 Delete
                             </button>
                         </div>
@@ -82,7 +82,7 @@ import "../../styles/components/LabBook.css";
                 </div>
             </div>
 
-            <footer class="mt-8 pt-4 border-t border-black/5 flex justify-between items-center opacity-40">
+            <footer class="mt-8 pt-4 border-t border-black/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] flex justify-between items-center opacity-40">
                 <span class="text-[7px] font-pixel uppercase">DMG-STUDIO-LAB-OS v1.02.26</span>
                 <span class="text-[7px] font-pixel uppercase tracking-[0.3em]">Processing Lab Memory...</span>
             </footer>

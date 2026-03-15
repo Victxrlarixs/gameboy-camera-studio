@@ -11,42 +11,84 @@
     justify-content: center;
     pointer-events: none;
     filter: drop-shadow(var(--shadow-x, 2px) var(--shadow-y, 5px) 6px rgba(0,0,0,0.8));
-    transition: filter 0.1s ease-out;
+    transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.1s ease-out;
+}
+
+/* D-Pad Mechanical Tilt Interaction */
+.controls-container:has(#btn-up:active) .dpad {
+    transform: perspective(300px) rotateX(10deg);
+    --shadow-y: 1px;
+}
+.controls-container:has(#btn-down:active) .dpad {
+    transform: perspective(300px) rotateX(-10deg);
+    --shadow-y: 8px;
+}
+.controls-container:has(#btn-left:active) .dpad {
+    transform: perspective(300px) rotateY(-10deg);
+    --shadow-x: 0px;
+}
+.controls-container:has(#btn-right:active) .dpad {
+    transform: perspective(300px) rotateY(10deg);
+    --shadow-x: 5px;
 }
 
 .dynamic-shadow-button {
     box-shadow: 
         inset -4px -6px 10px rgba(0,0,0,0.4),
-        inset 4px 6px 10px rgba(255,255,255,0.3),
+        inset 4px 6px 10px rgba(255,100,200,0.2),
         var(--shadow-x, 0px) var(--shadow-y, 6px) 10px rgba(0,0,0,0.8),
         0 8px 0 var(--gb-button-magenta-dark);
-    transition: transform 0.05s, box-shadow 0.1s ease-out !important;
+    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease !important;
+}
+
+.dynamic-shadow-button:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    box-shadow: 
+        inset -4px -6px 10px rgba(0,0,0,0.3),
+        inset 4px 6px 12px rgba(255,100,200,0.3),
+        var(--shadow-x, 0px) var(--shadow-y, 8px) 14px rgba(0,0,0,0.9),
+        0 9px 0 var(--gb-button-magenta-dark);
 }
 
 .dynamic-shadow-button:active {
-    transform: translateY(8px);
+    filter: brightness(0.95);
+    transform: translateY(6px);
     box-shadow: 
-        inset -2px -4px 6px rgba(0,0,0,0.5),
-        inset 2px 4px 6px rgba(255,255,255,0.3),
-        0 2px 6px rgba(0,0,0,0.8),
+        inset -2px -4px 6px rgba(0,0,0,0.6),
+        inset 2px 4px 6px rgba(255,100,200,0.1),
+        0 2px 4px rgba(0,0,0,0.8),
         0 2px 0 var(--gb-button-magenta-dark) !important;
+    transition: transform 0.05s cubic-bezier(0.4, 0, 1, 1), box-shadow 0.05s cubic-bezier(0.4, 0, 1, 1), filter 0.05s !important;
 }
 
 .dynamic-shadow-pill {
     box-shadow: 
-        inset -2px -3px 5px rgba(0,0,0,0.5),
-        inset 2px 3px 5px rgba(255,255,255,0.3),
+        inset -2px -3px 5px rgba(0,0,0,0.6),
+        inset 2px 3px 5px rgba(255,255,255,0.2),
         var(--shadow-x, 0px) var(--shadow-y, 5px) 8px rgba(0,0,0,0.8),
-        0 5px 0 #444;
+        0 4px 0 #333;
     transform: rotate(-30deg); /* Consolidated rotation */
-    transition: transform 0.05s, box-shadow 0.1s ease-out !important;
+    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease !important;
+}
+
+.dynamic-shadow-pill:hover {
+    filter: brightness(1.08);
+    transform: rotate(-30deg) translateY(-1px);
+    box-shadow: 
+        inset -2px -3px 5px rgba(0,0,0,0.5),
+        inset 2px 3px 6px rgba(255,255,255,0.25),
+        var(--shadow-x, 0px) var(--shadow-y, 6px) 10px rgba(0,0,0,0.9),
+        0 5px 0 #333;
 }
 
 .dynamic-shadow-pill:active {
-    transform: rotate(-30deg) translateY(4px) !important;
+    filter: brightness(0.9);
+    transform: rotate(-30deg) translateY(3px) !important;
     box-shadow: 
-        inset -1px -2px 3px rgba(0,0,0,0.5),
-        inset 1px 2px 3px rgba(255,255,255,0.3),
-        0 2px 4px rgba(0,0,0,0.8),
-        0 2px 0 #444 !important;
+        inset -1px -2px 3px rgba(0,0,0,0.7),
+        inset 1px 2px 2px rgba(255,255,255,0.1),
+        0 1px 3px rgba(0,0,0,0.8),
+        0 1px 0 #333 !important;
+    transition: transform 0.05s cubic-bezier(0.4, 0, 1, 1), box-shadow 0.05s cubic-bezier(0.4, 0, 1, 1), filter 0.05s !important;
 }

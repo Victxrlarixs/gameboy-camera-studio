@@ -13,29 +13,57 @@ import "../../styles/components/Electronics.css";
         <div class="absolute inset-0 opacity-[0.4] pcb-pattern"></div>
         <div class="absolute inset-x-0 top-0 bottom-0 opacity-[0.1] pcb-grid"></div>
 
+        <!-- Cartridge Edge Connector Pins -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 flex gap-[2px] z-10 w-[240px] justify-between">
+            {[...Array(32)].map(() => (
+                <div class="w-1.5 h-10 bg-gradient-to-b from-[#d4af37] via-[#f3e5ab] to-[#b8860b] rounded-b-sm shadow-[0_2px_4px_rgba(0,0,0,0.5)] border-x border-[#fcd34d]/30"></div>
+            ))}
+        </div>
+
         <!-- Master Circuitry (SVG Layer) -->
-        <svg class="absolute inset-0 w-full h-full opacity-[0.7]" viewBox="0 0 500 850" xmlns="http://www.w3.org/2000/svg">
+        <svg class="absolute inset-0 w-full h-full opacity-[0.85] z-0" viewBox="0 0 500 850" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <filter id="trace-glow-master" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="0.4" result="blur"/>
+                    <feGaussianBlur stdDeviation="0.5" result="blur"/>
                     <feComposite in="SourceGraphic" in2="blur" operator="over"/>
                 </filter>
             </defs>
-            <g stroke="#a3c46a" fill="none" stroke-width="1.2" filter="url(#trace-glow-master)">
-                <!-- Data Bus Paths -->
-                {[...Array(14)].map((_, i) => (
-                    <path d={`M${140 + i*4} 0 V150 Q${140 + i*4} 170 ${160 + i*4} 190`} opacity={0.2 + (i%2)*0.4} />
-                ))}
-                <!-- Power Rails -->
-                <path d="M60 0 V850" stroke-width="3" opacity="0.3" stroke="#2d5a2d" />
-                <path d="M440 0 V850" stroke-width="3" opacity="0.3" stroke="#2d5a2d" />
+            <g stroke="#a3c46a" fill="none" stroke-width="1.5" filter="url(#trace-glow-master)" opacity="0.6">
+                <!-- Detailed Traces with 45 degree bends -->
+                <path d="M 120 180 L 120 240 L 170 290 L 170 340 L 220 390 L 220 440" />
+                <path d="M 130 180 L 130 235 L 180 285 L 180 340 L 230 390 L 230 440" />
+                <path d="M 140 180 L 140 230 L 190 280 L 190 340 L 240 390 L 240 440" />
+                <path d="M 380 180 L 380 280 L 330 330 L 330 380 L 280 430" />
+                <path d="M 370 180 L 370 275 L 320 325 L 320 380 L 270 430" />
+                <path d="M 360 180 L 360 270 L 310 320 L 310 380 L 260 430" />
+                <path d="M 250 150 L 250 200 L 200 250 L 150 250" />
+                <path d="M 260 150 L 260 210 L 210 260 L 160 260" />
+                
+                <!-- Ground Fills / Polygons -->
+                <path d="M 20 20 L 80 20 L 80 80 L 20 80 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
+                <path d="M 420 20 L 480 20 L 480 80 L 420 80 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
+                <path d="M 20 750 L 80 750 L 80 820 L 20 820 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
+                <path d="M 420 750 L 480 750 L 480 820 L 420 820 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
             </g>
             
-            <!-- Real Solder Joints (Silver/Gold) -->
-            <g fill="#cbd5e1" opacity="0.9">
+            <!-- Vias and Solder Joints (Silver/Gold) -->
+            <g fill="#dfdfdf" stroke="#a3c46a" stroke-width="0.5" opacity="0.9">
+                <circle cx="120" cy="180" r="2.5" /> <circle cx="130" cy="180" r="2.5" /> <circle cx="140" cy="180" r="2.5" />
+                <circle cx="380" cy="180" r="2.5" /> <circle cx="370" cy="180" r="2.5" /> <circle cx="360" cy="180" r="2.5" />
+                <circle cx="250" cy="150" r="2.5" /> <circle cx="260" cy="150" r="2.5" />
+                <!-- Random scattered vias -->
                 {[...Array(120)].map(() => (
-                    <circle cx={Math.random()*500} cy={Math.random()*850} r={Math.random()*2 + 1} />
+                    <circle cx={40 + Math.random()*420} cy={100 + Math.random()*650} r="1.5" />
                 ))}
+            </g>
+            <!-- Gold Test Pads -->
+            <g fill="#d4af37" opacity="0.9">
+                <rect x="220" y="440" width="4" height="4" rx="1" />
+                <rect x="230" y="440" width="4" height="4" rx="1" />
+                <rect x="240" y="440" width="4" height="4" rx="1" />
+                <circle cx="280" cy="430" r="3" />
+                <circle cx="270" cy="430" r="3" />
+                <circle cx="260" cy="430" r="3" />
             </g>
         </svg>
 
@@ -69,33 +97,82 @@ import "../../styles/components/Electronics.css";
                 </div>
             </div>
 
-            <!-- Internal Component Details -->
-            <!-- CPU (Behind Shield - hinted shadow) -->
-            <div class="absolute top-[80px] left-1/2 -translate-x-1/2 w-32 h-32 bg-[#080808] rounded-sm border border-zinc-800 shadow-[0_10px_40px_rgba(0,0,0,0.9)] flex items-center justify-center opacity-90">
-                <!-- Silver Pins -->
-                <div class="absolute -left-3 inset-y-4 flex flex-col justify-between">
-                    {[...Array(8)].map(() => <div class="w-4 h-[2px] bg-zinc-500 shadow-sm"></div>)}
+            <!-- Internal Component Details (Authentic Hardware Replication) -->
+            <!-- Main Processor (Nintendo AGB style QFP) -->
+            <div class="absolute top-[80px] left-1/2 -translate-x-1/2 w-32 h-32 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 100 100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%221.5%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] bg-[#1a1c1d] bg-blend-overlay rounded-sm border-[1.5px] border-zinc-700 shadow-[0_10px_30px_rgba(0,0,0,0.9),inset_1px_1px_2px_rgba(255,255,255,0.1)] flex items-center justify-center opacity-95">
+                <!-- QFP Pins on all 4 sides -->
+                <div class="absolute -top-[5px] inset-x-2 flex justify-between">
+                    {[...Array(16)].map(() => <div class="w-[1.5px] h-[5px] bg-gradient-to-b from-zinc-300 to-zinc-500 shadow-sm rounded-t-[1px]"></div>)}
                 </div>
-                <div class="absolute -right-3 inset-y-4 flex flex-col justify-between">
-                    {[...Array(8)].map(() => <div class="w-4 h-[2px] bg-zinc-500 shadow-sm"></div>)}
+                <div class="absolute -bottom-[5px] inset-x-2 flex justify-between">
+                    {[...Array(16)].map(() => <div class="w-[1.5px] h-[5px] bg-gradient-to-t from-zinc-300 to-zinc-500 shadow-sm rounded-b-[1px]"></div>)}
                 </div>
-                <div class="text-[6px] text-zinc-400 font-bold tracking-widest text-center">LR35902<br/><span class="text-[4px] opacity-40">U1 PROCESSOR</span></div>
+                <div class="absolute -left-[5px] inset-y-2 flex flex-col justify-between">
+                    {[...Array(16)].map(() => <div class="w-[5px] h-[1.5px] bg-gradient-to-r from-zinc-300 to-zinc-500 shadow-sm rounded-l-[1px]"></div>)}
+                </div>
+                <div class="absolute -right-[5px] inset-y-2 flex flex-col justify-between">
+                    {[...Array(16)].map(() => <div class="w-[5px] h-[1.5px] bg-gradient-to-l from-zinc-300 to-zinc-500 shadow-sm rounded-r-[1px]"></div>)}
+                </div>
+                
+                <!-- CPU Marking -->
+                <div class="flex flex-col items-center">
+                    <span class="text-[7px] text-zinc-400 font-bold tracking-[0.2em] border border-zinc-400/30 px-1 py-0.5 rounded-[1px] mb-1 drop-shadow-md">NINTENDO</span>
+                    <span class="text-[5px] text-zinc-500 font-mono tracking-widest">CPU AGB A</span>
+                    <span class="text-[4px] text-zinc-600 font-mono tracking-widest mt-0.5">LR35902</span>
+                </div>
+                
+                <div class="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-zinc-800 shadow-inner border border-zinc-600/30"></div>
             </div>
 
-            <!-- Discrete Components Density -->
-            <div class="absolute inset-x-10 top-[280px] flex flex-wrap gap-3 opacity-60">
-                 {[...Array(20)].map(() => <div class="w-2.5 h-1 bg-amber-900/80 rounded-sm shadow-sm"></div>)}
-                 {[...Array(15)].map(() => <div class="w-2 h-1 bg-zinc-700 rounded-sm shadow-sm"></div>)}
+            <!-- RAM (SRAM Chip) -->
+            <div class="absolute top-[80px] right-[40px] w-14 h-24 bg-[#1a1c1d] rounded-sm border border-zinc-700 shadow-[0_5px_15px_rgba(0,0,0,0.8),inset_1px_1px_1px_rgba(255,255,255,0.1)] flex items-center justify-center opacity-95">
+                <div class="absolute -left-1.5 inset-y-2 flex flex-col justify-between">
+                    {[...Array(10)].map(() => <div class="w-1.5 h-[1.5px] bg-zinc-400 shadow-sm"></div>)}
+                </div>
+                <div class="absolute -right-1.5 inset-y-2 flex flex-col justify-between">
+                    {[...Array(10)].map(() => <div class="w-1.5 h-[1.5px] bg-zinc-400 shadow-sm"></div>)}
+                </div>
+                <div class="flex flex-col items-center rotate-90 w-20">
+                    <span class="text-[5px] text-zinc-400 font-mono tracking-[0.2em]">SRAM</span>
+                    <span class="text-[4px] text-zinc-500 font-mono">256K 10NS</span>
+                </div>
+                <div class="absolute top-1 left-1.5 w-1 h-1 rounded-full bg-zinc-800 shadow-inner"></div>
             </div>
 
-            <!-- Electrolytic Capacitor Farm -->
-            <div class="absolute top-[320px] left-[40px] flex flex-col gap-4">
-                 <div class="capacitor-cyl black-cap w-10 h-20 shadow-2xl"><div class="cap-label text-[4px]">100µF</div></div>
-                 <div class="capacitor-cyl blue-cap w-7 h-14 rotate-[15deg] shadow-xl"><div class="cap-label text-[4px]">47µF</div></div>
+            <!-- Crystal Oscillator (Silver Oval Component) -->
+            <div class="absolute top-[220px] left-[60px] w-8 h-[22px] bg-gradient-to-b from-zinc-300 via-white to-zinc-400 rounded-[10px] border border-zinc-600 shadow-[0_5px_10px_rgba(0,0,0,0.6),inset_0_2px_4px_white] flex items-center justify-center">
+                <div class="text-[4.5px] text-black/60 font-mono font-bold whitespace-nowrap drop-shadow-[0_1px_0_rgba(255,255,255,0.5)]">4.19 MHz</div>
+                <div class="absolute -left-2 top-1/2 -translate-y-1/2 flex flex-col justify-between">
+                    <div class="w-2 h-[1px] bg-zinc-400"></div>
+                </div>
+                <div class="absolute -right-2 top-1/2 -translate-y-1/2 flex flex-col justify-between">
+                    <div class="w-2 h-[1px] bg-zinc-400"></div>
+                </div>
             </div>
-            <div class="absolute top-[300px] right-[40px] flex flex-col gap-4">
-                 <div class="capacitor-cyl blue-cap w-8 h-18 -rotate-[10deg] shadow-xl"><div class="cap-label text-[4px]">68µF</div></div>
-                 <div class="capacitor-cyl black-cap w-6 h-12 shadow-md"><div class="cap-label text-[4px]">22µF</div></div>
+
+            <!-- Discrete Components Density (SMD Resistor and Capacitor Farm) -->
+            <div class="absolute inset-x-12 top-[280px] flex flex-wrap gap-2.5 opacity-85 z-0 justify-center">
+                 {[...Array(30)].map(() => (
+                    <div class="flex gap-[1px] items-center">
+                        <div class="w-1 h-2 bg-zinc-300 rounded-[0.5px]"></div>
+                        <div class={`w-${Math.random() > 0.5 ? '2.5' : '3'} h-2 ${Math.random() > 0.7 ? 'bg-amber-800' : Math.random() > 0.4 ? 'bg-[#181a1b]' : 'bg-[#e0d6b8]'} rounded-[1px] shadow-[0_2px_4px_rgba(0,0,0,0.5),inset_1px_1px_1px_rgba(255,255,255,0.2)] flex items-center justify-center`}>
+                           {Math.random() > 0.6 && <span class="text-[2.5px] text-white/40 scale-75 font-mono">103</span>}
+                        </div>
+                        <div class="w-1 h-2 bg-zinc-300 rounded-[0.5px]"></div>
+                    </div>
+                 ))}
+            </div>
+
+            <!-- Metallic Battery Terminals (AA Contact Plates) -->
+            <div class="absolute bottom-[240px] left-[130px] w-7 h-[42px] bg-gradient-to-r from-zinc-400 via-zinc-100 to-zinc-500 border border-zinc-600 rounded-[2px] shadow-[0_5px_15px_rgba(0,0,0,0.7),inset_2px_2px_4px_white] z-20 flex items-center">
+                <div class="absolute left-[-4px] w-1 h-4 bg-zinc-600 rounded-l-md shadow-sm"></div>
+                <div class="w-full text-center font-sans font-bold text-[10px] text-black/50 drop-shadow-[0_1px_0_white]">+</div>
+            </div>
+            <div class="absolute bottom-[240px] right-[130px] w-7 h-[42px] bg-gradient-to-l from-zinc-400 via-zinc-100 to-zinc-500 border border-zinc-600 rounded-[2px] shadow-[0_5px_15px_rgba(0,0,0,0.7),inset_2px_2px_4px_white] z-20 flex items-center justify-center">
+                <div class="absolute right-[-4px] w-1 h-4 bg-zinc-600 rounded-r-md shadow-sm"></div>
+                <!-- Spring Coil Representation -->
+                <div class="flex flex-col gap-[1px] w-[70%] h-[60%] bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,#777_2px,#aaa_3px)] opacity-90 border-x border-black/30 rounded-sm"></div>
+                <div class="absolute top-1/2 -translate-y-1/2 left-2 font-sans font-bold text-[10px] text-black/50 drop-shadow-[0_1px_0_white] z-10">-</div>
             </div>
 
             <!-- White Button Mounts (Semi-Transparent) -->
