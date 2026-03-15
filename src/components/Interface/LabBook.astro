@@ -5,14 +5,12 @@ import "../../styles/components/LabBook.css";
 <div id="lab-book-overlay" class="fixed inset-0 z-[300] flex items-center justify-center bg-black/95 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-700 overflow-hidden">
     <div class="lab-binder w-[98%] sm:w-[95%] max-w-[1200px] h-[95vh] sm:h-[90vh] bg-zinc-800 rounded-[8px_48px_48px_8px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] flex relative overflow-hidden ring-1 ring-white/10">
         
-        <!-- Binder Rings (Visual purely) -->
         <div class="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-around py-12 z-50">
             {[...Array(6)].map((_, i) => (
                 <div class="lab-ring w-10 h-6 -translate-x-1/2 rounded-full"></div>
             ))}
         </div>
 
-        <!-- Main Workspace (The Paper Page) -->
         <div class="lab-page flex-1 flex flex-col m-1 ml-8 sm:ml-10 p-4 sm:p-10 relative overflow-hidden">
             
             <header class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 sm:mb-10 border-b border-black/10 shadow-[0_1px_0_rgba(255,255,255,0.8)] pb-6">
@@ -39,14 +37,11 @@ import "../../styles/components/LabBook.css";
             </header>
 
             <div class="flex flex-1 flex-col lg:flex-row gap-6 lg:gap-10 overflow-hidden">
-                <!-- PHOTO GRID -->
                 <div class="flex-1 flex flex-col min-h-[200px]">
                     <div id="lab-grid" class="flex-1 overflow-y-auto pr-2 lg:pr-6 custom-scrollbar-v grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 align-start content-start py-4">
-                        <!-- Photos injected here -->
                     </div>
                 </div>
 
-                <!-- METADATA & CONTROL PANEL (Right Side) -->
                 <div id="photo-details-panel" class="w-full lg:w-[320px] stats-panel p-4 lg:p-6 flex flex-col gap-6 opacity-40 transition-opacity overflow-y-auto custom-scrollbar-v pr-2 border-t lg:border-t-0 lg:border-l border-black/5">
                     <div class="space-y-6 shrink-0">
                         <div class="aspect-square bg-white shadow-xl p-2 relative max-w-[200px] lg:max-w-none mx-auto lg:mx-0">

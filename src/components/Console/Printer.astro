@@ -8,20 +8,16 @@ import "../../styles/components/Printer.css";
         id="printer-chassis"
         class="matte-plastic relative p-8 pt-12 rounded-[14px_14px_80px_14px] shadow-[40px_50px_80px_rgba(0,0,0,0.8),inset_-8px_-10px_25px_rgba(0,0,0,0.4),inset_6px_8px_20px_rgba(255,255,255,0.7),inset_-20px_-30px_40px_rgba(0,0,0,0.1)] border-t-[2.5px] border-l-[2.5px] border-r-[32px] border-b-[38px] border-solid border-t-white/50 border-l-white/50 border-r-[#8b8d8c] border-b-[#8b8d8c] flex flex-col items-center z-20"
     >
-        <!-- Texture Overlays -->
         <div class="absolute -top-[2.5px] -left-[2.5px] -right-[32px] -bottom-[38px] rounded-[16px_16px_85px_16px] pointer-events-none plastic-grain opacity-[0.45] mix-blend-multiply z-[5]"></div>
         <div class="absolute inset-0 rounded-[14px_14px_80px_14px] pointer-events-none plastic-grain opacity-[0.18] mix-blend-overlay z-[5]"></div>
 
-        <!-- Shell Parting Lines (Seams) -->
         <div class="absolute top-[48%] -left-[2.5px] -right-[32px] h-[1.5px] bg-black/20 shadow-[0_1px_0_rgba(255,255,255,0.3)] z-10 pointer-events-none border-y border-black/5"></div>
         <div class="absolute top-0 right-[-14px] bottom-0 w-[1px] bg-black/15 shadow-[1px_0_0_rgba(255,255,255,0.4)] z-10 pointer-events-none"></div>
 
-        <!-- Left Side Data Connector Port (Link Cable) -->
         <div class="absolute top-[75px] left-[-4px] w-[8px] h-[36px] bg-[#8c8e8d] shadow-[inset_-1px_0_4px_rgba(255,255,255,0.4),inset_1px_1px_3px_rgba(0,0,0,0.5)] border-[0.5px] border-black/20 flex items-center justify-center rounded-r-sm z-10">
             <div class="w-[3px] h-[70%] bg-black/40 rounded-full shadow-[inset_1px_1px_2px_black]"></div>
         </div>
 
-        <!-- Side Grip Grooves (Like console) -->
         <div class="absolute top-[130px] right-[-14px] w-[10px] flex flex-col gap-[3.5px] z-10 opacity-70">
             {[...Array(8)].map(() => (
                 <div class="w-full h-[2.5px] bg-[#919392] rounded-l-[1px] shadow-[inset_-1px_1px_2px_rgba(0,0,0,0.8),inset_0_-1px_1px_rgba(255,255,255,0.4)]"></div>
@@ -34,7 +30,6 @@ import "../../styles/components/Printer.css";
         >
             <div class="absolute inset-x-0 top-[45%] h-[1px] bg-black/20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
             
-            <!-- Top "PUSH" Handle Engraving -->
             <div class="absolute -top-7 left-1/2 -translate-x-1/2 w-20 h-4 flex flex-col items-center opacity-30">
                 <div class="w-full h-[1.5px] bg-black/40 rounded-full mb-1 shadow-[0_0.5px_0_white/40]"></div>
                 <span class="text-[5px] font-pixel text-black font-bold tracking-[0.3em] uppercase">PUSH</span>
@@ -94,7 +89,6 @@ import "../../styles/components/Printer.css";
             </div>
         </div>
 
-        <!-- Printer Branding -->
         <div
             class="flex flex-col items-center mb-14 drop-shadow-[0_1px_0_rgba(255,255,255,0.5)] z-20 relative"
         >
@@ -131,7 +125,6 @@ import "../../styles/components/Printer.css";
                     <div class="relative w-20 h-20 bg-[#c0c2c3] rounded shadow-[inset_2px_2px_4px_rgba(255,255,255,0.5),inset_-2px_-2px_4px_rgba(0,0,0,0.2),12px_18px_25px_rgba(0,0,0,0.6)] border-[0.5px] border-black/20 overflow-hidden flex flex-col items-center justify-center gap-2">
                         <div class="absolute inset-0 plastic-grain opacity-10 pointer-events-none"></div>
                         
-                        <!-- Status LED -->
                         <div
                             id="printer-led"
                             class="w-5 h-5 rounded-full bg-[#3a0000] border-[1.5px] border-black/80 shadow-[inset_1px_2px_4px_black,0_1px_1px_rgba(255,255,255,0.4)] z-10 transition-colors duration-200"

@@ -19,7 +19,6 @@ export interface DitherOptions {
     palette?: number[][];
     brightness?: number;
     contrast?: number;
-    pixelSize?: number;
 }
 
 // Cache FPN and vignette lookup arrays per canvas size

@@ -2,18 +2,13 @@
 import "../../styles/components/Electronics.css";
 ---
 <div class="electronics-layer absolute inset-[12px] sm:inset-[16px] rounded-[12px_12px_210px_12px] overflow-hidden pointer-events-none z-0 opacity-0 transition-opacity duration-1000">
-    <!-- Main PCB Board (High-Fidelity FR-4 Substrate) -->
     <div class="pcb-board absolute inset-0 bg-[#356335] shadow-[inset_0_0_120px_rgba(0,0,0,0.8)] border border-white/5 isolate">
-        
-        <!-- Underlying Phenolic Depth (The orange-brown internal layers) -->
         <div class="absolute left-0 top-[30%] w-4 h-[40%] bg-[#b87333]/20 blur-md"></div>
         <div class="absolute right-0 top-[60%] w-4 h-[15%] bg-[#b87333]/20 blur-md"></div>
 
-        <!-- High-Density PCB Pattern & Copper Traces -->
         <div class="absolute inset-0 opacity-[0.4] pcb-pattern"></div>
         <div class="absolute inset-x-0 top-0 bottom-0 opacity-[0.1] pcb-grid"></div>
 
-        <!-- Cartridge Edge Connector Pins -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 flex gap-[2px] z-10 w-[240px] justify-between">
             {[...Array(32)].map(() => (
                 <div class="w-1.5 h-10 bg-gradient-to-b from-[#d4af37] via-[#f3e5ab] to-[#b8860b] rounded-b-sm shadow-[0_2px_4px_rgba(0,0,0,0.5)] border-x border-[#fcd34d]/30"></div>
@@ -29,7 +24,6 @@ import "../../styles/components/Electronics.css";
                 </filter>
             </defs>
             <g stroke="#a3c46a" fill="none" stroke-width="1.5" filter="url(#trace-glow-master)" opacity="0.6">
-                <!-- Detailed Traces with 45 degree bends -->
                 <path d="M 120 180 L 120 240 L 170 290 L 170 340 L 220 390 L 220 440" />
                 <path d="M 130 180 L 130 235 L 180 285 L 180 340 L 230 390 L 230 440" />
                 <path d="M 140 180 L 140 230 L 190 280 L 190 340 L 240 390 L 240 440" />
@@ -39,19 +33,16 @@ import "../../styles/components/Electronics.css";
                 <path d="M 250 150 L 250 200 L 200 250 L 150 250" />
                 <path d="M 260 150 L 260 210 L 210 260 L 160 260" />
                 
-                <!-- Ground Fills / Polygons -->
                 <path d="M 20 20 L 80 20 L 80 80 L 20 80 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
                 <path d="M 420 20 L 480 20 L 480 80 L 420 80 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
                 <path d="M 20 750 L 80 750 L 80 820 L 20 820 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
                 <path d="M 420 750 L 480 750 L 480 820 L 420 820 Z" fill="#2a4d2a" stroke="none" opacity="0.5" />
             </g>
             
-            <!-- Vias and Solder Joints (Silver/Gold) -->
             <g fill="#dfdfdf" stroke="#a3c46a" stroke-width="0.5" opacity="0.9">
                 <circle cx="120" cy="180" r="2.5" /> <circle cx="130" cy="180" r="2.5" /> <circle cx="140" cy="180" r="2.5" />
                 <circle cx="380" cy="180" r="2.5" /> <circle cx="370" cy="180" r="2.5" /> <circle cx="360" cy="180" r="2.5" />
                 <circle cx="250" cy="150" r="2.5" /> <circle cx="260" cy="150" r="2.5" />
-                <!-- Random scattered vias -->
                 {[...Array(120)].map(() => (
                     <circle cx={40 + Math.random()*420} cy={100 + Math.random()*650} r="1.5" />
                 ))}
@@ -67,40 +58,28 @@ import "../../styles/components/Electronics.css";
             </g>
         </svg>
 
-        <!-- Dynamic Components Layer -->
         <div class="absolute inset-0 z-10">
-            
-            <!-- LCD Ribbon Flex Cable (The orange "flex" the user requested) -->
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[55px] bg-[#a0522d] shadow-2xl flex flex-col justify-evenly py-2 border-x-4 border-black/30 z-30 overflow-hidden group-data-[skin=TRANSPARENT]:animate-pulse-slow">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/20 via-white/10 to-black/20"></div>
-                <!-- Flex Traces -->
                 {[...Array(24)].map(() => (
                     <div class="h-[0.5px] w-full bg-[#111]/40"></div>
                 ))}
-                <!-- Flex Serial Labels -->
                 <div class="absolute bottom-1 right-2 text-[3px] font-mono text-black/60 uppercase">DMG-LCD-FPC-01</div>
             </div>
 
-            <!-- EMI Metallic Shield (From the Play It Loud edition) -->
             <div class="absolute top-[170px] left-1/2 -translate-x-1/2 w-[65%] h-[110px] bg-zinc-400 shadow-[inset_0_2px_10px_rgba(255,255,255,0.6),0_15px_30px_rgba(0,0,0,0.7)] rounded-[2px] border-t border-white/50 z-20 overflow-hidden perspective-1000">
                 <div class="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20"></div>
-                <!-- Shield Texture -->
                 <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 100 100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22black%22/%3E%3C/svg%3E')]"></div>
-                <!-- Rivets -->
                 <div class="absolute top-3 left-4 w-3 h-3 rounded-full bg-zinc-500 border border-black/30 shadow-inner"></div>
                 <div class="absolute top-3 right-4 w-3 h-3 rounded-full bg-zinc-500 border border-black/30 shadow-inner"></div>
                 <div class="absolute bottom-3 left-10 w-2.5 h-2.5 rounded-full bg-zinc-600 border border-black/30 shadow-inner"></div>
                 <div class="absolute bottom-3 right-10 w-2.5 h-2.5 rounded-full bg-zinc-600 border border-black/30 shadow-inner"></div>
-                <!-- Nintendo Mark -->
                 <div class="absolute inset-0 flex items-center justify-center opacity-10">
                     <span class="text-[10px] font-bold tracking-widest text-zinc-900 border-2 border-zinc-900 px-2 py-0.5 rounded-md">Nintendo</span>
                 </div>
             </div>
 
-            <!-- Internal Component Details (Authentic Hardware Replication) -->
-            <!-- Main Processor (Nintendo AGB style QFP) -->
             <div class="absolute top-[80px] left-1/2 -translate-x-1/2 w-32 h-32 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 100 100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%221.5%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] bg-[#1a1c1d] bg-blend-overlay rounded-sm border-[1.5px] border-zinc-700 shadow-[0_10px_30px_rgba(0,0,0,0.9),inset_1px_1px_2px_rgba(255,255,255,0.1)] flex items-center justify-center opacity-95">
-                <!-- QFP Pins on all 4 sides -->
                 <div class="absolute -top-[5px] inset-x-2 flex justify-between">
                     {[...Array(16)].map(() => <div class="w-[1.5px] h-[5px] bg-gradient-to-b from-zinc-300 to-zinc-500 shadow-sm rounded-t-[1px]"></div>)}
                 </div>
@@ -114,7 +93,6 @@ import "../../styles/components/Electronics.css";
                     {[...Array(16)].map(() => <div class="w-[5px] h-[1.5px] bg-gradient-to-l from-zinc-300 to-zinc-500 shadow-sm rounded-r-[1px]"></div>)}
                 </div>
                 
-                <!-- CPU Marking -->
                 <div class="flex flex-col items-center">
                     <span class="text-[7px] text-zinc-400 font-bold tracking-[0.2em] border border-zinc-400/30 px-1 py-0.5 rounded-[1px] mb-1 drop-shadow-md">NINTENDO</span>
                     <span class="text-[5px] text-zinc-500 font-mono tracking-widest">CPU AGB A</span>
@@ -124,7 +102,6 @@ import "../../styles/components/Electronics.css";
                 <div class="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-zinc-800 shadow-inner border border-zinc-600/30"></div>
             </div>
 
-            <!-- RAM (SRAM Chip) -->
             <div class="absolute top-[80px] right-[40px] w-14 h-24 bg-[#1a1c1d] rounded-sm border border-zinc-700 shadow-[0_5px_15px_rgba(0,0,0,0.8),inset_1px_1px_1px_rgba(255,255,255,0.1)] flex items-center justify-center opacity-95">
                 <div class="absolute -left-1.5 inset-y-2 flex flex-col justify-between">
                     {[...Array(10)].map(() => <div class="w-1.5 h-[1.5px] bg-zinc-400 shadow-sm"></div>)}

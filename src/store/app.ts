@@ -10,7 +10,6 @@ export type GBSkin = 'DEFAULT' | 'TRANSPARENT';
 interface State {
     mode: GBMode;
     skin: GBSkin;
-    menuIndex: number;
     paletteName: string;
     brightness: number;
     contrast: number;
@@ -27,7 +26,6 @@ export const AppStore = {
     state: {
         mode: 'SPLASH' as GBMode,
         skin: 'DEFAULT' as GBSkin,
-        menuIndex: 0,
         paletteName: 'DMG',
         brightness: 0,
         contrast: 1,
@@ -91,10 +89,6 @@ export const AppStore = {
     cyclePalette() {
         const names = Object.keys(PALETTES);
         this.state.paletteName = names[(names.indexOf(this.state.paletteName) + 1) % names.length];
-    },
-
-    cycleStamp(dir: number) {
-        this.state.stampIndex = (this.state.stampIndex + dir + STAMPS.length) % STAMPS.length;
     },
 
     adjustBrightness(delta: number) {
