@@ -80,6 +80,7 @@ The image is exported as a **pixel-perfect 8× upscale (1280 × 1152)** while pr
 The experience adapts seamlessly to **pocket-sized interaction** while preserving the illusion of a physical object.
 
 <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+  <img src="public/screenshots/Mobile.png" width="320">
   <img src="public/screenshots/Mobile-2.png" width="320">
 </div>
 
