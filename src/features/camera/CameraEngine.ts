@@ -19,8 +19,9 @@ export class CameraEngine {
     private processingCtx: CanvasRenderingContext2D;
     private isFrozen = false;
     private animFrame: number | null = null;
-    private compositionCanvas: HTMLCanvasElement | null = null;
-    private compositionCtx: CanvasRenderingContext2D | null = null;
+    private compositionCanvas: HTMLCanvasElement;
+    private compositionCtx: CanvasRenderingContext2D;
+    private boundToggleListener: ((e: any) => void) | null = null;
 
     /**
      * @param targetCanvas - The visible LCD canvas element to render into.
@@ -33,6 +34,11 @@ export class CameraEngine {
         this.processingCanvas.width  = 128;
         this.processingCanvas.height = 112;
         this.processingCtx = this.processingCanvas.getContext('2d', { willReadFrequently: true })!;
+        
+        this.compositionCanvas = document.createElement('canvas');
+        this.compositionCanvas.width = 160;
+        this.compositionCanvas.height = 144;
+        this.compositionCtx = this.compositionCanvas.getContext('2d')!;
     }
 
     /**
@@ -64,9 +70,13 @@ export class CameraEngine {
             this.loop();
 
             // Listen for camera toggle
-            window.addEventListener('gb-camera-toggle', (e: any) => {
+            if (this.boundToggleListener) {
+                window.removeEventListener('gb-camera-toggle', this.boundToggleListener);
+            }
+            this.boundToggleListener = (e: any) => {
                 this.start(e.detail.facingMode);
-            }, { once: true }); // Re-bind on each start
+            };
+            window.addEventListener('gb-camera-toggle', this.boundToggleListener, { once: true });
         } catch (err) {
             console.error('Camera access denied:', err);
         }
@@ -78,6 +88,10 @@ export class CameraEngine {
     stop(): void {
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
         if (this.stream)    this.stream.getTracks().forEach(track => track.stop());
+        if (this.boundToggleListener) {
+            window.removeEventListener('gb-camera-toggle', this.boundToggleListener);
+            this.boundToggleListener = null;
+        }
         this.video = null;
     }
 
@@ -90,7 +104,7 @@ export class CameraEngine {
         this.animFrame = requestAnimationFrame(() => this.loop());
     }
 
-    private lastRawData: number[] | null = null;
+    private lastRawData: Uint8Array | null = null;
 
     /**
      * Captures a single video frame, applies dithering, draws it to the
@@ -119,13 +133,14 @@ export class CameraEngine {
         
         // Optimize: Pre-allocate or extract raw data efficiently without frequent array allocations
         if (!this.lastRawData || this.lastRawData.length !== (128 * 112)) {
-            this.lastRawData = new Array(128 * 112);
+            this.lastRawData = new Uint8Array(128 * 112);
         }
         
         // Fast path for raw data capture (extract red channel as proxy for luminance before dithering)
         const rawPixels = imageData.data;
+        const out = this.lastRawData;
         for (let i = 0, j = 0; i < rawPixels.length; i += 4, j++) {
-            this.lastRawData[j] = rawPixels[i];
+            out[j] = rawPixels[i];
         }
 
         const palette   = PALETTES[AppStore.state.paletteName] || PALETTES.DMG;
@@ -138,18 +153,11 @@ export class CameraEngine {
 
         this.processingCtx.putImageData(imageData, 0, 0);
 
-        if (!this.compositionCanvas) {
-            this.compositionCanvas = document.createElement('canvas');
-            this.compositionCanvas.width = 160;
-            this.compositionCanvas.height = 144;
-            this.compositionCtx = this.compositionCanvas.getContext('2d')!;
-        }
-
-        const compCtx = this.compositionCtx!;
+        const compCtx = this.compositionCtx;
         compCtx.imageSmoothingEnabled = false;
 
         // 1. Draw Background
-        compCtx.fillStyle = `rgb(${palette[3].join(',')})`;
+        compCtx.fillStyle = `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`;
         compCtx.fillRect(0, 0, 160, 144);
 
         // 2. Draw Camera Feed (No smoothing, pure pixel)
@@ -181,14 +189,14 @@ export class CameraEngine {
         const h = 24;
 
         // OSD Box
-        ctx.fillStyle = `rgb(${palette[0].join(',')})`;
+        ctx.fillStyle = `rgb(${palette[0][0]},${palette[0][1]},${palette[0][2]})`;
         ctx.fillRect(x, y, w, h);
-        ctx.strokeStyle = `rgb(${palette[2].join(',')})`;
+        ctx.strokeStyle = `rgb(${palette[2][0]},${palette[2][1]},${palette[2][2]})`;
         ctx.lineWidth = 1;
         ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
 
         // Label
-        ctx.fillStyle = `rgb(${palette[3].join(',')})`;
+        ctx.fillStyle = `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`;
         ctx.font = '6px "Press Start 2P"';
         ctx.textAlign = 'center';
         ctx.fillText(osd.label, 80, y + 8);
@@ -201,7 +209,9 @@ export class CameraEngine {
         const activeDots = Math.round(osd.value * dots);
 
         for (let i = 0; i < dots; i++) {
-            ctx.fillStyle = i < activeDots ? `rgb(${palette[3].join(',')})` : `rgb(${palette[1].join(',')})`;
+            ctx.fillStyle = i < activeDots 
+                ? `rgb(${palette[3][0]},${palette[3][1]},${palette[3][2]})`
+                : `rgb(${palette[1][0]},${palette[1][1]},${palette[1][2]})`;
             ctx.fillRect(barX + (i * (barW/dots)), barY, (barW/dots) - 2, 4);
         }
     }
@@ -215,7 +225,8 @@ export class CameraEngine {
     takePhoto() {
         this.isFrozen = true;
         const dataUrl = this.canvas.toDataURL('image/png');
-        const photo   = PhotoStore.savePhoto(dataUrl, this.lastRawData || undefined);
+        const rawArray = this.lastRawData ? Array.from(this.lastRawData) : undefined;
+        const photo   = PhotoStore.savePhoto(dataUrl, rawArray);
         setTimeout(() => { this.isFrozen = false; }, 1000);
         return photo;
     }

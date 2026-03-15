@@ -41,18 +41,44 @@ export interface DitherOptions {
  * Emulates the Mitsubishi M64282FP CMOS sensor characteristics including noise,
  * vignetting, and Bayer ordered dithering.
  */
+let cachedLookups: { width: number, height: number, fpn: Float32Array, vignette: Float32Array } | null = null;
+
+function getLookups(width: number, height: number) {
+    if (cachedLookups && cachedLookups.width === width && cachedLookups.height === height) {
+        return cachedLookups;
+    }
+    const len = width * height;
+    const fpn = new Float32Array(len);
+    const vignette = new Float32Array(len);
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const idx = y * width + x;
+            fpn[idx] = (Math.sin(x * 0.5) * 2) + (Math.cos(y * 0.5) * 2);
+            
+            const dx = (x / width) - 0.5;
+            const dy = (y / height) - 0.5;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            vignette[idx] = Math.max(0, 1 - (dist * dist * 1.2));
+        }
+    }
+    cachedLookups = { width, height, fpn, vignette };
+    return cachedLookups;
+}
+
 export function applyDither(imageData: ImageData, options: DitherOptions = {}): ImageData {
     const { data, width, height } = imageData;
     const palette = options.palette ?? PALETTES.DMG;
     const brightness = (options.brightness ?? 0) * 255;
     const contrast = options.contrast ?? 1;
 
-    // Pre-calculate vignette and noise for the frame to be more efficient
-    // but for "realism", we do it per pixel to allow dynamic interaction
+    const lookups = getLookups(width, height);
+    const fpnArray = lookups.fpn;
+    const vignetteArray = lookups.vignette;
     
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-            const i = (y * width + x) * 4;
+            const idx = y * width + x;
+            const i = idx * 4;
 
             // 1. Capture & Grayscale (using REC 601 weights like a real sensor)
             let r = data[i];
@@ -62,15 +88,12 @@ export function applyDither(imageData: ImageData, options: DitherOptions = {}): 
 
             // 2. Simulate Sensor Noise (Fixed Pattern Noise + Random Analog Noise)
             // Real GBC sensors have slight vertical/horizontal banding (Fixed Pattern Noise)
-            const fpn = (Math.sin(x * 0.5) * 2) + (Math.cos(y * 0.5) * 2);
+            const fpn = fpnArray[idx];
             const grain = (Math.random() - 0.5) * 12; // Gauges the "read noise"
             lum += fpn + grain;
 
             // 3. Optical Vignetting (Lens falloff)
-            const dx = (x / width) - 0.5;
-            const dy = (y / height) - 0.5;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const vignette = Math.max(0, 1 - (dist * dist * 1.2)); // Circular falloff
+            const vignette = vignetteArray[idx];
             lum *= vignette;
 
             // 4. Contrast & Brightness (Sensor Curves)
@@ -84,7 +107,7 @@ export function applyDither(imageData: ImageData, options: DitherOptions = {}): 
             
             // Normalize lum to 0-3 range for 4 shades
             const normalizedLum = (lum / 255) * 3;
-            const k = Math.floor(normalizedLum);
+            const k = normalizedLum | 0;
             const fract = normalizedLum - k;
             
             // Dither threshold comparison
@@ -94,10 +117,10 @@ export function applyDither(imageData: ImageData, options: DitherOptions = {}): 
             }
 
             // 6. Map to Palette
-            const [pr, pg, pb] = palette[shadeIndex];
-            data[i]     = pr;
-            data[i + 1] = pg;
-            data[i + 2] = pb;
+            const p = palette[shadeIndex];
+            data[i]     = p[0];
+            data[i + 1] = p[1];
+            data[i + 2] = p[2];
             data[i + 3] = 255;
         }
     }

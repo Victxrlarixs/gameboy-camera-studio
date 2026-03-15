@@ -14,6 +14,7 @@ export class DisplaySystem {
     private lastSavedPhoto: any = null;
     private splashStep = 0;
     private hasPlayedBootSound = false;
+    private splashCanvas: HTMLCanvasElement | null = null;
 
     /**
      * @param canvasId The ID of the HTML canvas element for LCD rendering
@@ -94,54 +95,68 @@ export class DisplaySystem {
         }
     }
 
+    private mainLoopId: number | null = null;
+
     /**
      * Initiates the high-frequency rendering loop for the LCD.
      */
     private startMainLoop(): void {
+        if (this.mainLoopId) {
+            cancelAnimationFrame(this.mainLoopId);
+        }
         const loop = () => {
             if (AppStore.state.mode === "SPLASH") {
                 this.renderSplash();
             }
             if (AppStore.state.mode !== "SHOOT") {
-                requestAnimationFrame(loop);
+                this.mainLoopId = requestAnimationFrame(loop);
+            } else {
+                this.mainLoopId = null;
             }
         };
-        requestAnimationFrame(loop);
+        this.mainLoopId = requestAnimationFrame(loop);
     }
 
     /**
      * Renders the authentic boot sequence.
      */
     private renderSplash(): void {
-        const { ctx } = this;
-        
-        const bgColor = "#9bbc0f";
-        const logoColor = "#0f380f";
+        if (!this.splashCanvas) {
+            this.splashCanvas = document.createElement('canvas');
+            this.splashCanvas.width = 160;
+            this.splashCanvas.height = 144;
+            const sCtx = this.splashCanvas.getContext("2d", { alpha: false })!;
+            
+            const bgColor = "#9bbc0f";
+            const logoColor = "#0f380f";
 
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, 160, 144);
+            sCtx.fillStyle = bgColor;
+            sCtx.fillRect(0, 0, 160, 144);
 
-        // 1. Draw "GAME BOY" static logo
-        ctx.fillStyle = logoColor;
-        ctx.textAlign = "center";
-        ctx.font = 'bold 16px "Press Start 2P"';
-        ctx.fillText("GAME BOY", 80, 70);
+            // 1. Draw "GAME BOY" static logo
+            sCtx.fillStyle = logoColor;
+            sCtx.textAlign = "center";
+            sCtx.font = 'bold 16px "Press Start 2P"';
+            sCtx.fillText("GAME BOY", 80, 70);
 
-        // 2. Draw "Nintendo®" FIXED at the bottom
-        const fixedY = 110;
-        ctx.font = '7px "Press Start 2P"';
-        
-        const text = "Nintendo®";
-        const textWidth = ctx.measureText(text).width;
-        const boxW = textWidth + 10;
-        const boxH = 14;
-        
-        ctx.strokeStyle = logoColor;
-        ctx.lineWidth = 1;
-        this.roundRect(ctx, 80 - (boxW / 2), fixedY - 10, boxW, boxH, 4);
-        ctx.stroke();
-        
-        ctx.fillText(text, 80, fixedY);
+            // 2. Draw "Nintendo®" FIXED at the bottom
+            const fixedY = 110;
+            sCtx.font = '7px "Press Start 2P"';
+            
+            const text = "Nintendo®";
+            const textWidth = sCtx.measureText(text).width;
+            const boxW = textWidth + 10;
+            const boxH = 14;
+            
+            sCtx.strokeStyle = logoColor;
+            sCtx.lineWidth = 1;
+            this.roundRect(sCtx, 80 - (boxW / 2), fixedY - 10, boxW, boxH, 4);
+            sCtx.stroke();
+            
+            sCtx.fillText(text, 80, fixedY);
+        }
+
+        this.ctx.drawImage(this.splashCanvas, 0, 0);
 
         // 3. Play sound after a short thematic delay (60 steps)
         if (this.splashStep === 60 && !this.hasPlayedBootSound) {

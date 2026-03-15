@@ -94,7 +94,8 @@
 }
 
 /* Magenta Logo for Clear Edition */
-#gb-chassis[data-skin="TRANSPARENT"] .text-transparent.bg-clip-text {
+#gb-chassis[data-skin="TRANSPARENT"] .text-transparent.bg-clip-text,
+#gb-chassis[data-skin="TRANSPARENT"] .gb-control-label {
     background: linear-gradient(to bottom, #d11568, #a01050) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
