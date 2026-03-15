@@ -1,4 +1,8 @@
-# Game Boy Camera Studio
+<h1 align="center">Game Boy Camera Studio</h1>
+
+<p align="center">
+  <img src="public/favicon.png" width="190">
+</p>
 
 Turn your webcam into a **Game Boy Camera.**
 
